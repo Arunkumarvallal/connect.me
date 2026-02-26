@@ -21,7 +21,8 @@ import {
   Edit2,
   Plus,
   Sun,
-  Moon
+  Moon,
+  Video
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -54,12 +55,19 @@ export default function Dashboard() {
     });
   };
 
+  const handleSizeChange = (id: string, size: TileSize) => {
+    setProfile({
+      ...profile,
+      tiles: profile.tiles.map(t => t.id === id ? { ...t, size } : t)
+    });
+  };
+
   const addTile = (type: TileType, metadata: any = {}) => {
     const newTile: Tile = {
       id: Math.random().toString(36).substr(2, 9),
       type,
       size: '1x1',
-      title: type === 'image' ? 'New Visual' : undefined,
+      title: type === 'image' ? 'New Visual' : (type === 'video' ? 'New Video' : undefined),
       metadata: { ...metadata }
     };
     setProfile({ ...profile, tiles: [...profile.tiles, newTile] });
@@ -150,7 +158,7 @@ export default function Dashboard() {
               Your Grid
             </h2>
             <p className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
-              Drag tiles to rearrange
+              Drag tiles to rearrange • Hover to resize
             </p>
           </div>
           
@@ -167,7 +175,7 @@ export default function Dashboard() {
                   onDragEnter={(e) => (dragOverItem.current = index)}
                   onDragEnd={handleSort}
                   onDragOver={(e) => e.preventDefault()}
-                  className="transition-all duration-300 cursor-grab active:cursor-grabbing hover:scale-[1.02] active:scale-[0.98]"
+                  className="transition-all duration-300 cursor-grab active:cursor-grabbing"
                 >
                   <TileRenderer 
                     tile={tile} 
@@ -175,6 +183,7 @@ export default function Dashboard() {
                     onRemove={removeTile}
                     onEdit={setEditingTile}
                     onQuickEdit={handleQuickEdit}
+                    onSizeChange={handleSizeChange}
                   />
                 </div>
               ))}
@@ -186,7 +195,7 @@ export default function Dashboard() {
       {/* Floating UI Container */}
       <div className="fixed bottom-10 left-0 right-0 z-50 px-8 flex items-center justify-center">
         <div className="max-w-fit flex items-center gap-4">
-          {/* Settings Button (Far Left) */}
+          {/* Settings Button */}
           <button className="w-14 h-14 bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 shadow-xl rounded-full flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group">
             <Settings2 size={24} className="text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white" />
           </button>
@@ -203,26 +212,23 @@ export default function Dashboard() {
               <button onClick={() => addTile('image')} className="p-3 text-white/50 hover:text-white transition-colors" title="Add Image"><ImageIcon size={18} /></button>
               <button onClick={() => addTile('text')} className="p-3 text-white/50 hover:text-white transition-colors" title="Add Quote"><Quote size={18} /></button>
               <button onClick={() => addTile('text')} className="p-3 text-white/50 hover:text-white transition-colors" title="Add Heading"><Type size={18} /></button>
-              <button onClick={() => addTile('text')} className="p-3 text-white/50 hover:text-white transition-colors" title="Add Text"><CaseSensitive size={18} /></button>
+              <button onClick={() => addTile('video')} className="p-3 text-white/50 hover:text-white transition-colors" title="Add Video"><Video size={18} /></button>
             </div>
 
             <div className="w-px h-6 bg-white/10 mx-1" />
 
             <div className="flex items-center px-2">
-              {/* Theme Toggle */}
+              {/* Theme & Device Toggles */}
               <button 
                 onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} 
                 className="p-3 text-white/50 hover:text-white transition-colors" 
-                title="Toggle Theme"
               >
                 {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
               </button>
               
-              {/* Device Toggle */}
               <button 
                 onClick={() => setView(view === 'desktop' ? 'mobile' : 'desktop')} 
                 className="p-3 text-white/50 hover:text-white transition-colors" 
-                title={view === 'desktop' ? "Switch to Mobile View" : "Switch to Desktop View"}
               >
                 {view === 'desktop' ? <Smartphone size={18} /> : <Monitor size={18} />}
               </button>
@@ -263,36 +269,18 @@ export default function Dashboard() {
                   />
                 </div>
               )}
-              {(!quickEditMode || quickEditMode === 'image') && (
+              {(!quickEditMode || quickEditMode === 'image' || quickEditMode === 'video') && (
                 <div className="space-y-2">
-                  <Label className="dark:text-zinc-400">Image URL / GIF Link</Label>
+                  <Label className="dark:text-zinc-400">{quickEditMode === 'video' ? 'Video URL' : 'Image URL'}</Label>
                   <Input 
-                    value={editingTile.metadata?.imageUrl || ''} 
+                    value={editingTile.metadata?.imageUrl || editingTile.metadata?.videoUrl || ''} 
                     onChange={(e) => setEditingTile({
                       ...editingTile, 
-                      metadata: { ...editingTile.metadata, imageUrl: e.target.value }
+                      metadata: { ...editingTile.metadata, [quickEditMode === 'video' ? 'videoUrl' : 'imageUrl']: e.target.value }
                     })}
                     className="rounded-xl dark:bg-zinc-800 dark:border-zinc-700"
                     placeholder="https://..."
                   />
-                </div>
-              )}
-              {!quickEditMode && (
-                <div className="space-y-2">
-                  <Label className="dark:text-zinc-400">Size</Label>
-                  <div className="grid grid-cols-5 gap-2">
-                    {(['1x1', '2x1', '1x2', '2x2', '3x1'] as TileSize[]).map((s) => (
-                      <Button 
-                        key={s} 
-                        size="sm" 
-                        variant={editingTile.size === s ? 'default' : 'outline'}
-                        onClick={() => setEditingTile({...editingTile, size: s})}
-                        className="rounded-lg text-[10px] dark:border-zinc-700"
-                      >
-                        {s}
-                      </Button>
-                    ))}
-                  </div>
                 </div>
               )}
               <Button className="w-full rounded-full h-12 mt-4" onClick={() => updateTile(editingTile)}>Save Changes</Button>
