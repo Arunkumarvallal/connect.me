@@ -7,6 +7,8 @@ import { mockProfile } from '@/lib/mock-data';
 import { TileRenderer } from '@/components/profile/tile-renderer';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Link2, Share2, Quote, LayoutGrid, Monitor, Github, Twitter, Linkedin } from 'lucide-react';
 
 export default function PublicProfile({ params }: { params: Promise<{ username: string }> }) {
   const [resolvedParams, setResolvedParams] = useState<{ username: string } | null>(null);
@@ -20,55 +22,80 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
   const profile = mockProfile;
 
   return (
-    <div className="min-h-screen bg-white font-body selection:bg-primary/10">
-      <div className="max-w-[800px] mx-auto px-6 py-12 md:py-20 flex flex-col items-center">
-        
-        {/* Profile Header: Centered like the screenshot */}
-        <div className="w-full flex flex-col items-center text-center space-y-8 mb-16">
-          <div className="relative">
-            {/* Main Avatar */}
-            <div className="relative group">
-              <div className="absolute -inset-4 bg-primary/5 rounded-full scale-95 transition-all duration-500" />
-              <Avatar className="w-48 h-48 border-8 border-white shadow-2xl relative">
+    <div className="min-h-screen bg-white font-body selection:bg-primary/10 relative pb-32">
+      <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-24">
+        <div className="flex flex-col md:flex-row gap-16 lg:gap-24">
+          
+          {/* Left Side: Bio Section */}
+          <div className="md:w-1/3 space-y-8 md:sticky md:top-24 h-fit">
+            <div className="space-y-6">
+              <Avatar className="w-32 h-32 border-[6px] border-white shadow-xl">
                 <AvatarImage src={profile.avatarUrl} alt={profile.displayName} />
                 <AvatarFallback>{profile.displayName.charAt(0)}</AvatarFallback>
               </Avatar>
               
-              {/* Floating badges from screenshot */}
-              <div className="absolute -top-4 -right-8 bg-white shadow-xl rounded-2xl px-4 py-2 text-sm font-bold border border-black/5 flex items-center gap-2 whitespace-nowrap">
-                👋 Welcome!
-              </div>
-              <div className="absolute top-1/2 -left-12 -translate-y-1/2 bg-white shadow-xl rounded-2xl px-4 py-2 text-xs font-bold border border-black/5 flex items-center gap-2 whitespace-nowrap">
-                <span className="text-red-500">📍</span> Based in {profile.location || 'Chennai'}
-              </div>
-              <div className="absolute -bottom-4 -right-4 bg-white shadow-lg rounded-full p-2 border border-black/5">
-                <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center">
-                   <svg viewBox="0 0 24 24" className="w-5 h-5 text-sky-500 fill-current"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                </div>
+              <div className="space-y-4">
+                <h1 className="text-4xl font-black font-headline flex items-center gap-2">
+                  {profile.displayName} 
+                  <span className="text-yellow-400">⚡️</span>
+                </h1>
+                <p className="text-muted-foreground text-base leading-relaxed font-medium whitespace-pre-wrap">
+                  {profile.bio}
+                </p>
+                <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
+                  {profile.bio.length}/280 characters
+                </p>
               </div>
             </div>
+
+            {/* Bottom mini icons from screenshot */}
+            <div className="flex items-center gap-6 pt-12 opacity-30">
+              <button className="hover:opacity-100 transition-opacity"><LayoutGrid size={18} /></button>
+              <button className="hover:opacity-100 transition-opacity"><Monitor size={18} /></button>
+              <button className="hover:opacity-100 transition-opacity"><Github size={18} /></button>
+            </div>
           </div>
-          
-          <div className="space-y-6 max-w-xl">
-            <h1 className="text-5xl md:text-6xl font-black font-headline tracking-tighter uppercase">{profile.displayName}</h1>
-            <div className="space-y-4">
-              <p className="text-muted-foreground text-lg leading-relaxed font-medium">
-                {profile.bio}
-              </p>
+
+          {/* Right Side: Grid Section */}
+          <div className="flex-1 space-y-12">
+            <div className="bento-grid">
+              {profile.tiles.filter(t => t.id !== 'help-text' && t.id !== 'email-1').map((tile) => (
+                <TileRenderer key={tile.id} tile={tile} />
+              ))}
+            </div>
+
+            {/* Section: How can I help? */}
+            <div className="space-y-6">
+              <h2 className="text-sm font-bold opacity-60 px-2">How can I help? ⚡️</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {profile.tiles.filter(t => t.id === 'help-text' || t.id === 'email-1').map((tile) => (
+                  <TileRenderer key={tile.id} tile={tile} />
+                ))}
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Bento Grid */}
-        <div className="w-full space-y-8">
-          <div className="flex items-center">
-            <h2 className="text-2xl font-black font-headline tracking-tight">Socials</h2>
-          </div>
-          <div className="bento-grid">
-            {profile.tiles.map((tile) => (
-              <TileRenderer key={tile.id} tile={tile} />
-            ))}
-          </div>
+      {/* Floating Action Bar at the bottom */}
+      <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
+        <div className="bg-black text-white px-2 py-2 rounded-full flex items-center gap-1 shadow-2xl border border-white/10">
+           <button className="bg-[#4ADE80] text-black px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 hover:scale-105 transition-transform">
+             Share my Bento
+           </button>
+           <div className="w-px h-6 bg-white/20 mx-1" />
+           <div className="flex items-center">
+             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Link2 size={16} /></button>
+             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Share2 size={16} /></button>
+             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Quote size={16} /></button>
+             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Monitor size={16} /></button>
+             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><div className="w-5 h-5 bg-white/10 rounded" /></button>
+           </div>
+           <div className="w-px h-6 bg-white/20 mx-1" />
+           <div className="flex items-center gap-1">
+             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Monitor size={16} /></button>
+             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Monitor size={16} /></button>
+           </div>
         </div>
       </div>
     </div>

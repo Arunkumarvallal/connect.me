@@ -12,7 +12,6 @@ import {
   Instagram, 
   Youtube, 
   ExternalLink, 
-  Play, 
   Disc, 
   MessageCircle, 
   Link as LinkIcon,
@@ -20,7 +19,10 @@ import {
   Edit2,
   Type,
   ImageIcon,
-  Video
+  Video,
+  MapPin,
+  Mail,
+  ArrowUpRight
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -47,21 +49,15 @@ const SocialIcon = ({ brand, className }: { brand?: string, className?: string }
 };
 
 export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit }: TileRendererProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const sizeClass = `tile-${tile.size}`;
 
   const commonClasses = cn(
-    "relative overflow-hidden group transition-all duration-500 hover:shadow-2xl rounded-[2.5rem] border border-black/5 min-h-[140px]",
+    "relative overflow-hidden group transition-all duration-500 hover:shadow-xl rounded-[2.5rem] border border-black/5 min-h-[140px] bg-white",
     sizeClass
   );
 
   const EditOverlay = () => isDashboard && (
-    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 z-10 backdrop-blur-sm">
+    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 z-30 backdrop-blur-sm">
       <Button size="icon" variant="secondary" className="rounded-full shadow-lg" onClick={() => onEdit?.(tile)}>
         <Edit2 size={16} />
       </Button>
@@ -72,7 +68,7 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit 
   );
 
   const QuickActions = () => isDashboard && (
-    <div className="absolute top-4 left-4 flex gap-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+    <div className="absolute top-4 left-4 flex gap-2 z-40 opacity-0 group-hover:opacity-100 transition-opacity">
       <Button 
         size="icon" 
         variant="secondary" 
@@ -89,149 +85,122 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit 
       >
         <ImageIcon size={14} />
       </Button>
-      <Button 
-        size="icon" 
-        variant="secondary" 
-        className="w-8 h-8 rounded-full bg-white/90 backdrop-blur"
-        onClick={(e) => { e.stopPropagation(); onQuickEdit?.(tile, 'video'); }}
-      >
-        <Video size={14} />
-      </Button>
     </div>
   );
 
-  const renderContent = () => {
-    if (tile.metadata?.videoUrl) {
-      return (
-        <video 
-          src={tile.metadata.videoUrl} 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-      );
-    }
-    if (tile.metadata?.imageUrl) {
-      return (
-        <div className="relative w-full h-full">
-          <Image 
-            src={tile.metadata.imageUrl} 
-            alt={tile.title || "Tile image"} 
-            fill 
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-        </div>
-      );
-    }
-    return null;
-  };
-
   switch (tile.type) {
     case 'social':
-      const isLinkedIn = tile.metadata?.brand?.toLowerCase() === 'linkedin';
       return (
-        <Card className={cn(commonClasses, isLinkedIn ? "bg-white" : "bg-muted/30", "flex flex-col items-center justify-center p-6")}>
+        <Card className={cn(commonClasses, "p-6 flex flex-col justify-between")}>
           <QuickActions />
           <EditOverlay />
-          <div className="flex flex-col items-center gap-2">
-            <SocialIcon brand={tile.metadata?.brand} className={cn("w-12 h-12", isLinkedIn ? "text-[#0077b5]" : "text-foreground")} />
-            {tile.size !== '1x1' && <span className="text-sm font-bold opacity-60 tracking-tight">{tile.metadata?.brand}</span>}
-          </div>
-          <div className="absolute bottom-6 right-6 opacity-20 group-hover:opacity-100 transition-opacity">
-            <ExternalLink size={16} />
-          </div>
-        </Card>
-      );
-
-    case 'luma':
-      return (
-        <Card className={cn(commonClasses, "bg-luma text-white p-8 flex flex-col items-center justify-center")}>
-          <QuickActions />
-          <EditOverlay />
-          <h3 className="text-4xl font-black italic tracking-tighter">luma</h3>
-          <div className="absolute top-4 right-4">
-            <Disc className="w-5 h-5 animate-spin-slow" />
+          <div className="space-y-4">
+            <div className="flex justify-between items-start">
+              <SocialIcon brand={tile.metadata?.brand} className={cn("w-10 h-10 p-2 rounded-xl bg-sky-50", tile.metadata?.brand?.toLowerCase() === 'linkedin' ? 'text-[#0077b5]' : 'text-[#1DA1F2]')} />
+              {tile.metadata?.buttonText && (
+                <Button size="sm" className="rounded-full bg-sky-500 hover:bg-sky-600 text-white text-[10px] h-7 px-4">
+                  {tile.metadata.buttonText}
+                </Button>
+              )}
+            </div>
+            <div className="space-y-1">
+              <h4 className="text-xs font-bold leading-tight">{tile.title}</h4>
+              <p className="text-[10px] text-muted-foreground font-medium">{tile.metadata?.username || tile.metadata?.linkText}</p>
+            </div>
           </div>
         </Card>
       );
 
-    case 'discord':
+    case 'project':
       return (
-        <Card className={cn(commonClasses, "bg-[#5865F2] text-white p-6 flex flex-col items-center justify-center")}>
+        <Card className={cn(commonClasses, "p-6 space-y-4")}>
           <QuickActions />
           <EditOverlay />
-          <div className="flex items-center gap-3">
-            <MessageCircle className="w-10 h-10 fill-white" />
-            <span className="text-2xl font-bold font-headline">Discord</span>
+          <div className="flex justify-between items-start">
+            <div className="flex gap-3 items-center">
+              <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center">
+                 <svg viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5"><path d="M19 28.5C19 23.2533 14.7467 19 9.5 19C4.2533 19 0 23.2533 0 28.5C0 33.7467 4.2533 38 9.5 38H19V28.5Z" fill="#0ACF83"/><path d="M0 9.5C0 4.2533 4.2533 0 9.5 0H19V19H9.5C4.2533 19 0 14.7467 0 9.5Z" fill="#A259FF"/><path d="M19 0H28.5C33.7467 0 38 4.2533 38 9.5C38 14.7467 33.7467 19 28.5 19H19V0Z" fill="#F24E1E"/><path d="M38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5Z" fill="#FF7262"/><path d="M19 38H28.5C33.7467 38 38 42.2533 38 47.5C38 52.7467 33.7467 57 28.5 57C23.2533 57 19 52.7467 19 47.5V38Z" fill="#1ABCFE"/></svg>
+              </div>
+              <div className="space-y-0.5">
+                <h4 className="text-sm font-bold">{tile.title}</h4>
+                <p className="text-[10px] text-muted-foreground">{tile.metadata?.username}</p>
+              </div>
+            </div>
+            {tile.metadata?.buttonText && (
+              <Button size="sm" variant="outline" className="rounded-full text-[10px] h-7 px-4 border-sky-100 text-sky-500">
+                {tile.metadata.buttonText}
+              </Button>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {tile.metadata?.previews?.map((src, idx) => (
+              <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden bg-zinc-50 border border-black/5">
+                <Image src={src} alt="Preview" fill className="object-cover" />
+              </div>
+            ))}
           </div>
         </Card>
       );
 
-    case 'whatsapp':
-      return (
-        <Card className={cn(commonClasses, "bg-[#25D366] text-white p-6 flex flex-col items-center justify-center")}>
-          <QuickActions />
-          <EditOverlay />
-          <MessageCircle className="w-16 h-16 fill-white" />
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/20 backdrop-blur-md px-4 py-1.5 rounded-full whitespace-nowrap">
-            <span className="text-[10px] font-bold uppercase tracking-wider">WhatsApp Community</span>
-          </div>
-        </Card>
-      );
-
-    case 'instagram':
-      return (
-        <Card className={cn(commonClasses, "bg-instagram text-white p-6 flex flex-col items-center justify-center")}>
-          <QuickActions />
-          <EditOverlay />
-          <Instagram className="w-14 h-14" />
-        </Card>
-      );
-
-    case 'image':
-    case 'video':
+    case 'map':
       return (
         <Card className={cn(commonClasses, "p-0")}>
           <QuickActions />
           <EditOverlay />
-          {renderContent()}
-          {(tile.title || tile.content) && (
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 text-white">
-              <h4 className="text-2xl font-black uppercase tracking-tighter leading-none mb-1">{tile.title}</h4>
-              <p className="text-xs font-medium opacity-80 uppercase tracking-widest">{tile.content}</p>
+          {tile.metadata?.imageUrl && (
+            <div className="absolute inset-0">
+              <Image src={tile.metadata.imageUrl} alt="Map" fill className="object-cover opacity-80" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className="w-4 h-4 bg-sky-500 rounded-full border-2 border-white shadow-lg animate-pulse" />
+              </div>
             </div>
           )}
-        </Card>
-      );
-
-    case 'github':
-      return (
-        <Card className={cn(commonClasses, "bg-black text-white p-8 flex flex-col justify-between")}>
-          <QuickActions />
-          <EditOverlay />
-          <div className="flex justify-between items-start">
-            <Github className="w-10 h-10" />
-            <div className="flex flex-col items-end">
-              <span className="text-sm font-bold opacity-60">GitHub</span>
+          <div className="absolute bottom-6 left-6 right-6">
+            <div className="bg-white/90 backdrop-blur-md p-3 rounded-2xl border border-black/5 shadow-sm">
+              <p className="text-[10px] font-bold leading-tight">{tile.title}</p>
             </div>
           </div>
-          <div className="mt-auto bg-white/20 px-4 py-2 rounded-2xl backdrop-blur-md text-center">
-            <span className="text-sm font-bold">@{tile.metadata?.username || 'user'}</span>
-          </div>
         </Card>
       );
 
-    case 'youtube':
+    case 'email':
       return (
-        <Card className={cn(commonClasses, "bg-white flex flex-col items-center justify-center p-6")}>
+        <Card className={cn(commonClasses, "bg-[#E5C4FB] border-none p-8 flex flex-col justify-end group/email")}>
           <QuickActions />
           <EditOverlay />
-          <div className="flex items-center gap-3">
-            <Youtube className="w-10 h-10 text-red-600 fill-red-600" />
-            <span className="text-2xl font-bold font-headline text-black">YouTube</span>
+          <div className="absolute top-6 right-6 opacity-40 group-hover/email:opacity-100 transition-opacity">
+            <div className="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center">
+              <ArrowUpRight size={14} className="text-black/60" />
+            </div>
+          </div>
+          <p className="text-lg font-medium text-black/80">{tile.content}</p>
+        </Card>
+      );
+
+    case 'text':
+      const isBlack = tile.metadata?.accentColor === '#000000';
+      return (
+        <Card className={cn(commonClasses, isBlack ? "bg-black text-white" : "bg-white text-black", "p-8 space-y-4")}>
+          <QuickActions />
+          <EditOverlay />
+          <p className="text-lg font-bold leading-tight">{tile.content}</p>
+        </Card>
+      );
+
+    case 'image':
+      return (
+        <Card className={cn(commonClasses, "p-0 flex flex-col")}>
+          <QuickActions />
+          <EditOverlay />
+          <div className="p-6 pb-2 space-y-1">
+             <div className="w-8 h-8 bg-zinc-100 rounded-lg flex items-center justify-center mb-2">
+                <SocialIcon brand="adplist" className="w-4 h-4" />
+             </div>
+             <h4 className="text-xs font-bold leading-tight max-w-[150px]">{tile.title}</h4>
+             <p className="text-[10px] text-muted-foreground">{tile.metadata?.linkText}</p>
+          </div>
+          <div className="flex-1 relative m-4 mt-2 rounded-2xl overflow-hidden bg-zinc-100">
+            {tile.metadata?.imageUrl && <Image src={tile.metadata.imageUrl} alt="Visual" fill className="object-cover" />}
           </div>
         </Card>
       );
@@ -242,8 +211,8 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit 
           <QuickActions />
           <EditOverlay />
           <div className="space-y-2">
-            <h4 className="font-black uppercase tracking-tighter text-xl">{tile.title || 'New Tile'}</h4>
-            <p className="text-sm font-medium text-muted-foreground leading-snug">{tile.content}</p>
+            <h4 className="font-bold text-sm leading-tight">{tile.title || 'New Tile'}</h4>
+            <p className="text-[10px] font-medium text-muted-foreground leading-snug">{tile.content}</p>
           </div>
         </Card>
       );

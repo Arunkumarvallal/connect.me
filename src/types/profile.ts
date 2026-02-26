@@ -1,7 +1,7 @@
 
 export type TileSize = '1x1' | '2x1' | '1x2' | '2x2' | '3x1';
 
-export type TileType = 'link' | 'social' | 'image' | 'video' | 'text' | 'spotify' | 'github' | 'youtube' | 'bio' | 'discord' | 'luma' | 'instagram' | 'whatsapp';
+export type TileType = 'link' | 'social' | 'image' | 'video' | 'text' | 'spotify' | 'github' | 'youtube' | 'bio' | 'discord' | 'luma' | 'instagram' | 'whatsapp' | 'map' | 'email' | 'project';
 
 export interface Tile {
   id: string;
@@ -19,6 +19,10 @@ export interface Tile {
     accentColor?: string;
     label?: string;
     isGif?: boolean;
+    location?: string;
+    previews?: string[];
+    buttonText?: string;
+    linkText?: string;
   };
 }
 
