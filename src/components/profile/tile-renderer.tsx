@@ -1,5 +1,7 @@
 
-import React from 'react';
+"use client"
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Tile } from '@/types/profile';
 import { cn } from '@/lib/utils';
@@ -24,6 +26,12 @@ const SocialIcon = ({ brand, className }: { brand?: string, className?: string }
 };
 
 export function TileRenderer({ tile, isDashboard }: TileRendererProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const sizeClass = `tile-${tile.size}`;
 
   const commonClasses = cn(
@@ -94,13 +102,17 @@ export function TileRenderer({ tile, isDashboard }: TileRendererProps) {
             <p className="text-sm opacity-60">{tile.metadata?.description}</p>
           </div>
           <div className="flex gap-1 mt-2">
-            {[...Array(15)].map((_, i) => (
-              <div 
-                key={i} 
-                className="w-2 h-2 rounded-sm" 
-                style={{ backgroundColor: `rgba(45, 186, 78, ${0.2 + Math.random() * 0.8})` }} 
-              />
-            ))}
+            {[...Array(15)].map((_, i) => {
+              // Deterministic values for SSR, random for client to avoid hydration mismatch
+              const opacity = mounted ? (0.2 + Math.random() * 0.8) : (0.2 + (i * 0.05) % 0.8);
+              return (
+                <div 
+                  key={i} 
+                  className="w-2 h-2 rounded-sm" 
+                  style={{ backgroundColor: `rgba(45, 186, 78, ${opacity})` }} 
+                />
+              );
+            })}
           </div>
         </Card>
       );
