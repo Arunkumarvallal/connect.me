@@ -27,7 +27,8 @@ import {
   Image as ImageIcon,
   Type,
   Disc,
-  Link as LinkIcon
+  Link as LinkIcon,
+  Video
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -39,6 +40,7 @@ export default function Dashboard() {
   const [profile, setProfile] = useState(mockProfile);
   const [view, setView] = useState<'desktop' | 'mobile'>('desktop');
   const [editingTile, setEditingTile] = useState<Tile | null>(null);
+  const [quickEditMode, setQuickEditMode] = useState<'title' | 'image' | 'video' | null>(null);
 
   const removeTile = (id: string) => {
     setProfile({
@@ -52,7 +54,7 @@ export default function Dashboard() {
       id: Math.random().toString(36).substr(2, 9),
       type,
       size: '1x1',
-      title: type === 'image' ? 'New Banner' : undefined,
+      title: type === 'image' ? 'New Visual' : undefined,
       metadata: { ...metadata }
     };
     setProfile({ ...profile, tiles: [...profile.tiles, newTile] });
@@ -64,6 +66,12 @@ export default function Dashboard() {
       tiles: profile.tiles.map(t => t.id === updated.id ? updated : t)
     });
     setEditingTile(null);
+    setQuickEditMode(null);
+  };
+
+  const handleQuickEdit = (tile: Tile, mode: 'title' | 'image' | 'video') => {
+    setEditingTile(tile);
+    setQuickEditMode(mode);
   };
 
   return (
@@ -150,6 +158,7 @@ export default function Dashboard() {
                   isDashboard 
                   onRemove={removeTile}
                   onEdit={setEditingTile}
+                  onQuickEdit={handleQuickEdit}
                 />
               ))}
             </div>
@@ -172,62 +181,99 @@ export default function Dashboard() {
             <div className="w-12 h-12 bg-luma rounded-2xl flex items-center justify-center text-white shadow-lg"><Disc size={20} /></div>
             <span className="text-[10px] font-bold">Luma</span>
           </button>
-          <button onClick={() => addTile('instagram')} className="dock-item" title="Add Instagram">
-            <div className="w-12 h-12 bg-instagram rounded-2xl flex items-center justify-center text-white shadow-lg"><Instagram size={20} /></div>
-            <span className="text-[10px] font-bold">Insta</span>
-          </button>
-          <button onClick={() => addTile('whatsapp')} className="dock-item" title="Add WhatsApp">
-            <div className="w-12 h-12 bg-[#25D366] rounded-2xl flex items-center justify-center text-white shadow-lg"><MessageCircle size={20} /></div>
-            <span className="text-[10px] font-bold">WA</span>
-          </button>
-          <div className="w-[1px] h-8 bg-black/10 mx-2" />
-          <button onClick={() => addTile('image')} className="dock-item" title="Add Banner">
+          <button onClick={() => addTile('image')} className="dock-item" title="Add Media">
             <div className="w-12 h-12 bg-zinc-100 rounded-2xl flex items-center justify-center text-zinc-500 border border-black/5 shadow-sm hover:bg-zinc-200"><ImageIcon size={20} /></div>
-            <span className="text-[10px] font-bold">Banner</span>
+            <span className="text-[10px] font-bold">Media</span>
+          </button>
+          <button onClick={() => addTile('text')} className="dock-item" title="Add Text">
+            <div className="w-12 h-12 bg-zinc-100 rounded-2xl flex items-center justify-center text-zinc-500 border border-black/5 shadow-sm hover:bg-zinc-200"><Type size={20} /></div>
+            <span className="text-[10px] font-bold">Text</span>
+          </button>
+          <button onClick={() => addTile('video')} className="dock-item" title="Add Video">
+            <div className="w-12 h-12 bg-zinc-100 rounded-2xl flex items-center justify-center text-zinc-500 border border-black/5 shadow-sm hover:bg-zinc-200"><Video size={20} /></div>
+            <span className="text-[10px] font-bold">Video</span>
           </button>
         </div>
       </div>
 
       {/* Edit Dialog */}
       {editingTile && (
-        <Dialog open={!!editingTile} onOpenChange={() => setEditingTile(null)}>
+        <Dialog open={!!editingTile} onOpenChange={() => { setEditingTile(null); setQuickEditMode(null); }}>
           <DialogContent className="rounded-[2.5rem]">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-black uppercase tracking-tighter">Edit Tile</DialogTitle>
+              <DialogTitle className="text-2xl font-black uppercase tracking-tighter">
+                {quickEditMode ? `Quick Edit: ${quickEditMode}` : 'Edit Tile'}
+              </DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label>Title / Banner Text</Label>
-                <Input 
-                  value={editingTile.title || ''} 
-                  onChange={(e) => setEditingTile({...editingTile, title: e.target.value})}
-                  className="rounded-xl"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Content / Description</Label>
-                <Textarea 
-                  value={editingTile.content || ''} 
-                  onChange={(e) => setEditingTile({...editingTile, content: e.target.value})}
-                  className="rounded-xl"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Size</Label>
-                <div className="grid grid-cols-4 gap-2">
-                  {(['1x1', '2x1', '1x2', '2x2', '3x1'] as TileSize[]).map((s) => (
-                    <Button 
-                      key={s} 
-                      size="sm" 
-                      variant={editingTile.size === s ? 'default' : 'outline'}
-                      onClick={() => setEditingTile({...editingTile, size: s})}
-                      className="rounded-lg text-[10px]"
-                    >
-                      {s}
-                    </Button>
-                  ))}
+              {(!quickEditMode || quickEditMode === 'title') && (
+                <div className="space-y-2">
+                  <Label>Title / Heading</Label>
+                  <Input 
+                    value={editingTile.title || ''} 
+                    onChange={(e) => setEditingTile({...editingTile, title: e.target.value})}
+                    className="rounded-xl"
+                    placeholder="Enter heading..."
+                  />
                 </div>
-              </div>
+              )}
+              {(!quickEditMode) && (
+                <div className="space-y-2">
+                  <Label>Content / Description</Label>
+                  <Textarea 
+                    value={editingTile.content || ''} 
+                    onChange={(e) => setEditingTile({...editingTile, content: e.target.value})}
+                    className="rounded-xl"
+                    placeholder="Enter description..."
+                  />
+                </div>
+              )}
+              {(!quickEditMode || quickEditMode === 'image') && (
+                <div className="space-y-2">
+                  <Label>Image URL / GIF Link</Label>
+                  <Input 
+                    value={editingTile.metadata?.imageUrl || ''} 
+                    onChange={(e) => setEditingTile({
+                      ...editingTile, 
+                      metadata: { ...editingTile.metadata, imageUrl: e.target.value }
+                    })}
+                    className="rounded-xl"
+                    placeholder="https://..."
+                  />
+                </div>
+              )}
+              {(!quickEditMode || quickEditMode === 'video') && (
+                <div className="space-y-2">
+                  <Label>Video URL (Direct link to .mp4)</Label>
+                  <Input 
+                    value={editingTile.metadata?.videoUrl || ''} 
+                    onChange={(e) => setEditingTile({
+                      ...editingTile, 
+                      metadata: { ...editingTile.metadata, videoUrl: e.target.value }
+                    })}
+                    className="rounded-xl"
+                    placeholder="https://..."
+                  />
+                </div>
+              )}
+              {!quickEditMode && (
+                <div className="space-y-2">
+                  <Label>Size</Label>
+                  <div className="grid grid-cols-5 gap-2">
+                    {(['1x1', '2x1', '1x2', '2x2', '3x1'] as TileSize[]).map((s) => (
+                      <Button 
+                        key={s} 
+                        size="sm" 
+                        variant={editingTile.size === s ? 'default' : 'outline'}
+                        onClick={() => setEditingTile({...editingTile, size: s})}
+                        className="rounded-lg text-[10px]"
+                      >
+                        {s}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
               <Button className="w-full rounded-full h-12 mt-4" onClick={() => updateTile(editingTile)}>Save Changes</Button>
             </div>
           </DialogContent>
