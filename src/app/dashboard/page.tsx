@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -139,13 +138,13 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="w-full space-y-6">
+            <div className="w-full space-y-8">
               {/* Massive Name */}
               <div className="relative group/name w-full">
                 <Input 
                   value={profile.displayName} 
                   onChange={(e) => setProfile({...profile, displayName: e.target.value})}
-                  className="text-7xl font-black font-headline tracking-tighter uppercase dark:text-white border-none shadow-none focus-visible:ring-0 px-0 h-auto bg-transparent w-full transition-colors group-hover/name:bg-black/5 dark:group-hover/name:bg-white/5 rounded-lg leading-none"
+                  className="text-8xl font-black font-headline tracking-tighter uppercase dark:text-white border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 h-auto bg-transparent w-full transition-colors group-hover/name:bg-black/5 dark:group-hover/name:bg-white/5 rounded-none leading-none focus:outline-none"
                   placeholder=""
                 />
               </div>
@@ -156,7 +155,7 @@ export default function Dashboard() {
                   value={profile.bio} 
                   onChange={handleBioChange}
                   placeholder=""
-                  className="text-2xl leading-relaxed font-medium dark:text-zinc-300 border-none shadow-none focus-visible:ring-0 px-0 resize-none bg-transparent w-full h-auto overflow-hidden transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded-lg p-2"
+                  className="text-3xl leading-relaxed font-medium dark:text-zinc-300 border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 resize-none bg-transparent w-full min-h-[300px] overflow-hidden transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded-none p-2 focus:outline-none"
                   style={{ height: 'auto' }}
                   onInput={(e) => {
                     const target = e.target as HTMLTextAreaElement;
