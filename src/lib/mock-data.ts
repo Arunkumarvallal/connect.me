@@ -5,68 +5,75 @@ import { PlaceHolderImages } from "./placeholder-images";
 const avatar = PlaceHolderImages.find(img => img.id === 'profile-avatar')?.imageUrl;
 const work = PlaceHolderImages.find(img => img.id === 'tile-image-1')?.imageUrl;
 const art = PlaceHolderImages.find(img => img.id === 'tile-image-2')?.imageUrl;
-const album = PlaceHolderImages.find(img => img.id === 'spotify-album')?.imageUrl;
 
 export const mockProfile: UserProfile = {
-  username: "johndoe",
-  displayName: "John Doe",
-  avatarUrl: avatar || "https://picsum.photos/seed/1/400/400",
-  bio: "Product Designer & Frontend Developer. Building tools for the modern web.",
+  username: "chennaireact",
+  displayName: "CHENNAI REACT",
+  avatarUrl: avatar || "https://picsum.photos/seed/chennai/400/400",
+  bio: "We are a community of enthusiasts who are passionate about all things React. This community provides a platform to meetup, connect, and deepen our knowledge on the latest trends and developments in Reactjs.",
   theme: {
     mode: 'light',
     font: 'headline',
-    background: 'mesh'
+    background: 'white'
   },
   tiles: [
     {
-      id: "bio-1",
-      type: "bio",
+      id: "li-1",
+      type: "social",
       size: "2x1",
+      metadata: { brand: "LinkedIn" }
     },
     {
-      id: "x-1",
+      id: "luma-1",
+      type: "luma",
+      size: "1x1"
+    },
+    {
+      id: "wa-1",
+      type: "whatsapp",
+      size: "1x1"
+    },
+    {
+      id: "insta-1",
+      type: "instagram",
+      size: "1x1"
+    },
+    {
+      id: "discord-1",
+      type: "discord",
+      size: "2x1"
+    },
+    {
+      id: "tw-1",
       type: "social",
       size: "1x1",
-      url: "https://x.com/johndoe",
-      metadata: { brand: "X", username: "@johndoe" }
-    },
-    {
-      id: "spotify-1",
-      type: "spotify",
-      size: "2x2",
-      metadata: { imageUrl: album, description: "Currently Playing", title: "Midnight City - M83" }
-    },
-    {
-      id: "img-1",
-      type: "image",
-      size: "1x2",
-      metadata: { imageUrl: work }
+      metadata: { brand: "Twitter" }
     },
     {
       id: "gh-1",
       type: "github",
-      size: "2x1",
-      url: "https://github.com/johndoe",
-      metadata: { username: "johndoe", description: "Open Source Contributions" }
-    },
-    {
-      id: "linkedin-1",
-      type: "social",
       size: "1x1",
-      url: "https://linkedin.com/in/johndoe",
-      metadata: { brand: "LinkedIn" }
-    },
-    {
-      id: "art-1",
-      type: "image",
-      size: "1x1",
-      metadata: { imageUrl: art }
+      metadata: { username: "chennaireact" }
     },
     {
       id: "yt-1",
       type: "youtube",
-      size: "2x1",
-      metadata: { username: "John's Lab", description: "Design Tutorials" }
+      size: "1x1"
+    },
+    {
+      id: "banner-1",
+      type: "image",
+      size: "3x1",
+      title: "CALL FOR SPEAKERS",
+      metadata: { imageUrl: work }
+    },
+    {
+      id: "banner-2",
+      type: "image",
+      size: "3x1",
+      title: "CALL FOR SPONSORS",
+      content: "Email us: chennaireactjs@gmail.com",
+      metadata: { imageUrl: art }
     }
   ]
 };

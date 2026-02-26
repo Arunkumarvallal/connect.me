@@ -7,8 +7,6 @@ import { mockProfile } from '@/lib/mock-data';
 import { TileRenderer } from '@/components/profile/tile-renderer';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Share2, Plus } from 'lucide-react';
 
 export default function PublicProfile({ params }: { params: Promise<{ username: string }> }) {
   const [resolvedParams, setResolvedParams] = useState<{ username: string } | null>(null);
@@ -19,60 +17,46 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
 
   if (!resolvedParams) return null;
 
-  const profile = mockProfile; // In a real app, fetch by username
-
-  const fontClass = cn({
-    'font-body': profile.theme.font === 'body',
-    'font-headline': profile.theme.font === 'headline',
-    'font-serif': profile.theme.font === 'serif',
-    'font-mono': profile.theme.font === 'mono',
-  });
-
-  const bgClass = cn({
-    'bg-white': profile.theme.background === 'white',
-    'bg-gradient-mesh': profile.theme.background === 'mesh',
-    'bg-gradient-to-br from-blue-500 to-purple-600': profile.theme.background === 'gradient-blue',
-  });
+  const profile = mockProfile;
 
   return (
-    <div className={cn("min-h-screen py-12 px-6 flex flex-col items-center", bgClass, fontClass)}>
-      <div className="max-w-4xl w-full space-y-8">
-        {/* Header/Bio Section */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 bg-card/60 backdrop-blur-xl p-8 rounded-[2.5rem] shadow-xl border border-white/20">
-          <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-white shadow-2xl">
-            <AvatarImage src={profile.avatarUrl} alt={profile.displayName} />
-            <AvatarFallback>{profile.displayName.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div className="flex-1 space-y-4 text-center md:text-left">
-            <div className="space-y-1">
-              <h1 className="text-4xl font-bold font-headline">{profile.displayName}</h1>
-              <p className="text-muted-foreground text-lg">@{profile.username}</p>
+    <div className="min-h-screen bg-white font-body selection:bg-primary/10">
+      <div className="max-w-[1400px] mx-auto px-6 py-12 md:py-24 flex flex-col md:flex-row gap-16">
+        {/* Left Side: Bio & Profile */}
+        <div className="md:w-[400px] md:sticky md:top-24 h-fit space-y-8 flex flex-col items-center text-center">
+          <div className="relative group">
+            <div className="absolute -inset-4 bg-primary/5 rounded-full scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500" />
+            <Avatar className="w-56 h-56 border-8 border-white shadow-2xl relative">
+              <AvatarImage src={profile.avatarUrl} alt={profile.displayName} />
+              <AvatarFallback>{profile.displayName.charAt(0)}</AvatarFallback>
+            </Avatar>
+            {/* Floating badges like in the image */}
+            <div className="absolute -top-4 -right-4 bg-white shadow-lg rounded-2xl px-4 py-2 text-sm font-bold border border-black/5 flex items-center gap-2">
+              👋 Welcome!
             </div>
-            <p className="text-lg leading-relaxed max-w-xl">{profile.bio}</p>
-            <div className="flex items-center justify-center md:justify-start gap-3">
-              <Button size="sm" className="rounded-full px-6 shadow-lg">
-                Follow
-              </Button>
-              <Button size="icon" variant="outline" className="rounded-full shadow-sm bg-white/50 backdrop-blur">
-                <Share2 size={18} />
-              </Button>
+            <div className="absolute top-12 -left-8 bg-white shadow-lg rounded-2xl px-4 py-2 text-xs font-bold border border-black/5 flex items-center gap-2">
+              📍 Based in Chennai
             </div>
+          </div>
+          
+          <div className="space-y-4">
+            <h1 className="text-5xl font-black font-headline tracking-tighter uppercase">{profile.displayName}</h1>
+            <p className="text-muted-foreground text-lg max-w-sm leading-relaxed font-medium">
+              {profile.bio}
+            </p>
           </div>
         </div>
 
-        {/* Bento Grid */}
-        <div className="bento-grid">
-          {profile.tiles.filter(t => t.type !== 'bio').map((tile) => (
-            <TileRenderer key={tile.id} tile={tile} />
-          ))}
-        </div>
-
-        {/* CTA Footer */}
-        <div className="flex flex-col items-center pt-12 space-y-4">
-          <p className="text-sm font-medium text-muted-foreground">Create your own Bento profile</p>
-          <Button variant="outline" className="rounded-full bg-white/50 backdrop-blur px-8 h-12 shadow-sm border-white/40">
-            <Plus className="mr-2 h-4 w-4" /> Connect.me
-          </Button>
+        {/* Right Side: Bento Grid */}
+        <div className="flex-1 space-y-12">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-black font-headline">Socials</h2>
+          </div>
+          <div className="bento-grid">
+            {profile.tiles.map((tile) => (
+              <TileRenderer key={tile.id} tile={tile} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
