@@ -1,0 +1,29 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "profile-avatar",
+      "description": "Professional headshot for profile",
+      "imageUrl": "https://picsum.photos/seed/connectme-avatar/400/400",
+      "imageHint": "professional portrait"
+    },
+    {
+      "id": "tile-image-1",
+      "description": "Creative workspace image",
+      "imageUrl": "https://picsum.photos/seed/connectme-work/600/400",
+      "imageHint": "minimal workspace"
+    },
+    {
+      "id": "tile-image-2",
+      "description": "Abstract design art",
+      "imageUrl": "https://picsum.photos/seed/connectme-art/600/600",
+      "imageHint": "abstract art"
+    },
+    {
+      "id": "spotify-album",
+      "description": "Spotify album cover placeholder",
+      "imageUrl": "https://picsum.photos/seed/spotify-now/300/300",
+      "imageHint": "album cover"
+    }
+  ]
+}
