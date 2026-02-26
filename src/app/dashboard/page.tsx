@@ -2,7 +2,6 @@
 "use client"
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { mockProfile } from '@/lib/mock-data';
 import { TileRenderer } from '@/components/profile/tile-renderer';
 import { Button } from '@/components/ui/button';
@@ -14,8 +13,6 @@ import {
   Palette, 
   Layout, 
   Eye, 
-  GripVertical, 
-  Trash2, 
   Monitor,
   Smartphone,
   Github,
@@ -28,11 +25,14 @@ import {
   Type,
   Disc,
   Link as LinkIcon,
-  Video
+  Video,
+  Share2,
+  Quote,
+  LayoutGrid
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tile, TileType, TileSize } from '@/types/profile';
 
@@ -110,7 +110,7 @@ export default function Dashboard() {
       <div className="flex-1 flex flex-col md:flex-row max-w-[1400px] mx-auto w-full p-8 gap-12 mb-32">
         {/* Left: Bio Editor */}
         <aside className="md:w-[400px] space-y-8">
-          <div className="bg-white rounded-[2.5rem] border p-8 shadow-sm space-y-6">
+          <div className="bg-white rounded-[2.5rem] border p-8 shadow-sm space-y-6 sticky top-28">
             <div className="flex flex-col items-center space-y-4 pb-4">
               <Avatar className="w-32 h-32 border-4 border-white shadow-xl">
                 <AvatarImage src={profile.avatarUrl} />
@@ -135,6 +135,9 @@ export default function Dashboard() {
                   onChange={(e) => setProfile({...profile, bio: e.target.value})}
                   className="rounded-2xl min-h-[120px] leading-relaxed font-medium"
                 />
+                <p className="text-[10px] font-bold text-muted-foreground/40 text-right uppercase tracking-widest">
+                  {profile.bio.length}/280 characters
+                </p>
               </div>
             </div>
           </div>
@@ -166,33 +169,25 @@ export default function Dashboard() {
         </main>
       </div>
 
-      {/* Apple-style Dock */}
+      {/* Floating Action Bar (Apple-style Dock for Adding) */}
       <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
-        <div className="bg-white/80 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-[2.5rem] p-4 flex items-center gap-4">
-          <button onClick={() => addTile('social', { brand: 'LinkedIn' })} className="dock-item" title="Add LinkedIn">
-            <div className="w-12 h-12 bg-[#0077b5] rounded-2xl flex items-center justify-center text-white shadow-lg"><Linkedin size={20} /></div>
-            <span className="text-[10px] font-bold">LinkedIn</span>
-          </button>
-          <button onClick={() => addTile('discord')} className="dock-item" title="Add Discord">
-            <div className="w-12 h-12 bg-[#5865F2] rounded-2xl flex items-center justify-center text-white shadow-lg"><MessageCircle size={20} /></div>
-            <span className="text-[10px] font-bold">Discord</span>
-          </button>
-          <button onClick={() => addTile('luma')} className="dock-item" title="Add Luma">
-            <div className="w-12 h-12 bg-luma rounded-2xl flex items-center justify-center text-white shadow-lg"><Disc size={20} /></div>
-            <span className="text-[10px] font-bold">Luma</span>
-          </button>
-          <button onClick={() => addTile('image')} className="dock-item" title="Add Media">
-            <div className="w-12 h-12 bg-zinc-100 rounded-2xl flex items-center justify-center text-zinc-500 border border-black/5 shadow-sm hover:bg-zinc-200"><ImageIcon size={20} /></div>
-            <span className="text-[10px] font-bold">Media</span>
-          </button>
-          <button onClick={() => addTile('text')} className="dock-item" title="Add Text">
-            <div className="w-12 h-12 bg-zinc-100 rounded-2xl flex items-center justify-center text-zinc-500 border border-black/5 shadow-sm hover:bg-zinc-200"><Type size={20} /></div>
-            <span className="text-[10px] font-bold">Text</span>
-          </button>
-          <button onClick={() => addTile('video')} className="dock-item" title="Add Video">
-            <div className="w-12 h-12 bg-zinc-100 rounded-2xl flex items-center justify-center text-zinc-500 border border-black/5 shadow-sm hover:bg-zinc-200"><Video size={20} /></div>
-            <span className="text-[10px] font-bold">Video</span>
-          </button>
+        <div className="bg-black text-white px-2 py-2 rounded-full flex items-center gap-1 shadow-2xl border border-white/10">
+           <button className="bg-[#4ADE80] text-black px-4 py-2 rounded-full text-[10px] font-bold flex items-center gap-2 hover:scale-105 transition-transform">
+             ADD NEW TILE
+           </button>
+           <div className="w-px h-6 bg-white/20 mx-1" />
+           <div className="flex items-center">
+             <button onClick={() => addTile('text')} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Text"><Type size={16} /></button>
+             <button onClick={() => addTile('image')} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Image"><ImageIcon size={16} /></button>
+             <button onClick={() => addTile('video')} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Video"><Video size={16} /></button>
+             <button onClick={() => addTile('social', { brand: 'LinkedIn' })} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add LinkedIn"><Linkedin size={16} /></button>
+             <button onClick={() => addTile('social', { brand: 'Twitter' })} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Twitter"><Twitter size={16} /></button>
+           </div>
+           <div className="w-px h-6 bg-white/20 mx-1" />
+           <div className="flex items-center gap-1">
+             <button onClick={() => addTile('map')} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Map"><LayoutGrid size={16} /></button>
+             <button onClick={() => addTile('email')} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Email"><div className="w-4 h-4 bg-white/20 rounded-sm" /></button>
+           </div>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { Tile } from '@/types/profile';
 import { cn } from '@/lib/utils';
@@ -12,7 +12,6 @@ import {
   Instagram, 
   Youtube, 
   ExternalLink, 
-  Disc, 
   MessageCircle, 
   Link as LinkIcon,
   Trash2,
@@ -20,9 +19,8 @@ import {
   Type,
   ImageIcon,
   Video,
-  MapPin,
-  Mail,
-  ArrowUpRight
+  ArrowUpRight,
+  Smile
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -44,6 +42,7 @@ const SocialIcon = ({ brand, className }: { brand?: string, className?: string }
     case 'youtube': return <Youtube className={className} />;
     case 'github': return <Github className={className} />;
     case 'whatsapp': return <MessageCircle className={className} />;
+    case 'adplist': return <Smile className={className} />;
     default: return <LinkIcon className={className} />;
   }
 };
@@ -90,6 +89,7 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit 
 
   switch (tile.type) {
     case 'social':
+      const isTwitter = tile.metadata?.brand?.toLowerCase() === 'twitter' || tile.metadata?.brand?.toLowerCase() === 'x';
       return (
         <Card className={cn(commonClasses, "p-6 flex flex-col justify-between")}>
           <QuickActions />
@@ -98,7 +98,7 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit 
             <div className="flex justify-between items-start">
               <SocialIcon brand={tile.metadata?.brand} className={cn("w-10 h-10 p-2 rounded-xl bg-sky-50", tile.metadata?.brand?.toLowerCase() === 'linkedin' ? 'text-[#0077b5]' : 'text-[#1DA1F2]')} />
               {tile.metadata?.buttonText && (
-                <Button size="sm" className="rounded-full bg-sky-500 hover:bg-sky-600 text-white text-[10px] h-7 px-4">
+                <Button size="sm" className={cn("rounded-full text-[10px] h-7 px-4", isTwitter ? "bg-sky-500 hover:bg-sky-600 text-white" : "variant-outline border-sky-100 text-sky-500 bg-white")}>
                   {tile.metadata.buttonText}
                 </Button>
               )}
@@ -127,7 +127,7 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit 
               </div>
             </div>
             {tile.metadata?.buttonText && (
-              <Button size="sm" variant="outline" className="rounded-full text-[10px] h-7 px-4 border-sky-100 text-sky-500">
+              <Button size="sm" variant="outline" className="rounded-full text-[10px] h-7 px-4 border-sky-100 text-sky-500 bg-sky-50/50">
                 {tile.metadata.buttonText}
               </Button>
             )}
@@ -156,7 +156,7 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit 
             </div>
           )}
           <div className="absolute bottom-6 left-6 right-6">
-            <div className="bg-white/90 backdrop-blur-md p-3 rounded-2xl border border-black/5 shadow-sm">
+            <div className="bg-white/90 backdrop-blur-md p-3 px-4 rounded-2xl border border-black/5 shadow-sm w-fit">
               <p className="text-[10px] font-bold leading-tight">{tile.title}</p>
             </div>
           </div>
@@ -180,7 +180,7 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit 
     case 'text':
       const isBlack = tile.metadata?.accentColor === '#000000';
       return (
-        <Card className={cn(commonClasses, isBlack ? "bg-black text-white" : "bg-white text-black", "p-8 space-y-4")}>
+        <Card className={cn(commonClasses, isBlack ? "bg-black text-white" : "bg-white text-black", "p-8 flex flex-col justify-center")}>
           <QuickActions />
           <EditOverlay />
           <p className="text-lg font-bold leading-tight">{tile.content}</p>
@@ -194,12 +194,12 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit 
           <EditOverlay />
           <div className="p-6 pb-2 space-y-1">
              <div className="w-8 h-8 bg-zinc-100 rounded-lg flex items-center justify-center mb-2">
-                <SocialIcon brand="adplist" className="w-4 h-4" />
+                <SocialIcon brand="adplist" className="w-4 h-4 text-black" />
              </div>
-             <h4 className="text-xs font-bold leading-tight max-w-[150px]">{tile.title}</h4>
+             <h4 className="text-xs font-bold leading-tight max-w-[200px]">{tile.title}</h4>
              <p className="text-[10px] text-muted-foreground">{tile.metadata?.linkText}</p>
           </div>
-          <div className="flex-1 relative m-4 mt-2 rounded-2xl overflow-hidden bg-zinc-100">
+          <div className="flex-1 relative m-4 mt-2 rounded-2xl overflow-hidden bg-zinc-100 min-h-[160px]">
             {tile.metadata?.imageUrl && <Image src={tile.metadata.imageUrl} alt="Visual" fill className="object-cover" />}
           </div>
         </Card>

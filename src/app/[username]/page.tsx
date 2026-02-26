@@ -2,13 +2,10 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { mockProfile } from '@/lib/mock-data';
 import { TileRenderer } from '@/components/profile/tile-renderer';
-import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Link2, Share2, Quote, LayoutGrid, Monitor, Github, Twitter, Linkedin } from 'lucide-react';
+import { Link2, Share2, Quote, LayoutGrid, Monitor, Github, Smartphone } from 'lucide-react';
 
 export default function PublicProfile({ params }: { params: Promise<{ username: string }> }) {
   const [resolvedParams, setResolvedParams] = useState<{ username: string } | null>(null);
@@ -48,7 +45,7 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
               </div>
             </div>
 
-            {/* Bottom mini icons from screenshot */}
+            {/* Bottom mini icons from reference */}
             <div className="flex items-center gap-6 pt-12 opacity-30">
               <button className="hover:opacity-100 transition-opacity"><LayoutGrid size={18} /></button>
               <button className="hover:opacity-100 transition-opacity"><Monitor size={18} /></button>
@@ -77,7 +74,7 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
         </div>
       </div>
 
-      {/* Floating Action Bar at the bottom */}
+      {/* Floating Action Bar at the bottom - Perfect match for reference */}
       <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
         <div className="bg-black text-white px-2 py-2 rounded-full flex items-center gap-1 shadow-2xl border border-white/10">
            <button className="bg-[#4ADE80] text-black px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 hover:scale-105 transition-transform">
@@ -89,12 +86,12 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
              <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Share2 size={16} /></button>
              <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Quote size={16} /></button>
              <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Monitor size={16} /></button>
-             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><div className="w-5 h-5 bg-white/10 rounded" /></button>
+             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><div className="w-5 h-5 bg-white/10 rounded-sm" /></button>
            </div>
            <div className="w-px h-6 bg-white/20 mx-1" />
            <div className="flex items-center gap-1">
              <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Monitor size={16} /></button>
-             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Monitor size={16} /></button>
+             <button className="p-2 hover:bg-white/10 rounded-full transition-colors"><Smartphone size={16} /></button>
            </div>
         </div>
       </div>
