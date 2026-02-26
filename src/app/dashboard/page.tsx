@@ -20,6 +20,7 @@ import {
   Smartphone,
   Github,
   Twitter,
+  Linkedin,
   Instagram,
   Youtube,
   MessageCircle,
@@ -46,13 +47,13 @@ export default function Dashboard() {
     });
   };
 
-  const addTile = (type: TileType) => {
+  const addTile = (type: TileType, metadata: any = {}) => {
     const newTile: Tile = {
       id: Math.random().toString(36).substr(2, 9),
       type,
       size: '1x1',
-      title: type === 'text' ? 'New Title' : undefined,
-      metadata: type === 'social' ? { brand: 'X' } : {}
+      title: type === 'image' ? 'New Banner' : undefined,
+      metadata: { ...metadata }
     };
     setProfile({ ...profile, tiles: [...profile.tiles, newTile] });
   };
@@ -105,7 +106,7 @@ export default function Dashboard() {
             <div className="flex flex-col items-center space-y-4 pb-4">
               <Avatar className="w-32 h-32 border-4 border-white shadow-xl">
                 <AvatarImage src={profile.avatarUrl} />
-                <AvatarFallback>CR</AvatarFallback>
+                <AvatarFallback>{profile.displayName?.charAt(0)}</AvatarFallback>
               </Avatar>
               <Button variant="outline" size="sm" className="rounded-full text-xs">Change Photo</Button>
             </div>
@@ -159,7 +160,7 @@ export default function Dashboard() {
       {/* Apple-style Dock */}
       <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
         <div className="bg-white/80 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-[2.5rem] p-4 flex items-center gap-4">
-          <button onClick={() => addTile('social')} className="dock-item" title="Add Link">
+          <button onClick={() => addTile('social', { brand: 'LinkedIn' })} className="dock-item" title="Add LinkedIn">
             <div className="w-12 h-12 bg-[#0077b5] rounded-2xl flex items-center justify-center text-white shadow-lg"><Linkedin size={20} /></div>
             <span className="text-[10px] font-bold">LinkedIn</span>
           </button>
