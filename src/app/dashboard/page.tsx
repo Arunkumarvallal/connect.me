@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -18,8 +19,7 @@ import {
   Video,
   Sun,
   Moon,
-  Camera,
-  Pencil
+  Camera
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -139,23 +139,23 @@ export default function Dashboard() {
             </div>
 
             <div className="w-full space-y-8">
-              {/* Massive Name */}
+              {/* Massive Name - Zero border, zero focus ring */}
               <div className="relative group/name w-full">
                 <Input 
                   value={profile.displayName} 
                   onChange={(e) => setProfile({...profile, displayName: e.target.value})}
-                  className="text-8xl font-black font-headline tracking-tighter uppercase dark:text-white border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 h-auto bg-transparent w-full transition-colors group-hover/name:bg-black/5 dark:group-hover/name:bg-white/5 rounded-none leading-none focus:outline-none"
+                  className="text-8xl font-black font-headline tracking-tighter uppercase dark:text-white border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 h-auto bg-transparent w-full transition-colors group-hover/name:bg-black/5 dark:group-hover/name:bg-white/5 rounded-none leading-none focus:outline-none focus:ring-0"
                   placeholder=""
                 />
               </div>
 
-              {/* Big Bio: No scroll, massive font */}
+              {/* Big Bio: No scroll, massive font, zero border */}
               <div className="space-y-4">
                  <Textarea 
                   value={profile.bio} 
                   onChange={handleBioChange}
                   placeholder=""
-                  className="text-3xl leading-relaxed font-medium dark:text-zinc-300 border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 resize-none bg-transparent w-full min-h-[300px] overflow-hidden transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded-none p-2 focus:outline-none"
+                  className="text-3xl leading-relaxed font-medium dark:text-zinc-300 border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 px-0 resize-none bg-transparent w-full min-h-[300px] overflow-hidden transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded-none p-2 focus:outline-none focus:ring-0"
                   style={{ height: 'auto' }}
                   onInput={(e) => {
                     const target = e.target as HTMLTextAreaElement;
