@@ -1,34 +1,26 @@
 
 "use client"
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { mockProfile } from '@/lib/mock-data';
 import { TileRenderer } from '@/components/profile/tile-renderer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { 
-  Plus, 
-  Settings, 
-  Palette, 
-  Layout, 
-  Eye, 
+  Settings2, 
+  Share2, 
+  Link2, 
+  ImageIcon, 
+  Quote, 
+  Type, 
+  CaseSensitive, 
+  Pencil, 
+  Smartphone, 
   Monitor,
-  Smartphone,
-  Github,
-  Twitter,
-  Linkedin,
-  Instagram,
-  Youtube,
-  MessageCircle,
-  Image as ImageIcon,
-  Type,
-  Disc,
-  Link as LinkIcon,
-  Video,
-  Share2,
-  Quote,
-  LayoutGrid
+  Trash2,
+  Edit2,
+  Plus
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -41,6 +33,9 @@ export default function Dashboard() {
   const [view, setView] = useState<'desktop' | 'mobile'>('desktop');
   const [editingTile, setEditingTile] = useState<Tile | null>(null);
   const [quickEditMode, setQuickEditMode] = useState<'title' | 'image' | 'video' | null>(null);
+  const [isRearranging, setIsRearranging] = useState(false);
+  const dragItem = useRef<number | null>(null);
+  const dragOverItem = useRef<number | null>(null);
 
   const removeTile = (id: string) => {
     setProfile({
@@ -74,49 +69,48 @@ export default function Dashboard() {
     setQuickEditMode(mode);
   };
 
+  // Drag and Drop Logic
+  const handleSort = () => {
+    const _tiles = [...profile.tiles];
+    if (dragItem.current !== null && dragOverItem.current !== null) {
+      const draggedItemContent = _tiles.splice(dragItem.current, 1)[0];
+      _tiles.splice(dragOverItem.current, 0, draggedItemContent);
+      dragItem.current = null;
+      dragOverItem.current = null;
+      setProfile({ ...profile, tiles: _tiles });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#FDFDFD] flex flex-col">
-      {/* Navbar */}
+      {/* Navbar (Simplified for this version) */}
       <header className="h-20 border-b bg-white/80 backdrop-blur-xl px-8 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <span className="font-black text-2xl font-headline tracking-tighter">Connect.me</span>
         </div>
         <div className="flex items-center gap-4">
-          <div className="hidden md:flex bg-muted/50 rounded-full p-1 border">
-            <Button 
-              variant={view === 'desktop' ? "secondary" : "ghost"} 
-              size="sm" 
-              className="rounded-full h-8 px-4"
-              onClick={() => setView('desktop')}
-            >
-              <Monitor size={14} className="mr-2" /> Desktop
-            </Button>
-            <Button 
-              variant={view === 'mobile' ? "secondary" : "ghost"} 
-              size="sm" 
-              className="rounded-full h-8 px-4"
-              onClick={() => setView('mobile')}
-            >
-              <Smartphone size={14} className="mr-2" /> Mobile
-            </Button>
-          </div>
           <Button variant="outline" size="sm" className="rounded-full px-6" asChild>
-            <a href={`/${profile.username}`} target="_blank"><Eye size={16} className="mr-2" /> Preview</a>
+            <a href={`/${profile.username}`} target="_blank">Preview Live</a>
           </Button>
           <Button size="sm" className="rounded-full px-8 shadow-lg shadow-primary/20">Publish</Button>
         </div>
       </header>
 
-      <div className="flex-1 flex flex-col md:flex-row max-w-[1400px] mx-auto w-full p-8 gap-12 mb-32">
+      <div className="flex-1 flex flex-col md:flex-row max-w-[1400px] mx-auto w-full p-8 gap-12 mb-40">
         {/* Left: Bio Editor */}
         <aside className="md:w-[400px] space-y-8">
           <div className="bg-white rounded-[2.5rem] border p-8 shadow-sm space-y-6 sticky top-28">
             <div className="flex flex-col items-center space-y-4 pb-4">
-              <Avatar className="w-32 h-32 border-4 border-white shadow-xl">
-                <AvatarImage src={profile.avatarUrl} />
-                <AvatarFallback>{profile.displayName?.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <Button variant="outline" size="sm" className="rounded-full text-xs">Change Photo</Button>
+              <div className="relative group cursor-pointer">
+                <Avatar className="w-32 h-32 border-4 border-white shadow-xl">
+                  <AvatarImage src={profile.avatarUrl} />
+                  <AvatarFallback>{profile.displayName?.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div className="absolute inset-0 bg-black/20 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Pencil size={20} className="text-white" />
+                </div>
+              </div>
+              <h3 className="text-xl font-black uppercase tracking-tighter">{profile.displayName}</h3>
             </div>
             
             <div className="space-y-4">
@@ -145,8 +139,13 @@ export default function Dashboard() {
 
         {/* Right: Grid Editor */}
         <main className="flex-1 space-y-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-black font-headline uppercase tracking-tighter">Your Grid</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-black font-headline uppercase tracking-tighter">
+              {isRearranging ? "Reordering Tiles..." : "Your Grid"}
+            </h2>
+            {isRearranging && (
+              <Button size="sm" variant="secondary" onClick={() => setIsRearranging(false)} className="rounded-full">Done</Button>
+            )}
           </div>
           
           <div className={cn(
@@ -154,40 +153,78 @@ export default function Dashboard() {
             view === 'mobile' ? "max-w-[375px] mx-auto scale-90 origin-top" : "w-full"
           )}>
             <div className="bento-grid">
-              {profile.tiles.map((tile) => (
-                <TileRenderer 
-                  key={tile.id} 
-                  tile={tile} 
-                  isDashboard 
-                  onRemove={removeTile}
-                  onEdit={setEditingTile}
-                  onQuickEdit={handleQuickEdit}
-                />
+              {profile.tiles.map((tile, index) => (
+                <div
+                  key={tile.id}
+                  draggable={isRearranging}
+                  onDragStart={(e) => (dragItem.current = index)}
+                  onDragEnter={(e) => (dragOverItem.current = index)}
+                  onDragEnd={handleSort}
+                  onDragOver={(e) => e.preventDefault()}
+                  className={cn(
+                    "transition-transform",
+                    isRearranging && "cursor-move ring-2 ring-primary ring-offset-4 animate-pulse"
+                  )}
+                >
+                  <TileRenderer 
+                    tile={tile} 
+                    isDashboard 
+                    onRemove={removeTile}
+                    onEdit={setEditingTile}
+                    onQuickEdit={handleQuickEdit}
+                  />
+                </div>
               ))}
             </div>
           </div>
         </main>
       </div>
 
-      {/* Floating Action Bar (Apple-style Dock for Adding) */}
-      <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
-        <div className="bg-black text-white px-2 py-2 rounded-full flex items-center gap-1 shadow-2xl border border-white/10">
-           <button className="bg-[#4ADE80] text-black px-4 py-2 rounded-full text-[10px] font-bold flex items-center gap-2 hover:scale-105 transition-transform">
-             ADD NEW TILE
-           </button>
-           <div className="w-px h-6 bg-white/20 mx-1" />
-           <div className="flex items-center">
-             <button onClick={() => addTile('text')} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Text"><Type size={16} /></button>
-             <button onClick={() => addTile('image')} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Image"><ImageIcon size={16} /></button>
-             <button onClick={() => addTile('video')} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Video"><Video size={16} /></button>
-             <button onClick={() => addTile('social', { brand: 'LinkedIn' })} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add LinkedIn"><Linkedin size={16} /></button>
-             <button onClick={() => addTile('social', { brand: 'Twitter' })} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Twitter"><Twitter size={16} /></button>
-           </div>
-           <div className="w-px h-6 bg-white/20 mx-1" />
-           <div className="flex items-center gap-1">
-             <button onClick={() => addTile('map')} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Map"><LayoutGrid size={16} /></button>
-             <button onClick={() => addTile('email')} className="p-2 hover:bg-white/10 rounded-full transition-colors" title="Add Email"><div className="w-4 h-4 bg-white/20 rounded-sm" /></button>
-           </div>
+      {/* Floating UI Container */}
+      <div className="fixed bottom-10 left-0 right-0 z-50 px-8 flex items-center justify-center">
+        <div className="max-w-fit flex items-center gap-4">
+          {/* Settings Button (Far Left) */}
+          <button className="w-14 h-14 bg-white border border-black/5 shadow-xl rounded-full flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group">
+            <Settings2 size={24} className="text-black/60 group-hover:text-black" />
+          </button>
+
+          {/* Main Pill Dock */}
+          <div className="bg-white/90 backdrop-blur-2xl px-2 py-2 rounded-full flex items-center gap-1 shadow-2xl border border-black/5">
+            {/* Share Pill */}
+            <button className="bg-[#A855F7] text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
+              <Share2 size={16} /> Share
+            </button>
+
+            <div className="flex items-center px-2">
+              <button onClick={() => addTile('link')} className="p-3 text-black/50 hover:text-black transition-colors" title="Add Link"><Link2 size={18} /></button>
+              <button onClick={() => addTile('image')} className="p-3 text-black/50 hover:text-black transition-colors" title="Add Image"><ImageIcon size={18} /></button>
+              <button onClick={() => addTile('text')} className="p-3 text-black/50 hover:text-black transition-colors" title="Add Quote"><Quote size={18} /></button>
+              <button onClick={() => addTile('text')} className="p-3 text-black/50 hover:text-black transition-colors" title="Add Heading"><Type size={18} /></button>
+              <button onClick={() => addTile('text')} className="p-3 text-black/50 hover:text-black transition-colors" title="Add Text"><CaseSensitive size={18} /></button>
+            </div>
+
+            <div className="w-px h-6 bg-black/10 mx-1" />
+
+            <div className="flex items-center px-2">
+              {/* Rearrange Toggle */}
+              <button 
+                onClick={() => setIsRearranging(!isRearranging)} 
+                className={cn("p-3 transition-colors", isRearranging ? "text-primary" : "text-black/50 hover:text-black")} 
+                title="Rearrange Mode"
+              >
+                <Pencil size={18} />
+              </button>
+              
+              {/* Device Toggle */}
+              <button 
+                onClick={() => setView(view === 'desktop' ? 'mobile' : 'desktop')} 
+                className="p-3 text-black/50 hover:text-black transition-colors" 
+                title={view === 'desktop' ? "Switch to Mobile View" : "Switch to Desktop View"}
+              >
+                {view === 'desktop' ? <Smartphone size={18} /> : <Monitor size={18} />}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -231,20 +268,6 @@ export default function Dashboard() {
                     onChange={(e) => setEditingTile({
                       ...editingTile, 
                       metadata: { ...editingTile.metadata, imageUrl: e.target.value }
-                    })}
-                    className="rounded-xl"
-                    placeholder="https://..."
-                  />
-                </div>
-              )}
-              {(!quickEditMode || quickEditMode === 'video') && (
-                <div className="space-y-2">
-                  <Label>Video URL (Direct link to .mp4)</Label>
-                  <Input 
-                    value={editingTile.metadata?.videoUrl || ''} 
-                    onChange={(e) => setEditingTile({
-                      ...editingTile, 
-                      metadata: { ...editingTile.metadata, videoUrl: e.target.value }
                     })}
                     className="rounded-xl"
                     placeholder="https://..."
