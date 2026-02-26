@@ -86,30 +86,34 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit,
 
   const SizeSelector = () => isDashboard && (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-      <div className="bg-black/80 dark:bg-white/10 backdrop-blur-xl px-3 py-2 rounded-full flex items-center gap-2 shadow-2xl border border-white/10">
+      <div className="bg-black/90 dark:bg-white/10 backdrop-blur-xl px-4 py-2 rounded-full flex items-center gap-3 shadow-2xl border border-white/10">
         <button 
           onClick={(e) => { e.stopPropagation(); onSizeChange?.(tile.id, '1x1'); }}
-          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '1x1' ? "text-white" : "text-white/40")}
+          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '1x1' ? "text-white" : "text-white/30")}
+          title="1x1"
         >
-          <div className="w-3 h-3 border-2 border-current rounded-sm" />
+          <div className="w-3 h-3 border-2 border-current rounded-[1px]" />
         </button>
         <button 
           onClick={(e) => { e.stopPropagation(); onSizeChange?.(tile.id, '2x1'); }}
-          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '2x1' ? "text-white" : "text-white/40")}
+          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '2x1' ? "text-white" : "text-white/30")}
+          title="2x1"
         >
-          <div className="w-5 h-3 border-2 border-current rounded-sm" />
+          <div className="w-5 h-3 border-2 border-current rounded-[1px]" />
         </button>
         <button 
           onClick={(e) => { e.stopPropagation(); onSizeChange?.(tile.id, '1x2'); }}
-          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '1x2' ? "text-white" : "text-white/40")}
+          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '1x2' ? "text-white" : "text-white/30")}
+          title="1x2"
         >
-          <div className="w-3 h-5 border-2 border-current rounded-sm" />
+          <div className="w-3 h-5 border-2 border-current rounded-[1px]" />
         </button>
         <button 
           onClick={(e) => { e.stopPropagation(); onSizeChange?.(tile.id, '2x2'); }}
-          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '2x2' ? "text-white" : "text-white/40")}
+          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '2x2' ? "text-white" : "text-white/30")}
+          title="2x2"
         >
-          <div className="w-5 h-5 border-4 border-current rounded-md" />
+          <div className="w-5 h-5 border-2 border-current rounded-md" />
         </button>
       </div>
     </div>
@@ -118,20 +122,19 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit,
   const renderContent = () => {
     switch (tile.type) {
       case 'social':
-        const isTwitter = tile.metadata?.brand?.toLowerCase() === 'twitter' || tile.metadata?.brand?.toLowerCase() === 'x';
         return (
           <div className="p-6 h-full flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex justify-between items-start">
                 <SocialIcon brand={tile.metadata?.brand} className={cn("w-10 h-10 p-2 rounded-xl bg-sky-50 dark:bg-sky-900/20", tile.metadata?.brand?.toLowerCase() === 'linkedin' ? 'text-[#0077b5]' : 'text-[#1DA1F2]')} />
                 {tile.metadata?.buttonText && (
-                  <Button size="sm" className={cn("rounded-full text-[10px] h-7 px-4", isTwitter ? "bg-sky-500 hover:bg-sky-600 text-white" : "bg-white dark:bg-zinc-800 border-sky-100 text-sky-500")}>
+                  <Button size="sm" className="rounded-full text-[10px] h-7 px-4 bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white border-none hover:scale-105 transition-transform">
                     {tile.metadata.buttonText}
                   </Button>
                 )}
               </div>
               <div className="space-y-1">
-                <h4 className="text-xs font-bold leading-tight dark:text-white">{tile.title}</h4>
+                <h4 className="text-xs font-bold leading-tight dark:text-white uppercase tracking-tighter">{tile.title}</h4>
                 <p className="text-[10px] text-muted-foreground font-medium">{tile.metadata?.username || tile.metadata?.linkText}</p>
               </div>
             </div>
@@ -207,13 +210,23 @@ export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit,
           <div className="h-full flex flex-col">
             <div className="p-6 pb-2 space-y-1">
                <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center mb-2">
-                  {tile.type === 'video' ? <Video size={14} /> : <SocialIcon brand="adplist" className="w-4 h-4 text-black dark:text-white" />}
+                  {tile.type === 'video' ? <Video size={14} /> : <ImageIcon size={14} className="text-black dark:text-white" />}
                </div>
                <h4 className="text-xs font-bold leading-tight max-w-[200px] dark:text-white">{tile.title}</h4>
                <p className="text-[10px] text-muted-foreground">{tile.metadata?.linkText || tile.metadata?.username}</p>
             </div>
             <div className="flex-1 relative m-4 mt-2 rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 min-h-[160px]">
               {tile.metadata?.imageUrl && <Image src={tile.metadata.imageUrl} alt="Visual" fill className="object-cover" />}
+              {tile.metadata?.videoUrl && (
+                <video 
+                  src={tile.metadata.videoUrl} 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="absolute inset-0 w-full h-full object-cover" 
+                />
+              )}
             </div>
           </div>
         );

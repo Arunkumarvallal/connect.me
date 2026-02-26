@@ -18,20 +18,23 @@ import {
   Monitor,
   Video,
   Sun,
-  Moon
+  Moon,
+  Camera,
+  Pencil
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Tile, TileType, TileSize } from '@/types/profile';
+import { Tile, TileType, TileSize, UserProfile } from '@/types/profile';
 
 export default function Dashboard() {
-  const [profile, setProfile] = useState(mockProfile);
+  const [profile, setProfile] = useState<UserProfile>(mockProfile);
   const [view, setView] = useState<'desktop' | 'mobile'>('desktop');
   const [editingTile, setEditingTile] = useState<Tile | null>(null);
   const [quickEditMode, setQuickEditMode] = useState<'title' | 'image' | 'video' | null>(null);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [isAvatarDialogOpen, setIsAvatarDialogOpen] = useState(false);
   const dragItem = useRef<number | null>(null);
   const dragOverItem = useRef<number | null>(null);
 
@@ -94,7 +97,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] dark:bg-zinc-950 transition-colors duration-300 flex flex-col">
+    <div className="min-h-screen bg-[#FDFDFD] dark:bg-zinc-950 transition-colors duration-300 flex flex-col selection:bg-purple-100 dark:selection:bg-purple-900/30">
       <header className="h-20 border-b dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl px-8 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <span className="font-black text-2xl font-headline tracking-tighter dark:text-white">Connect.me</span>
@@ -108,37 +111,50 @@ export default function Dashboard() {
       </header>
 
       <div className="flex-1 flex flex-col md:flex-row max-w-[1400px] mx-auto w-full p-8 gap-12 mb-40">
-        <aside className="md:w-[400px] space-y-8">
-          <div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 shadow-sm space-y-6 sticky top-28 border-none">
-            <div className="flex flex-col items-center space-y-4 pb-4">
-              <div className="relative group cursor-pointer">
-                <Avatar className="w-32 h-32 border-4 border-white dark:border-zinc-800 shadow-xl">
+        <aside className="md:w-[350px] space-y-8">
+          <div className="space-y-10 sticky top-28">
+            {/* Minimalist Profile Section */}
+            <div className="flex flex-col items-center md:items-start space-y-6">
+              <div 
+                className="relative group cursor-pointer"
+                onClick={() => setIsAvatarDialogOpen(true)}
+              >
+                <Avatar className="w-32 h-32 border-[6px] border-white dark:border-zinc-800 shadow-2xl transition-transform group-hover:scale-105">
                   <AvatarImage src={profile.avatarUrl} />
                   <AvatarFallback>{profile.displayName?.charAt(0)}</AvatarFallback>
                 </Avatar>
+                <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                  <Camera className="text-white w-8 h-8" />
+                </div>
               </div>
-              <h3 className="text-xl font-black uppercase tracking-tighter dark:text-white">{profile.displayName}</h3>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label className="text-[10px] font-bold uppercase tracking-widest opacity-40 dark:text-zinc-500">Display Name</Label>
-                <Input 
-                  value={profile.displayName} 
-                  onChange={(e) => setProfile({...profile, displayName: e.target.value})}
-                  className="rounded-2xl h-12 text-xl font-black uppercase tracking-tighter dark:bg-zinc-800 border-none shadow-none focus-visible:ring-0 px-0"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-[10px] font-bold uppercase tracking-widest opacity-40 dark:text-zinc-500">Biography</Label>
-                <Textarea 
-                  value={profile.bio} 
-                  onChange={(e) => setProfile({...profile, bio: e.target.value})}
-                  className="rounded-2xl min-h-[120px] leading-relaxed font-medium dark:bg-zinc-800 border-none shadow-none focus-visible:ring-0 px-0 resize-none"
-                />
-                <p className="text-[10px] font-bold text-muted-foreground/40 text-right uppercase tracking-widest">
-                  {profile.bio.length}/280 characters
-                </p>
+
+              <div className="w-full space-y-4">
+                <div className="relative group/name">
+                  <Input 
+                    value={profile.displayName} 
+                    onChange={(e) => setProfile({...profile, displayName: e.target.value})}
+                    className="text-4xl font-black font-headline tracking-tighter uppercase dark:text-white border-none shadow-none focus-visible:ring-0 px-0 h-auto bg-transparent w-full"
+                  />
+                  <Pencil size={14} className="absolute -right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover/name:opacity-30 transition-opacity dark:text-white" />
+                </div>
+
+                <div className="space-y-2">
+                   <Textarea 
+                    value={profile.bio} 
+                    onChange={(e) => setProfile({...profile, bio: e.target.value})}
+                    placeholder="Tell your story..."
+                    className="text-base leading-relaxed font-medium dark:text-zinc-300 border-none shadow-none focus-visible:ring-0 px-0 resize-none bg-transparent w-full h-auto min-h-[100px]"
+                    style={{ height: 'auto' }}
+                    onInput={(e) => {
+                      const target = e.target as HTMLTextAreaElement;
+                      target.style.height = 'auto';
+                      target.style.height = `${target.scrollHeight}px`;
+                    }}
+                  />
+                  <p className="text-[10px] font-bold text-muted-foreground/30 uppercase tracking-widest text-right">
+                    {profile.bio.length}/280
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -147,10 +163,10 @@ export default function Dashboard() {
         <main className="flex-1 space-y-8">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-black font-headline uppercase tracking-tighter dark:text-white">
-              Your Grid
+              Grid Editor
             </h2>
             <p className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
-              Drag tiles to rearrange • Hover to resize
+              Drag to move • Toggle sizes below
             </p>
           </div>
           
@@ -184,8 +200,9 @@ export default function Dashboard() {
         </main>
       </div>
 
-      <div className="fixed bottom-10 left-0 right-0 z-50 px-8 flex items-center justify-center">
-        <div className="max-w-fit flex items-center gap-4">
+      {/* Control Dock */}
+      <div className="fixed bottom-10 left-0 right-0 z-50 px-8 flex items-center justify-center pointer-events-none">
+        <div className="max-w-fit flex items-center gap-4 pointer-events-auto">
           <button className="w-14 h-14 bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 shadow-xl rounded-full flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group">
             <Settings2 size={24} className="text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white" />
           </button>
@@ -223,6 +240,29 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <Dialog open={isAvatarDialogOpen} onOpenChange={setIsAvatarDialogOpen}>
+        <DialogContent className="rounded-[2.5rem] dark:bg-zinc-900 dark:border-zinc-800">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black uppercase tracking-tighter dark:text-white">
+              Update Profile Photo
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label className="dark:text-zinc-400">Image URL</Label>
+              <Input 
+                value={profile.avatarUrl} 
+                onChange={(e) => setProfile({...profile, avatarUrl: e.target.value})}
+                className="rounded-xl dark:bg-zinc-800 dark:border-zinc-700"
+                placeholder="https://..."
+              />
+            </div>
+            <Button className="w-full rounded-full h-12 mt-4" onClick={() => setIsAvatarDialogOpen(false)}>Save Photo</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {editingTile && (
         <Dialog open={!!editingTile} onOpenChange={() => { setEditingTile(null); setQuickEditMode(null); }}>
