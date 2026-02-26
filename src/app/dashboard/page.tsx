@@ -14,15 +14,11 @@ import {
   ImageIcon, 
   Quote, 
   Type, 
-  CaseSensitive, 
   Smartphone, 
   Monitor,
-  Trash2,
-  Edit2,
-  Plus,
+  Video,
   Sun,
-  Moon,
-  Video
+  Moon
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -39,7 +35,6 @@ export default function Dashboard() {
   const dragItem = useRef<number | null>(null);
   const dragOverItem = useRef<number | null>(null);
 
-  // Sync theme with document class
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -100,7 +95,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] dark:bg-zinc-950 transition-colors duration-300 flex flex-col">
-      {/* Navbar */}
       <header className="h-20 border-b dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl px-8 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <span className="font-black text-2xl font-headline tracking-tighter dark:text-white">Connect.me</span>
@@ -114,9 +108,8 @@ export default function Dashboard() {
       </header>
 
       <div className="flex-1 flex flex-col md:flex-row max-w-[1400px] mx-auto w-full p-8 gap-12 mb-40">
-        {/* Left: Bio Editor */}
         <aside className="md:w-[400px] space-y-8">
-          <div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] border dark:border-zinc-800 p-8 shadow-sm space-y-6 sticky top-28">
+          <div className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 shadow-sm space-y-6 sticky top-28 border-none">
             <div className="flex flex-col items-center space-y-4 pb-4">
               <div className="relative group cursor-pointer">
                 <Avatar className="w-32 h-32 border-4 border-white dark:border-zinc-800 shadow-xl">
@@ -133,7 +126,7 @@ export default function Dashboard() {
                 <Input 
                   value={profile.displayName} 
                   onChange={(e) => setProfile({...profile, displayName: e.target.value})}
-                  className="rounded-2xl h-12 text-xl font-black uppercase tracking-tighter dark:bg-zinc-800 dark:border-zinc-700"
+                  className="rounded-2xl h-12 text-xl font-black uppercase tracking-tighter dark:bg-zinc-800 border-none shadow-none focus-visible:ring-0 px-0"
                 />
               </div>
               <div className="space-y-2">
@@ -141,7 +134,7 @@ export default function Dashboard() {
                 <Textarea 
                   value={profile.bio} 
                   onChange={(e) => setProfile({...profile, bio: e.target.value})}
-                  className="rounded-2xl min-h-[120px] leading-relaxed font-medium dark:bg-zinc-800 dark:border-zinc-700"
+                  className="rounded-2xl min-h-[120px] leading-relaxed font-medium dark:bg-zinc-800 border-none shadow-none focus-visible:ring-0 px-0 resize-none"
                 />
                 <p className="text-[10px] font-bold text-muted-foreground/40 text-right uppercase tracking-widest">
                   {profile.bio.length}/280 characters
@@ -151,7 +144,6 @@ export default function Dashboard() {
           </div>
         </aside>
 
-        {/* Right: Grid Editor */}
         <main className="flex-1 space-y-8">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-black font-headline uppercase tracking-tighter dark:text-white">
@@ -192,17 +184,13 @@ export default function Dashboard() {
         </main>
       </div>
 
-      {/* Floating UI Container */}
       <div className="fixed bottom-10 left-0 right-0 z-50 px-8 flex items-center justify-center">
         <div className="max-w-fit flex items-center gap-4">
-          {/* Settings Button */}
           <button className="w-14 h-14 bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 shadow-xl rounded-full flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group">
             <Settings2 size={24} className="text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white" />
           </button>
 
-          {/* Main Pill Dock (Black) */}
-          <div className="bg-black/90 backdrop-blur-2xl px-2 py-2 rounded-full flex items-center gap-1 shadow-2xl border border-white/10">
-            {/* Share Pill */}
+          <div className="bg-black text-white px-2 py-2 rounded-full flex items-center gap-1 shadow-2xl border border-white/10">
             <button className="bg-[#A855F7] text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
               <Share2 size={16} /> Share
             </button>
@@ -218,7 +206,6 @@ export default function Dashboard() {
             <div className="w-px h-6 bg-white/10 mx-1" />
 
             <div className="flex items-center px-2">
-              {/* Theme & Device Toggles */}
               <button 
                 onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} 
                 className="p-3 text-white/50 hover:text-white transition-colors" 
@@ -237,7 +224,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Edit Dialog */}
       {editingTile && (
         <Dialog open={!!editingTile} onOpenChange={() => { setEditingTile(null); setQuickEditMode(null); }}>
           <DialogContent className="rounded-[2.5rem] dark:bg-zinc-900 dark:border-zinc-800">
