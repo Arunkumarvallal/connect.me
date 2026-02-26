@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -117,16 +118,16 @@ export default function Dashboard() {
       </header>
 
       <div className="flex-1 flex flex-col md:flex-row max-w-[1400px] mx-auto w-full p-8 gap-12 mb-40">
-        {/* Profile Sidebar: No Borders, Integrated Content */}
-        <aside className="md:w-[400px] space-y-8">
+        {/* Profile Sidebar */}
+        <aside className="md:w-[450px] space-y-8">
           <div className="space-y-12 sticky top-28 flex flex-col items-center md:items-start">
             
-            {/* Bigger Avatar with Edit Overlay */}
+            {/* Bigger Avatar */}
             <div 
               className="relative group cursor-pointer"
               onClick={() => setIsAvatarDialogOpen(true)}
             >
-              <Avatar className="w-40 h-40 border-[8px] border-white dark:border-zinc-800 shadow-2xl transition-transform group-hover:scale-105">
+              <Avatar className="w-48 h-48 border-[10px] border-white dark:border-zinc-800 shadow-2xl transition-transform group-hover:scale-105">
                 <AvatarImage src={profile.avatarUrl} />
                 <AvatarFallback>{profile.displayName?.charAt(0)}</AvatarFallback>
               </Avatar>
@@ -138,25 +139,24 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="w-full space-y-8">
-              {/* Integrated Name: Plain text feel, editable */}
+            <div className="w-full space-y-6">
+              {/* Massive Name */}
               <div className="relative group/name w-full">
                 <Input 
                   value={profile.displayName} 
                   onChange={(e) => setProfile({...profile, displayName: e.target.value})}
-                  className="text-5xl font-black font-headline tracking-tighter uppercase dark:text-white border-none shadow-none focus-visible:ring-0 px-0 h-auto bg-transparent w-full transition-colors group-hover/name:bg-black/5 dark:group-hover/name:bg-white/5 rounded-lg"
-                  placeholder="Your Name"
+                  className="text-7xl font-black font-headline tracking-tighter uppercase dark:text-white border-none shadow-none focus-visible:ring-0 px-0 h-auto bg-transparent w-full transition-colors group-hover/name:bg-black/5 dark:group-hover/name:bg-white/5 rounded-lg leading-none"
+                  placeholder=""
                 />
-                <Pencil size={14} className="absolute -right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover/name:opacity-30 transition-opacity dark:text-white pointer-events-none" />
               </div>
 
-              {/* Bio Section: Expanded, Auto-height, 270 char limit */}
+              {/* Big Bio: No scroll, massive font */}
               <div className="space-y-4">
                  <Textarea 
                   value={profile.bio} 
                   onChange={handleBioChange}
-                  placeholder="Tell your story..."
-                  className="text-lg leading-relaxed font-medium dark:text-zinc-300 border-none shadow-none focus-visible:ring-0 px-0 resize-none bg-transparent w-full h-auto min-h-[150px] transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded-lg p-2"
+                  placeholder=""
+                  className="text-2xl leading-relaxed font-medium dark:text-zinc-300 border-none shadow-none focus-visible:ring-0 px-0 resize-none bg-transparent w-full h-auto overflow-hidden transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded-lg p-2"
                   style={{ height: 'auto' }}
                   onInput={(e) => {
                     const target = e.target as HTMLTextAreaElement;
@@ -164,15 +164,12 @@ export default function Dashboard() {
                     target.style.height = `${target.scrollHeight}px`;
                   }}
                 />
-                <div className="flex items-center justify-between px-2">
-                  <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
-                    Description
-                  </p>
+                <div className="flex items-center justify-end px-2">
                   <p className={cn(
                     "text-[10px] font-bold uppercase tracking-widest",
-                    profile.bio.length >= 260 ? "text-red-500" : "text-muted-foreground/40"
+                    profile.bio.length >= 260 ? "text-red-500" : "text-muted-foreground/30"
                   )}>
-                    {profile.bio.length}/270 characters
+                    {profile.bio.length}/270
                   </p>
                 </div>
               </div>
@@ -180,15 +177,12 @@ export default function Dashboard() {
           </div>
         </aside>
 
-        {/* Grid Editor: Right Side */}
+        {/* Grid Editor */}
         <main className="flex-1 space-y-8">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-black font-headline uppercase tracking-tighter dark:text-white">
               Grid Editor
             </h2>
-            <p className="text-[10px] font-bold text-muted-foreground/50 uppercase tracking-widest">
-              Drag tiles to rearrange your grid
-            </p>
           </div>
           
           <div className={cn(
@@ -221,15 +215,13 @@ export default function Dashboard() {
         </main>
       </div>
 
-      {/* Control Dock: High fidelity black pill */}
+      {/* Control Dock */}
       <div className="fixed bottom-10 left-0 right-0 z-50 px-8 flex items-center justify-center pointer-events-none">
         <div className="max-w-fit flex items-center gap-4 pointer-events-auto">
-          {/* Separate Settings Button */}
           <button className="w-14 h-14 bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/10 shadow-xl rounded-full flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group">
             <Settings2 size={24} className="text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white" />
           </button>
 
-          {/* Main Black Dock */}
           <div className="bg-black text-white px-2 py-2 rounded-full flex items-center gap-1 shadow-2xl border border-white/10">
             <button className="bg-[#A855F7] text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 hover:opacity-90 transition-opacity">
               <Share2 size={16} /> Share
@@ -245,7 +237,6 @@ export default function Dashboard() {
 
             <div className="w-px h-6 bg-white/10 mx-1" />
 
-            {/* Combined View/Theme Controls */}
             <div className="flex items-center px-2">
               <button 
                 onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} 

@@ -23,29 +23,26 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
       <div className="max-w-[1200px] mx-auto px-6 py-12 md:py-24">
         <div className="flex flex-col md:flex-row gap-16 lg:gap-24">
           
-          {/* Left Side: Bio Section */}
+          {/* Left Side: Massive Typography */}
           <div className="md:w-1/3 space-y-8 md:sticky md:top-24 h-fit">
-            <div className="space-y-6">
-              <Avatar className="w-32 h-32 border-[6px] border-white shadow-xl">
+            <div className="space-y-8">
+              <Avatar className="w-48 h-48 border-[10px] border-white shadow-2xl">
                 <AvatarImage src={profile.avatarUrl} alt={profile.displayName} />
                 <AvatarFallback>{profile.displayName.charAt(0)}</AvatarFallback>
               </Avatar>
               
-              <div className="space-y-4">
-                <h1 className="text-4xl font-black font-headline flex items-center gap-2">
+              <div className="space-y-6">
+                <h1 className="text-7xl font-black font-headline tracking-tighter uppercase leading-none">
                   {profile.displayName} 
                   <span className="text-yellow-400">⚡️</span>
                 </h1>
-                <p className="text-muted-foreground text-base leading-relaxed font-medium whitespace-pre-wrap">
+                <p className="text-2xl leading-relaxed font-medium whitespace-pre-wrap text-zinc-800">
                   {profile.bio}
-                </p>
-                <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest">
-                  {profile.bio.length}/280 characters
                 </p>
               </div>
             </div>
 
-            {/* Bottom mini icons from reference */}
+            {/* Bottom mini icons */}
             <div className="flex items-center gap-6 pt-12 opacity-30">
               <button className="hover:opacity-100 transition-opacity"><LayoutGrid size={18} /></button>
               <button className="hover:opacity-100 transition-opacity"><Monitor size={18} /></button>
@@ -74,7 +71,7 @@ export default function PublicProfile({ params }: { params: Promise<{ username: 
         </div>
       </div>
 
-      {/* Floating Action Bar at the bottom - Perfect match for reference */}
+      {/* Floating Action Bar */}
       <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50">
         <div className="bg-black text-white px-2 py-2 rounded-full flex items-center gap-1 shadow-2xl border border-white/10">
            <button className="bg-[#4ADE80] text-black px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 hover:scale-105 transition-transform">
