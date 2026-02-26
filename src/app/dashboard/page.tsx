@@ -2,6 +2,7 @@
 "use client"
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { mockProfile } from '@/lib/mock-data';
 import { TileRenderer } from '@/components/profile/tile-renderer';
 import { Button } from '@/components/ui/button';
@@ -20,9 +21,8 @@ import {
   Monitor,
   Smartphone
 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(mockProfile);
@@ -223,5 +223,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
-import { cn } from '@/lib/utils';
