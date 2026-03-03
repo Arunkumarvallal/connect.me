@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Lenis from 'lenis';
 import GridLayout from 'react-grid-layout';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { TileRenderer } from '@/components/profile/tile-renderer';
 import { UserProfile, GRID_CONFIG } from '@/types/profile';

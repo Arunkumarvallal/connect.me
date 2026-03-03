@@ -774,3 +774,328 @@ NEXT_PUBLIC_FIREBASE_APP_ID=
 - Three.js 3D login animation (Phase 3)
 - Custom background image upload (Phase 3)
 
+---
+
+## 22. Phase 1 Refactor Plan
+
+> **Scope:** Structural and quality improvements to the already-completed Phase 1 codebase. Zero changes to business logic, component APIs, data shapes, or visual output. Every item is a "same result, better code" improvement.
+
+---
+
+### Audit vs. Next.js Best Practices (Skill-Driven)
+
+The `next-best-practices` skill identifies the following violations in the current codebase:
+
+| # | File | Issue | Severity |
+|---|------|-------|----------|
+| 1 | `src/app/layout.tsx` | Raw `<link>` Google Fonts tags — render-blocking, causes FOUT/CLS | **High** |
+| 2 | `next.config.ts` | `typescript.ignoreBuildErrors: true` and `eslint.ignoreDuringBuilds: true` hide real errors at build time | **High** |
+| 3 | `src/components/dashboard/tile-edit-dialog.tsx` | Two `<img>` tags with `eslint-disable` comments instead of `next/image` | **Medium** |
+| 4 | `src/components/dashboard/tile-grid.tsx` + `public-profile.tsx` | Both import `react-grid-layout/css/styles.css` and `react-resizable/css/styles.css` — should be imported once in `globals.css` | **Medium** |
+| 5 | `src/app/layout.tsx` | `className="font-body"` on `<body>` conflicts with `@apply font-sans` in `globals.css` — both target the body font | **Medium** |
+| 6 | `src/app/[username]/` | No `not-found.tsx`, no `error.tsx`, no `loading.tsx` — `notFound()` is called but there is no custom UI | **Medium** |
+| 7 | `src/app/[username]/page.tsx` | No `generateMetadata` — every public profile page shares the same `<title>` from root layout | **Low** |
+| 8 | `src/app/dashboard/` | No `error.tsx` or `loading.tsx` — any runtime crash renders the global error boundary | **Low** |
+| 9 | Route structure | Dashboard and public profile routes share the root layout. A route group `(public)` separating auth-required from public routes would make Phase 2 middleware targetable | **Low** |
+
+---
+
+### R1 — Migrate Google Fonts to `next/font`
+
+**Why:** Raw `<link>` tags in `<head>` are render-blocking. `next/font` self-hosts fonts, eliminates the Google DNS round-trip, preloads the correct subset, and produces zero CLS. This is the #1 performance fix available.
+
+**Affected files:**
+- `src/app/layout.tsx` — remove `<head>` block with `<link>` tags; replace with `next/font/google` imports
+- `tailwind.config.ts` — keep `fontFamily` values but reference CSS variables instead of hard-coded font names
+- `src/app/globals.css` — add `--font-inter`, `--font-outfit`, `--font-playfair`, `--font-space-grotesk` CSS variable assignments
+
+**Implementation:**
+
+```tsx
+// src/app/layout.tsx
+import { Inter, Outfit, Playfair_Display, Space_Grotesk } from 'next/font/google';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+});
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+});
+
+// html element:
+<html
+  lang="en"
+  suppressHydrationWarning
+  className={`${inter.variable} ${outfit.variable} ${playfair.variable} ${spaceGrotesk.variable}`}
+>
+  <body className="font-sans antialiased min-h-screen">
+```
+
+```typescript
+// tailwind.config.ts — reference CSS variables
+fontFamily: {
+  sans:     ['var(--font-inter)', 'sans-serif'],
+  body:     ['var(--font-inter)', 'sans-serif'],
+  headline: ['var(--font-outfit)', 'sans-serif'],
+  serif:    ['var(--font-playfair)', 'serif'],
+  mono:     ['var(--font-space-grotesk)', 'monospace'],
+},
+```
+
+**Business logic impact:** None. Same fonts, same Tailwind classes, same visual output.
+
+---
+
+### R2 — Remove Build Error Suppression from `next.config.ts`
+
+**Why:** `typescript.ignoreBuildErrors: true` means TypeScript errors pass silently through CI/build. `eslint.ignoreDuringBuilds: true` means linting issues are never caught at deploy time. Both will cause Phase 2 regressions to go undetected. Remove both flags so the build fails fast on type errors.
+
+**Action:** Delete the two blocks. Run `npm run typecheck` to surface any latent errors and fix them before proceeding to Phase 2.
+
+```typescript
+// next.config.ts — remove these entirely:
+typescript: {
+  ignoreBuildErrors: true,   // ← DELETE
+},
+eslint: {
+  ignoreDuringBuilds: true,  // ← DELETE
+},
+```
+
+**Business logic impact:** None. Same runtime behavior, stricter build gate.
+
+---
+
+### R3 — Replace `<img>` with `next/image` in `tile-edit-dialog.tsx`
+
+**Why:** Two `<img>` tags use `eslint-disable` comments to suppress the warning. `next/image` applies automatic resizing, lazy loading, modern format conversion (WebP/AVIF), and blur placeholder — with zero changes to the component's visual output.
+
+**Affected file:** `src/components/dashboard/tile-edit-dialog.tsx`
+
+**Implementation:**
+- Favicon preview: `<Image src={...} width={16} height={16} alt="" unoptimized />` — `unoptimized` because favicons are tiny external files
+- Image tile preview: `<Image src={...} alt="preview" fill className="object-cover rounded-lg border border-border mt-1" />` inside a `relative` container div
+
+**Business logic impact:** None. Same previews, better loading.
+
+---
+
+### R4 — Consolidate `react-grid-layout` CSS Imports
+
+**Why:** `tile-grid.tsx` and `public-profile.tsx` each independently import `react-grid-layout/css/styles.css` and `react-resizable/css/styles.css`. While Next.js deduplicates CSS modules at build time, the intent should be explicit: these are global stylesheet overrides, not component-scoped styles.
+
+**Action:** Move both imports to `src/app/globals.css`:
+
+```css
+/* src/app/globals.css */
+@import 'react-grid-layout/css/styles.css';
+@import 'react-resizable/css/styles.css';
+```
+
+Remove the two import lines from `tile-grid.tsx` and `public-profile.tsx`.
+
+**Business logic impact:** None. Build output is identical.
+
+---
+
+### R5 — Resolve `font-body` vs `font-sans` Conflict
+
+**Why:** `src/app/layout.tsx` applies `className="font-body"` to `<body>`, while `src/app/globals.css` has `@apply ... font-sans` on `body`. Two different font rules target the same element. After R1 is applied, both `font-body` and `font-sans` will resolve to Inter (via the CSS variable), so the conflict becomes cosmetic — but it should still be cleaned up.
+
+**Action:** Remove `@apply font-sans` from the `body` rule in `globals.css`. The `font-sans`/`font-body` class on the `<body>` element in `layout.tsx` is the single source of truth. To align with standard Tailwind, use `font-sans` since that is now mapped to Inter.
+
+**Business logic impact:** None. Both resolve to Inter after R1.
+
+---
+
+### R6 — Add Route Convention Files for `[username]` and `dashboard`
+
+**Why:** The Next.js App Router requires `not-found.tsx`, `error.tsx`, and `loading.tsx` to be co-located with the route for customized UX. Currently `notFound()` is called in `[username]/page.tsx` but there is no custom UI — Next.js shows a generic white page.
+
+#### `src/app/[username]/not-found.tsx`
+A simple "Profile not found" message matching the app's design language. No logic — pure UI.
+
+```tsx
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+
+export default function ProfileNotFound() {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-background text-foreground">
+      <p className="text-5xl font-black tracking-tighter">404</p>
+      <p className="text-lg text-muted-foreground">This profile does not exist.</p>
+      <Button asChild variant="outline" className="rounded-full px-8">
+        <Link href="/">Go home</Link>
+      </Button>
+    </div>
+  );
+}
+```
+
+#### `src/app/[username]/error.tsx`
+Catches any unexpected runtime error on a public profile page (currently this falls through to root `global-error`).
+
+```tsx
+'use client';
+export default function ProfileError({ reset }: { reset: () => void }) {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-background">
+      <p className="text-lg text-muted-foreground">Something went wrong loading this profile.</p>
+      <button onClick={reset} className="text-sm underline">Try again</button>
+    </div>
+  );
+}
+```
+
+#### `src/app/[username]/loading.tsx`
+A skeleton that matches the `PublicProfile` layout — sidebar + grid area. Shown while the server component resolves (Phase 2: while Firestore data loads). Inert in Phase 1 since the RSC resolves synchronously from mock data, but ready and correct.
+
+#### `src/app/dashboard/error.tsx`
+Same pattern — catches any runtime error in the dashboard and offers a reset option.
+
+**Business logic impact:** None. These files are only shown on failure/load paths.
+
+---
+
+### R7 — Add `generateMetadata` to `[username]/page.tsx`
+
+**Why:** Currently every public profile page (`/juarezfilho`, `/anyone`) shares the root `<title>Connect.me | Your Personal Bento Profile`. Phase 2 requires per-user OG tags for sharing anyway — the skeleton should be in place now.
+
+**Implementation:**
+
+```tsx
+// src/app/[username]/page.tsx
+import type { Metadata } from 'next';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}): Promise<Metadata> {
+  const { username } = await params;
+  // Phase 1: resolve from mock data. Phase 2: Firestore lookup.
+  if (username !== mockProfile.username) {
+    return { title: 'Profile not found | Connect.me' };
+  }
+  return {
+    title: `${mockProfile.displayName} (@${username}) | Connect.me`,
+    description: mockProfile.bio,
+  };
+}
+```
+
+**Business logic impact:** None. Same page, richer `<title>` tag.
+
+---
+
+### R8 — Introduce Route Groups for Phase 2 Readiness
+
+**Why:** Phase 2 requires a `middleware.ts` that protects `/dashboard` and `/onboarding` from unauthenticated access. Today all routes sit at the root. Wrapping auth-required routes in a route group `(app)` and public routes in `(public)` means the middleware matcher path is clean and layouts can be differentiated.
+
+**Proposed structure:**
+
+```
+src/app/
+├── (public)/
+│   ├── page.tsx               ← landing /
+│   ├── login/page.tsx         ← /login
+│   └── [username]/
+│       ├── page.tsx           ← /:username
+│       ├── not-found.tsx
+│       ├── error.tsx
+│       └── loading.tsx
+├── (app)/
+│   ├── dashboard/page.tsx     ← /dashboard
+│   └── onboarding/            ← /onboarding (Phase 2)
+├── api/
+│   └── link-preview/route.ts
+├── layout.tsx                 ← root layout (unchanged)
+└── globals.css
+```
+
+Route groups (`(public)` and `(app)`) do not affect the URL. `/dashboard` stays `/dashboard`. But they allow:
+- Separate `layout.tsx` per group (e.g., `(app)/layout.tsx` will wrap with auth guard in Phase 2)
+- A precise middleware matcher: `matcher: ['/dashboard/:path*', '/onboarding/:path*']`
+
+**Business logic impact:** Zero. URLs are unchanged. This is a file-system reorganization only.
+
+---
+
+### R9 — Tighten `next.config.ts` Image Domains
+
+**Why:** The current `remotePatterns` allows `picsum.photos` (mock data only) and `images.unsplash.com`. Phase 2 will add Firebase Storage URLs. Confirming and tightening the list now avoids a deployment surprise later.
+
+**Add for Phase 2 readiness:**
+
+```typescript
+{
+  protocol: 'https',
+  hostname: 'firebasestorage.googleapis.com',
+  pathname: '/v0/b/**',
+},
+{
+  protocol: 'https',
+  hostname: 'lh3.googleusercontent.com',  // Google profile avatars
+  pathname: '/**',
+},
+{
+  protocol: 'https',
+  hostname: 'avatars.githubusercontent.com',  // GitHub profile avatars
+  pathname: '/**',
+},
+```
+
+**Business logic impact:** None for Phase 1. Unlocks Phase 2 avatar/image rendering.
+
+---
+
+### Summary Table
+
+| # | Task | File(s) | Impact on Phase 2 | Effort |
+|---|------|---------|-------------------|--------|
+| R1 | `next/font` migration | `layout.tsx`, `tailwind.config.ts`, `globals.css` | Unblocks font consistency | Medium |
+| R2 | Remove build error suppression | `next.config.ts` | Catches Phase 2 TS bugs at build | Low |
+| R3 | `next/image` for `<img>` tags | `tile-edit-dialog.tsx` | None | Low |
+| R4 | Consolidate RGL CSS imports | `globals.css`, `tile-grid.tsx`, `public-profile.tsx` | None | Trivial |
+| R5 | Fix `font-body`/`font-sans` conflict | `globals.css` | None | Trivial |
+| R6 | Add route convention files | `[username]/`, `dashboard/` | Skeleton for Phase 2 async loading | Low |
+| R7 | `generateMetadata` for `[username]` | `[username]/page.tsx` | Required for Phase 3 OG tags | Low |
+| R8 | Route groups `(public)` / `(app)` | File system reorganization | Direct Phase 2 prerequisite | Medium |
+| R9 | Tighten image domains | `next.config.ts` | Required for Phase 2 Firebase avatars | Trivial |
+
+### Execution Order
+
+```
+R2 (unblock build) → R4 + R5 (trivial cleanups) → R1 (fonts) → R3 (images)
+→ R6 (route files) → R7 (metadata) → R8 (route groups) → R9 (image domains)
+→ npm run typecheck (zero errors gate before Phase 2)
+```
+
+### What This Refactor Does NOT Change
+
+- All Zustand store logic and state shape
+- All tile types, tile rendering logic, tile drag/resize behavior
+- All `react-grid-layout` integration in `TileGrid` and `PublicProfile`
+- All component APIs and prop types
+- All mock data structure
+- The `linkPreview` API route handler
+- The `sonner` toast wiring
+- The `framer-motion` animations on login and tile hover
+- The `lenis` smooth scroll integration
+- The `next-themes` ThemeProvider setup
+- The `ControlDock`, `SettingsPanel`, `TileEditDialog`, `ProfileSidebar` behavior
+

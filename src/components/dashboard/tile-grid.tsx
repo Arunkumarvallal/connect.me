@@ -2,8 +2,6 @@
 
 import { useCallback, useRef, useEffect, useState } from 'react';
 import GridLayout from 'react-grid-layout';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
 import { Tile, GRID_CONFIG } from '@/types/profile';
 import { useProfileStore } from '@/store/profile-store';
 import { TileCard } from './tile-card';

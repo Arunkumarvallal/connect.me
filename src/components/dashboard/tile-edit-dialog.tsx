@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
@@ -117,8 +118,13 @@ export function TileEditDialog() {
               {form.metadata?.linkPreview && (
                 <div className="flex items-center gap-2 p-2 rounded-md border border-border bg-muted text-sm mt-1">
                   {form.metadata.linkPreview.favicon && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={form.metadata.linkPreview.favicon} className="w-4 h-4" alt="" />
+                    <Image
+                      src={form.metadata.linkPreview.favicon}
+                      width={16}
+                      height={16}
+                      alt=""
+                      unoptimized
+                    />
                   )}
                   <span className="truncate">{form.metadata.linkPreview.title}</span>
                 </div>
@@ -137,12 +143,15 @@ export function TileEditDialog() {
                 onChange={handleImageUpload}
               />
               {(form.metadata?.imageData || form.metadata?.imageUrl) && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={form.metadata.imageData ?? form.metadata.imageUrl}
-                  className="w-full h-28 object-cover rounded-lg border border-border mt-1"
-                  alt="preview"
-                />
+                <div className="relative w-full h-28 mt-1 rounded-lg overflow-hidden border border-border">
+                  <Image
+                    src={(form.metadata.imageData ?? form.metadata.imageUrl)!}
+                    alt="preview"
+                    fill
+                    className="object-cover"
+                    unoptimized={!!form.metadata.imageData}
+                  />
+                </div>
               )}
             </div>
           )}
