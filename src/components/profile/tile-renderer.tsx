@@ -1,253 +1,367 @@
 
 "use client"
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
-import { Tile, TileSize } from '@/types/profile';
+import { Tile } from '@/types/profile';
 import { cn } from '@/lib/utils';
-import { 
-  Github, 
-  Twitter, 
-  Linkedin, 
-  Instagram, 
-  Youtube, 
-  Link as LinkIcon,
-  Trash2,
-  Type,
-  ImageIcon,
-  Video,
+import {
+  Github,
+  Twitter,
+  Linkedin,
+  Instagram,
+  Youtube,
   ArrowUpRight,
   Smile,
-  ExternalLink
+  ImageIcon,
 } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { useProfileStore } from '@/store/profile-store';
 
 interface TileRendererProps {
   tile: Tile;
   isDashboard?: boolean;
-  onRemove?: (id: string) => void;
-  onEdit?: (tile: Tile) => void;
-  onQuickEdit?: (tile: Tile, mode: 'title' | 'image' | 'video') => void;
-  onSizeChange?: (id: string, size: TileSize) => void;
 }
 
-const SocialIcon = ({ brand, className }: { brand?: string, className?: string }) => {
+const SocialIcon = ({ brand, className }: { brand?: string; className?: string }) => {
   switch (brand?.toLowerCase()) {
     case 'x':
-    case 'twitter': return <Twitter className={className} />;
-    case 'linkedin': return <Linkedin className={className} />;
+    case 'twitter':   return <Twitter   className={className} />;
+    case 'linkedin':  return <Linkedin  className={className} />;
     case 'instagram': return <Instagram className={className} />;
-    case 'youtube': return <Youtube className={className} />;
-    case 'github': return <Github className={className} />;
-    case 'whatsapp': return <Smile className={className} />;
-    case 'adplist': return <Smile className={className} />;
-    default: return <LinkIcon className={className} />;
+    case 'youtube':   return <Youtube   className={className} />;
+    case 'github':    return <Github    className={className} />;
+    default:          return <Smile     className={className} />;
   }
 };
 
-export function TileRenderer({ tile, isDashboard, onRemove, onEdit, onQuickEdit, onSizeChange }: TileRendererProps) {
-  const sizeClass = `tile-${tile.size}`;
+/* ─── Text tile — double-click to inline edit ─── */
+function TextTile({ tile, isDashboard }: { tile: Tile; isDashboard?: boolean }) {
+  const { updateTile } = useProfileStore();
+  const [editing, setEditing] = useState(false);
+  const [val, setVal] = useState(tile.content ?? '');
+  const isBlack = tile.metadata?.accentColor === '#000000';
 
-  const commonClasses = cn(
-    "relative overflow-hidden group transition-all duration-500 rounded-[2.5rem] border border-black/5 dark:border-white/5 min-h-[140px] bg-white dark:bg-zinc-900",
-    isDashboard ? "hover:shadow-2xl hover:scale-[1.01]" : "hover:shadow-xl",
-    sizeClass
-  );
+  function commit() {
+    setEditing(false);
+    updateTile({ ...tile, content: val });
+  }
 
-  const QuickActions = () => isDashboard && (
-    <div className="absolute top-4 left-4 flex gap-2 z-40 opacity-0 group-hover:opacity-100 transition-opacity">
-      <Button 
-        size="icon" 
-        variant="secondary" 
-        className="w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-800/90 backdrop-blur shadow-sm"
-        onClick={(e) => { e.stopPropagation(); onQuickEdit?.(tile, 'title'); }}
-      >
-        <Type size={14} />
-      </Button>
-      <Button 
-        size="icon" 
-        variant="secondary" 
-        className="w-8 h-8 rounded-full bg-white/90 dark:bg-zinc-800/90 backdrop-blur shadow-sm"
-        onClick={(e) => { e.stopPropagation(); onQuickEdit?.(tile, 'image'); }}
-      >
-        <ImageIcon size={14} />
-      </Button>
-      <Button 
-        size="icon" 
-        variant="destructive" 
-        className="w-8 h-8 rounded-full shadow-sm"
-        onClick={(e) => { e.stopPropagation(); onRemove?.(tile.id); }}
-      >
-        <Trash2 size={14} />
-      </Button>
+  return (
+    <div
+      className={cn(
+        'p-6 h-full flex flex-col justify-center',
+        isBlack ? 'bg-zinc-950 text-white' : 'bg-card text-foreground',
+      )}
+    >
+      {editing && isDashboard ? (
+        <textarea
+          autoFocus
+          value={val}
+          onChange={(e) => setVal(e.target.value)}
+          onBlur={commit}
+          onKeyDown={(e) => { if (e.key === 'Escape') commit(); }}
+          className="w-full bg-transparent border-none outline-none resize-none text-lg font-bold leading-snug"
+          rows={3}
+        />
+      ) : (
+        <p
+          className={cn('text-lg font-bold leading-snug', isDashboard && 'cursor-text')}
+          onDoubleClick={() => isDashboard && setEditing(true)}
+          title={isDashboard ? 'Double-click to edit' : undefined}
+        >
+          {tile.content || (isDashboard ? <span className="opacity-30 italic font-normal text-sm">Double-click to add text…</span> : null)}
+        </p>
+      )}
     </div>
   );
+}
 
-  const SizeSelector = () => isDashboard && (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-      <div className="bg-black/90 dark:bg-white/10 backdrop-blur-xl px-4 py-2 rounded-full flex items-center gap-3 shadow-2xl border border-white/10">
-        <button 
-          onClick={(e) => { e.stopPropagation(); onSizeChange?.(tile.id, '1x1'); }}
-          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '1x1' ? "text-white" : "text-white/30")}
-          title="1x1"
+/* ─── Heading tile — full-width section divider, double-click to inline edit ─── */
+function HeadingTile({ tile, isDashboard }: { tile: Tile; isDashboard?: boolean }) {
+  const { updateTile } = useProfileStore();
+  const [editing, setEditing] = useState(false);
+  const [val, setVal] = useState(tile.title ?? '');
+
+  function commit() {
+    setEditing(false);
+    updateTile({ ...tile, title: val });
+  }
+
+  return (
+    <div className="w-full h-full flex items-center">
+      {editing && isDashboard ? (
+        <input
+          autoFocus
+          value={val}
+          onChange={(e) => setVal(e.target.value)}
+          onBlur={commit}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') commit(); }}
+          className="flex-1 bg-transparent border-none outline-none text-2xl font-black leading-none tracking-tight text-foreground"
+        />
+      ) : (
+        <h2
+          className={cn('text-2xl font-black leading-none tracking-tight text-foreground', isDashboard && 'cursor-text')}
+          onDoubleClick={() => isDashboard && setEditing(true)}
+          title={isDashboard ? 'Double-click to edit' : undefined}
         >
-          <div className="w-3 h-3 border-2 border-current rounded-[1px]" />
-        </button>
-        <button 
-          onClick={(e) => { e.stopPropagation(); onSizeChange?.(tile.id, '2x1'); }}
-          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '2x1' ? "text-white" : "text-white/30")}
-          title="2x1"
-        >
-          <div className="w-5 h-3 border-2 border-current rounded-[1px]" />
-        </button>
-        <button 
-          onClick={(e) => { e.stopPropagation(); onSizeChange?.(tile.id, '1x2'); }}
-          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '1x2' ? "text-white" : "text-white/30")}
-          title="1x2"
-        >
-          <div className="w-3 h-5 border-2 border-current rounded-[1px]" />
-        </button>
-        <button 
-          onClick={(e) => { e.stopPropagation(); onSizeChange?.(tile.id, '2x2'); }}
-          className={cn("p-1.5 rounded-md hover:bg-white/20 transition-colors", tile.size === '2x2' ? "text-white" : "text-white/30")}
-          title="2x2"
-        >
-          <div className="w-5 h-5 border-2 border-current rounded-md" />
-        </button>
+          {tile.title || (isDashboard ? <span className="opacity-30 italic font-normal text-sm">Double-click to add heading…</span> : null)}
+        </h2>
+      )}
+    </div>
+  );
+}
+
+/* ─── Link tile — double-click to inline edit ─── */
+function LinkTile({ tile, isDashboard }: { tile: Tile; isDashboard?: boolean }) {
+  const { updateTile } = useProfileStore();
+  const [editingUrl, setEditingUrl] = useState(false);
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [url, setUrl] = useState(tile.url ?? '');
+  const [titleVal, setTitleVal] = useState(tile.title ?? '');
+  const preview = tile.metadata?.linkPreview;
+
+  function commitUrl() {
+    setEditingUrl(false);
+    const normalized = url.startsWith('http') ? url : `https://${url}`;
+    updateTile({ ...tile, url: normalized });
+  }
+
+  function commitTitle() {
+    setEditingTitle(false);
+    updateTile({ ...tile, title: titleVal });
+  }
+
+  return (
+    <div className="relative h-full">
+      <div className="h-full flex flex-col justify-between p-5 bg-card">
+        {preview?.image && (
+          <div className="relative w-full h-24 rounded-xl overflow-hidden mb-3">
+            <Image src={preview.image} alt="" fill className="object-cover" />
+          </div>
+        )}
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex-1 min-w-0">
+            {editingTitle && isDashboard ? (
+              <input
+                autoFocus
+                value={titleVal}
+                onChange={(e) => setTitleVal(e.target.value)}
+                onBlur={commitTitle}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') commitTitle(); }}
+                className="w-full bg-transparent border-none outline-none text-sm font-semibold text-foreground leading-tight"
+              />
+            ) : (
+              <p
+                className={cn('text-sm font-semibold text-foreground leading-tight truncate', isDashboard && 'cursor-text')}
+                onDoubleClick={() => isDashboard && setEditingTitle(true)}
+              >
+                {tile.title || preview?.title || (isDashboard ? <span className="opacity-30 italic font-normal text-xs">Double-click to add title…</span> : tile.url)}
+              </p>
+            )}
+            {editingUrl && isDashboard ? (
+              <input
+                autoFocus
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                onBlur={commitUrl}
+                onKeyDown={(e) => { if (e.key === 'Enter') commitUrl(); if (e.key === 'Escape') setEditingUrl(false); }}
+                placeholder="https://..."
+                className="w-full bg-transparent border-none outline-none text-xs text-muted-foreground mt-0.5"
+              />
+            ) : (
+              <p
+                className={cn('text-xs text-muted-foreground mt-0.5 truncate', isDashboard && 'cursor-text')}
+                onDoubleClick={() => isDashboard && setEditingUrl(true)}
+              >
+                {preview?.siteName || tile.url || (isDashboard ? <span className="opacity-30 italic font-normal text-xs">Double-click to add URL…</span> : '')}
+              </p>
+            )}
+          </div>
+          {!isDashboard ? (
+            <a href={tile.url} target="_blank" rel="noopener noreferrer">
+              <ArrowUpRight className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
+            </a>
+          ) : (
+            <ArrowUpRight className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5 opacity-30" />
+          )}
+        </div>
       </div>
     </div>
   );
+}
 
-  const renderContent = () => {
-    switch (tile.type) {
-      case 'social':
-        return (
-          <div className="p-6 h-full flex flex-col justify-between">
-            <div className="space-y-4">
-              <div className="flex justify-between items-start">
-                <SocialIcon brand={tile.metadata?.brand} className={cn("w-10 h-10 p-2 rounded-xl bg-sky-50 dark:bg-sky-900/20", tile.metadata?.brand?.toLowerCase() === 'linkedin' ? 'text-[#0077b5]' : 'text-[#1DA1F2]')} />
-                {tile.metadata?.buttonText && (
-                  <Button size="sm" className="rounded-full text-[10px] h-7 px-4 bg-zinc-100 dark:bg-zinc-800 text-black dark:text-white border-none hover:scale-105 transition-transform">
-                    {tile.metadata.buttonText}
-                  </Button>
-                )}
-              </div>
-              <div className="space-y-1">
-                <h4 className="text-xs font-bold leading-tight dark:text-white uppercase tracking-tighter">{tile.title}</h4>
-                <p className="text-[10px] text-muted-foreground font-medium">{tile.metadata?.username || tile.metadata?.linkText}</p>
-              </div>
-            </div>
-          </div>
-        );
+/* ─── Image tile — hover shows replace button in corner ─── */
+function ImageTile({ tile, isDashboard }: { tile: Tile; isDashboard?: boolean }) {
+  const { updateTile } = useProfileStore();
+  const fileRef = useRef<HTMLInputElement>(null);
+  const imgSrc = tile.metadata?.imageData ?? tile.metadata?.imageUrl;
 
-      case 'project':
-        return (
-          <div className="p-6 h-full space-y-4">
-            <div className="flex justify-between items-start">
-              <div className="flex gap-3 items-center">
-                <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center">
-                   <svg viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5"><path d="M19 28.5C19 23.2533 14.7467 19 9.5 19C4.2533 19 0 23.2533 0 28.5C0 33.7467 4.2533 38 9.5 38H19V28.5Z" fill="#0ACF83"/><path d="M0 9.5C0 4.2533 4.2533 0 9.5 0H19V19H9.5C4.2533 19 0 14.7467 0 9.5Z" fill="#A259FF"/><path d="M19 0H28.5C33.7467 0 38 4.2533 38 9.5C38 14.7467 33.7467 19 28.5 19H19V0Z" fill="#F24E1E"/><path d="M38 28.5C38 33.7467 33.7467 38 28.5 38C23.2533 38 19 33.7467 19 28.5C19 23.2533 23.2533 19 28.5 19C33.7467 19 38 23.2533 38 28.5Z" fill="#FF7262"/><path d="M19 38H28.5C33.7467 38 38 42.2533 38 47.5C38 52.7467 33.7467 57 28.5 57C23.2533 57 19 52.7467 19 47.5V38Z" fill="#1ABCFE"/></svg>
-                </div>
-                <div className="space-y-0.5">
-                  <h4 className="text-sm font-bold dark:text-white">{tile.title}</h4>
-                  <p className="text-[10px] text-muted-foreground">{tile.metadata?.username}</p>
-                </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {tile.metadata?.previews?.map((src, idx) => (
-                <div key={idx} className="relative aspect-square rounded-2xl overflow-hidden bg-zinc-50 dark:bg-zinc-800 border border-black/5 dark:border-white/5">
-                  <Image src={src} alt="Preview" fill className="object-cover" />
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'map':
-        return (
-          <div className="h-full relative">
-            {tile.metadata?.imageUrl && (
-              <div className="absolute inset-0">
-                <Image src={tile.metadata.imageUrl} alt="Map" fill className="object-cover opacity-80 dark:opacity-40" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <div className="w-4 h-4 bg-sky-500 rounded-full border-2 border-white shadow-lg animate-pulse" />
-                </div>
-              </div>
-            )}
-            <div className="absolute bottom-6 left-6 right-6">
-              <div className="bg-white/90 dark:bg-zinc-800/90 backdrop-blur-md p-3 px-4 rounded-2xl border border-black/5 shadow-sm w-fit">
-                <p className="text-[10px] font-bold leading-tight dark:text-white">{tile.title}</p>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'email':
-        return (
-          <div className="h-full bg-[#E5C4FB] dark:bg-[#7e57c2] border-none p-8 flex flex-col justify-end group/email relative">
-            <div className="absolute top-6 right-6 opacity-40 group-hover/email:opacity-100 transition-opacity">
-              <div className="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center">
-                <ArrowUpRight size={14} className="text-black/60" />
-              </div>
-            </div>
-            <p className="text-lg font-medium text-black/80 dark:text-white/90">{tile.content}</p>
-          </div>
-        );
-
-      case 'text':
-        const isBlack = tile.metadata?.accentColor === '#000000';
-        return (
-          <div className={cn("p-8 h-full flex flex-col justify-center", isBlack ? "bg-black text-white" : "bg-white dark:bg-zinc-900 text-black dark:text-white")}>
-            <p className="text-lg font-bold leading-tight">{tile.content}</p>
-          </div>
-        );
-
-      case 'image':
-      case 'video':
-        return (
-          <div className="h-full flex flex-col">
-            <div className="p-6 pb-2 space-y-1">
-               <div className="w-8 h-8 bg-zinc-100 dark:bg-zinc-800 rounded-lg flex items-center justify-center mb-2">
-                  {tile.type === 'video' ? <Video size={14} /> : <ImageIcon size={14} className="text-black dark:text-white" />}
-               </div>
-               <h4 className="text-xs font-bold leading-tight max-w-[200px] dark:text-white">{tile.title}</h4>
-               <p className="text-[10px] text-muted-foreground">{tile.metadata?.linkText || tile.metadata?.username}</p>
-            </div>
-            <div className="flex-1 relative m-4 mt-2 rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 min-h-[160px]">
-              {tile.metadata?.imageUrl && <Image src={tile.metadata.imageUrl} alt="Visual" fill className="object-cover" />}
-              {tile.metadata?.videoUrl && (
-                <video 
-                  src={tile.metadata.videoUrl} 
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline 
-                  className="absolute inset-0 w-full h-full object-cover" 
-                />
-              )}
-            </div>
-          </div>
-        );
-
-      default:
-        return (
-          <div className="p-6 h-full flex flex-col justify-center">
-            <div className="space-y-2">
-              <h4 className="font-bold text-sm leading-tight dark:text-white">{tile.title || 'New Tile'}</h4>
-              <p className="text-[10px] font-medium text-muted-foreground leading-snug">{tile.content}</p>
-            </div>
-          </div>
-        );
-    }
-  };
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => updateTile({ ...tile, metadata: { ...tile.metadata, imageData: reader.result as string } });
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  }
 
   return (
-    <Card className={commonClasses}>
-      <QuickActions />
-      {renderContent()}
-      <SizeSelector />
-    </Card>
+    <div className="relative w-full h-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden group/img">
+      {imgSrc ? (
+        <Image src={imgSrc} alt={tile.title ?? ''} fill className="object-cover" />
+      ) : (
+        <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-muted-foreground">
+          <ImageIcon className="w-8 h-8 opacity-30" />
+          {isDashboard && <p className="text-xs opacity-50">Click replace to add image</p>}
+        </div>
+      )}
+
+      {/* Replace button — dashboard only */}
+      {isDashboard && (
+        <>
+          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
+          <button
+            onClick={() => fileRef.current?.click()}
+            className="absolute top-2 right-2 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center gap-1 bg-black/70 hover:bg-black/90 text-white text-xs px-2.5 py-1 rounded-full shadow-lg backdrop-blur-sm"
+          >
+            <ImageIcon className="w-3 h-3" />
+            {imgSrc ? 'Replace' : 'Upload'}
+          </button>
+        </>
+      )}
+    </div>
   );
+}
+
+/* ─── Social tile — double-click to inline edit ─── */
+function SocialTile({ tile, isDashboard }: { tile: Tile; isDashboard?: boolean }) {
+  const { updateTile } = useProfileStore();
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [editingUsername, setEditingUsername] = useState(false);
+  const [titleVal, setTitleVal] = useState(tile.title ?? '');
+  const [usernameVal, setUsernameVal] = useState(tile.metadata?.username ?? '');
+
+  function commitTitle() {
+    setEditingTitle(false);
+    updateTile({ ...tile, title: titleVal });
+  }
+
+  function commitUsername() {
+    setEditingUsername(false);
+    updateTile({ ...tile, metadata: { ...tile.metadata, username: usernameVal } });
+  }
+
+  return (
+    <div className="p-5 h-full flex flex-col justify-between bg-card">
+      <div className="flex items-start justify-between">
+        <SocialIcon brand={tile.metadata?.brand} className="w-9 h-9 p-1.5 rounded-xl bg-sky-50 dark:bg-sky-900/20 text-sky-500" />
+        {tile.metadata?.buttonText && (
+          <span className="text-[10px] font-semibold px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-foreground">
+            {tile.metadata.buttonText}
+          </span>
+        )}
+      </div>
+      <div>
+        {editingTitle && isDashboard ? (
+          <input
+            autoFocus
+            value={titleVal}
+            onChange={(e) => setTitleVal(e.target.value)}
+            onBlur={commitTitle}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') commitTitle(); }}
+            className="w-full bg-transparent border-none outline-none text-xs font-bold uppercase tracking-tight text-foreground"
+          />
+        ) : (
+          <p
+            className={cn('text-xs font-bold uppercase tracking-tight text-foreground', isDashboard && 'cursor-text')}
+            onDoubleClick={() => isDashboard && setEditingTitle(true)}
+          >
+            {tile.title || (isDashboard ? <span className="opacity-30 italic normal-case font-normal">Double-click to add title…</span> : '')}
+          </p>
+        )}
+        {editingUsername && isDashboard ? (
+          <input
+            autoFocus
+            value={usernameVal}
+            onChange={(e) => setUsernameVal(e.target.value)}
+            onBlur={commitUsername}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') commitUsername(); }}
+            className="w-full bg-transparent border-none outline-none text-[10px] text-muted-foreground mt-0.5"
+          />
+        ) : (
+          <p
+            className={cn('text-[10px] text-muted-foreground mt-0.5', isDashboard && 'cursor-text')}
+            onDoubleClick={() => isDashboard && setEditingUsername(true)}
+          >
+            {tile.metadata?.username || tile.metadata?.linkText || (isDashboard ? <span className="opacity-30 italic">Double-click to add username…</span> : '')}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Email tile — double-click to inline edit ─── */
+function EmailTile({ tile, isDashboard }: { tile: Tile; isDashboard?: boolean }) {
+  const { updateTile } = useProfileStore();
+  const [editing, setEditing] = useState(false);
+  const [val, setVal] = useState(tile.content ?? '');
+
+  function commit() {
+    setEditing(false);
+    updateTile({ ...tile, content: val });
+  }
+
+  return (
+    <div className="h-full bg-violet-100 dark:bg-violet-900/30 p-6 flex flex-col justify-end relative group/em">
+      <div className="absolute top-4 right-4 w-7 h-7 rounded-full bg-white/60 dark:bg-white/10 flex items-center justify-center opacity-40 group-hover/em:opacity-100 transition-opacity">
+        <ArrowUpRight className="w-3.5 h-3.5" />
+      </div>
+      {editing && isDashboard ? (
+        <input
+          autoFocus
+          value={val}
+          onChange={(e) => setVal(e.target.value)}
+          onBlur={commit}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === 'Escape') commit(); }}
+          className="bg-transparent border-none outline-none text-base font-medium text-violet-900 dark:text-violet-100 break-all w-full"
+        />
+      ) : (
+        <p
+          className={cn('text-base font-medium text-violet-900 dark:text-violet-100 break-all', isDashboard && 'cursor-text')}
+          onDoubleClick={() => isDashboard && setEditing(true)}
+        >
+          {tile.content || (isDashboard ? <span className="opacity-50 italic text-sm font-normal">Double-click to add email…</span> : '')}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/* ─── Master renderer ─── */
+export function TileRenderer({ tile, isDashboard }: TileRendererProps) {
+  const base = 'relative w-full h-full rounded-2xl overflow-hidden border border-border';
+
+  switch (tile.type) {
+    case 'text':
+      return <div className={base}><TextTile    tile={tile} isDashboard={isDashboard} /></div>;
+    case 'heading':
+      return <div className={base}><HeadingTile tile={tile} isDashboard={isDashboard} /></div>;
+    case 'link':
+      return <div className={base}><LinkTile    tile={tile} isDashboard={isDashboard} /></div>;
+    case 'image':
+    case 'video':
+      return <div className={base}><ImageTile   tile={tile} isDashboard={isDashboard} /></div>;
+    case 'social':
+      return <div className={base}><SocialTile  tile={tile} isDashboard={isDashboard} /></div>;
+    case 'email':
+      return <div className={base}><EmailTile   tile={tile} isDashboard={isDashboard} /></div>;
+    default:
+      return (
+        <div className={cn(base, 'p-5 bg-card flex flex-col justify-center')}>
+          <p className="text-sm font-semibold text-foreground">{tile.title || tile.type}</p>
+          {tile.content && <p className="text-xs text-muted-foreground mt-1">{tile.content}</p>}
+        </div>
+      );
+  }
 }

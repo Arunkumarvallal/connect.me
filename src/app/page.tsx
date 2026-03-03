@@ -2,6 +2,10 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Grid3X3, Layers, Palette, ShieldCheck } from 'lucide-react';
+import { mockProfile } from '@/lib/mock-data';
+
+/** Route used for the live demo link on the landing page. */
+const DEMO_USERNAME = mockProfile.username;
 
 export default function Home() {
   return (
@@ -39,7 +43,7 @@ export default function Home() {
               </Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="rounded-full px-8 text-lg h-14 bg-background/50 backdrop-blur">
-              <Link href="/johndoe">View Demo</Link>
+              <Link href={`/${DEMO_USERNAME}`}>View Demo</Link>
             </Button>
           </div>
         </section>
@@ -78,7 +82,7 @@ export default function Home() {
         </section>
       </main>
       <footer className="py-12 px-6 lg:px-12 border-t text-center text-sm text-muted-foreground">
-        <p>© 2024 Connect.me. Built for creatives and professionals.</p>
+        <p>© {new Date().getFullYear()} Connect.me. Built for creatives and professionals.</p>
       </footer>
     </div>
   );

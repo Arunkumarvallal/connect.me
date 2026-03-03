@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Volumes/Elements/Project Files/GitHub/connect.me"
+      ]
+    }
+  }
+}
