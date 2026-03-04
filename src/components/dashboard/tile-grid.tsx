@@ -12,11 +12,14 @@ const RGL = GridLayout as React.ComponentType<any>;
 type RGLLayoutItem = { i: string; x: number; y: number; w: number; h: number; minW?: number; minH?: number; maxW?: number; maxH?: number; isDraggable?: boolean; isResizable?: boolean; };
 
 interface TileGridProps {
-  mobileView: boolean;
+  mobileView?: boolean;
+  readOnly?: boolean;
+  tiles?: Tile[];
 }
 
-export function TileGrid({ mobileView }: TileGridProps) {
+export function TileGrid({ mobileView = false, readOnly = false, tiles: tilesProp }: TileGridProps) {
   const { profile, reorderTiles } = useProfileStore();
+  const tiles = tilesProp ?? profile.tiles;
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(800);
 
@@ -53,7 +56,7 @@ export function TileGrid({ mobileView }: TileGridProps) {
   const HEADING_PX = 52;
   const headingH = (HEADING_PX + marginSize) / (rowHeight + marginSize);
 
-  const layout: RGLLayoutItem[] = profile.tiles.map((tile) => {
+  const layout: RGLLayoutItem[] = tiles.map((tile) => {
     const isHeading = tile.type === 'heading';
     // Always clamp w to current cols — makes layout responsive at ANY width,
     // not just when the mobileView toggle is on.
@@ -69,14 +72,15 @@ export function TileGrid({ mobileView }: TileGridProps) {
       maxW: isHeading ? cols : cols,
       minH: isHeading ? headingH : 1,
       maxH: isHeading ? headingH : undefined,
-      isDraggable: true,
-      isResizable: !isHeading,
+      isDraggable: !readOnly,
+      isResizable: !readOnly && !isHeading,
     };
   });
 
   const handleLayoutChange = useCallback(
     (newLayout: RGLLayoutItem[]) => {
-      const updatedTiles: Tile[] = profile.tiles.map((tile) => {
+      if (readOnly) return;
+      const updatedTiles: Tile[] = tiles.map((tile) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const item = (newLayout as any[]).find((l: { i: string }) => l.i === tile.id);
         if (!item) return tile;
@@ -91,7 +95,7 @@ export function TileGrid({ mobileView }: TileGridProps) {
       });
       reorderTiles(updatedTiles);
     },
-    [profile.tiles, reorderTiles]
+    [tiles, reorderTiles, readOnly]
   );
 
   return (
@@ -105,13 +109,13 @@ export function TileGrid({ mobileView }: TileGridProps) {
         margin={[marginSize, marginSize]}
         containerPadding={[padding, padding]}
         onLayoutChange={handleLayoutChange}
-        isDraggable={true}
-        isResizable={true}
+        isDraggable={!readOnly}
+        isResizable={!readOnly}
         resizeHandles={['se']}
       >
-        {profile.tiles.map((tile) => (
+        {tiles.map((tile) => (
           <div key={tile.id} className={tile.type === 'heading' ? '' : 'rounded-2xl'}>
-            <TileCard tile={tile} />
+            <TileCard tile={tile} readOnly={readOnly} />
           </div>
         ))}
       </RGL>

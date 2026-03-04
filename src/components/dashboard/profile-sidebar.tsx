@@ -5,10 +5,16 @@ import { debounce } from 'lodash';
 import { SlidersHorizontal, LogOut } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useProfileStore } from '@/store/profile-store';
-import { BIO_MAX_CHARS } from '@/types/profile';
+import { BIO_MAX_CHARS, UserProfile } from '@/types/profile';
 
-export function ProfileSidebar() {
-  const { profile, updateProfile } = useProfileStore();
+interface ProfileSidebarProps {
+  profile?: UserProfile;
+  editable?: boolean;
+}
+
+export function ProfileSidebar({ profile: profileProp, editable = true }: ProfileSidebarProps) {
+  const { profile: storeProfile, updateProfile } = useProfileStore();
+  const profile = profileProp ?? storeProfile;
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   const debouncedUpdate = useRef(
@@ -27,58 +33,76 @@ export function ProfileSidebar() {
             {profile.displayName.charAt(0)}
           </AvatarFallback>
         </Avatar>
-        <label
-          htmlFor="avatar-upload"
-          className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-        >
-          <span className="text-white text-xs font-semibold tracking-wide">Change</span>
-        </label>
-        <input
-          id="avatar-upload"
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = () => updateProfile({ avatarUrl: reader.result as string });
-            reader.readAsDataURL(file);
-          }}
-        />
+        {editable && (
+          <label
+            htmlFor="avatar-upload"
+            className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+          >
+            <span className="text-white text-xs font-semibold tracking-wide">Change</span>
+          </label>
+        )}
+        {editable && (
+          <input
+            id="avatar-upload"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const reader = new FileReader();
+              reader.onload = () => updateProfile({ avatarUrl: reader.result as string });
+              reader.readAsDataURL(file);
+            }}
+          />
+        )}
       </div>
 
-      {/* Display name — inline, no border */}
-      <input
-        key={profile.displayName}
-        defaultValue={profile.displayName}
-        onChange={(e) => debouncedUpdate({ displayName: e.target.value })}
-        className="w-full text-center text-3xl font-bold bg-transparent border-none outline-none focus:outline-none shadow-none ring-0 focus:ring-0 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-foreground p-0"
-        placeholder="Your name"
-        spellCheck={false}
-      />
-
-      {/* Bio — inline, no border */}
-      <div className="w-full relative">
-        <textarea
-          key={profile.bio}
-          defaultValue={profile.bio}
-          maxLength={BIO_MAX_CHARS}
-          rows={5}
-          onChange={(e) => debouncedUpdate({ bio: e.target.value })}
-          className="w-full resize-none bg-transparent border-none outline-none focus:outline-none shadow-none ring-0 focus:ring-0 text-base text-muted-foreground leading-relaxed placeholder:text-zinc-400 dark:placeholder:text-zinc-600 p-0"
-          placeholder="Write a short bio…"
+      {/* Display name */}
+      {editable ? (
+        <input
+          key={profile.displayName}
+          defaultValue={profile.displayName}
+          onChange={(e) => debouncedUpdate({ displayName: e.target.value })}
+          className="w-full text-center text-3xl font-bold bg-transparent border-none outline-none focus:outline-none shadow-none ring-0 focus:ring-0 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-foreground p-0"
+          placeholder="Your name"
           spellCheck={false}
         />
-        <span className="absolute bottom-1 right-0 text-[10px] text-zinc-400 dark:text-zinc-600 select-none pointer-events-none">
-          {profile.bio.length}/{BIO_MAX_CHARS}
-        </span>
-      </div>
+      ) : (
+        <h1 className="w-full text-center text-3xl font-bold text-foreground">
+          {profile.displayName || 'Your Name'}
+        </h1>
+      )}
+
+      {/* Bio */}
+      {editable ? (
+        <div className="w-full relative">
+          <textarea
+            key={profile.bio}
+            defaultValue={profile.bio}
+            maxLength={BIO_MAX_CHARS}
+            rows={5}
+            onChange={(e) => debouncedUpdate({ bio: e.target.value })}
+            className="w-full resize-none bg-transparent border-none outline-none focus:outline-none shadow-none ring-0 focus:ring-0 text-base text-muted-foreground leading-relaxed placeholder:text-zinc-400 dark:placeholder:text-zinc-600 p-0"
+            placeholder="Write a short bio…"
+            spellCheck={false}
+          />
+          <span className="absolute bottom-1 right-0 text-[10px] text-zinc-400 dark:text-zinc-600 select-none pointer-events-none">
+            {profile.bio.length}/{BIO_MAX_CHARS}
+          </span>
+        </div>
+      ) : (
+        profile.bio && (
+          <p className="w-full text-base text-muted-foreground leading-relaxed">
+            {profile.bio}
+          </p>
+        )
+      )}
 
       <div className="mt-auto" />
 
-      {/* Settings icon — fixed at bottom-6, aligned with dock */}
-      <div className="absolute bottom-6 left-8">
+      {/* Settings icon — dashboard only */}
+      {editable && (<div className="absolute bottom-6 left-8">
         {/* Popover */}
         {popoverOpen && (
           <>
@@ -121,7 +145,7 @@ export function ProfileSidebar() {
         >
           <SlidersHorizontal className="w-4 h-4" />
         </button>
-      </div>
+      </div>)}
     </aside>
   );
 }

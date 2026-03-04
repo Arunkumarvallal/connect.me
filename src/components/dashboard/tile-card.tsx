@@ -9,6 +9,7 @@ import { TileRenderer } from '@/components/profile/tile-renderer';
 
 interface TileCardProps {
   tile: Tile;
+  readOnly?: boolean;
 }
 
 /**
@@ -17,7 +18,7 @@ interface TileCardProps {
  */
 const ICON_CELL_PX = 8;
 
-export function TileCard({ tile }: TileCardProps) {
+export function TileCard({ tile, readOnly = false }: TileCardProps) {
   const { removeTile, updateTile } = useProfileStore();
   const [hovered, setHovered] = useState(false);
 
@@ -29,16 +30,16 @@ export function TileCard({ tile }: TileCardProps) {
   return (
     <div
       className="relative w-full h-full"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={readOnly ? undefined : () => setHovered(true)}
+      onMouseLeave={readOnly ? undefined : () => setHovered(false)}
     >
       {/* Tile content — headings are edge-to-edge, others get rounded card */}
       <div className={`w-full h-full ${tile.type === 'heading' ? '' : 'rounded-2xl overflow-hidden'}`}>
-        <TileRenderer tile={tile} isDashboard />
+        <TileRenderer tile={tile} isDashboard={!readOnly} />
       </div>
 
-      {/* Per-tile mini floating dock — slides up below tile on hover */}
-      <AnimatePresence>
+      {/* Per-tile mini floating dock — edit mode only */}
+      {!readOnly && (<AnimatePresence>
         {hovered && (
           <motion.div
             key="mini-dock"
@@ -101,7 +102,7 @@ export function TileCard({ tile }: TileCardProps) {
             </button>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence>)}
     </div>
   );
 }
