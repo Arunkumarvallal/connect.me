@@ -111,37 +111,94 @@ export const useProfileStore = create<ProfileStore>()(
           const tiles = [...state.profile.tiles];
           const cols = 3;
 
-          const priority: Record<string, number> = {
-            profile: 0, heading: 1, link: 2, image: 3, text: 4, social: 5, video: 6
-          };
+          // Separate fixed-width tiles (profile, heading) from flexible ones
+          const fixedTiles = tiles.filter(t => t.type === 'profile' || t.type === 'heading');
+          const flexibleTiles = tiles.filter(t => t.type !== 'profile' && t.type !== 'heading');
 
-          tiles.sort((a, b) => {
-            const pa = priority[a.type] ?? 99;
-            const pb = priority[b.type] ?? 99;
-            return pa - pb;
+          // Sort flexible tiles by area (largest first) for better space utilization
+          flexibleTiles.sort((a, b) => {
+            const areaA = a.layout.w * a.layout.h;
+            const areaB = b.layout.w * b.layout.h;
+            return areaB - areaA; // Largest first
           });
+
+          // Interleave: place fixed tiles first, then fill with flexible ones
+          const sortedTiles = [...fixedTiles, ...flexibleTiles];
 
           let x = 0;
           let y = 0;
           let maxYInRow = 0;
+          const occupied: Array<{x: number, y: number, w: number, h: number}> = [];
 
-          const newTiles = tiles.map((tile) => {
+          const newTiles = sortedTiles.map((tile) => {
             const isFixedWidth = tile.type === 'heading' || tile.type === 'profile';
             const w = isFixedWidth ? cols : Math.min(tile.layout.w, cols);
             const h = isFixedWidth ? (tile.type === 'profile' ? 2 : 1) : tile.layout.h;
 
-            if (x + w > cols) {
-              x = 0;
-              y = maxYInRow;
+            // Try to find best position (greedy fill - try to place at lowest y, then leftmost x)
+            let placed = false;
+            let newX = x;
+            let newY = y;
+
+            // First try current position
+            if (newX + w <= cols) {
+              // Check if this position is already occupied
+              const hasConflict = occupied.some(o =>
+                !(newX + w <= o.x || newX >= o.x + o.w || newY + h <= o.y || newY >= o.y + o.h)
+              );
+              if (!hasConflict) {
+                placed = true;
+              }
             }
+
+            // If conflict, find next available position
+            if (!placed) {
+              // Reset to find best position
+              let bestY = Number.MAX_SAFE_INTEGER;
+              let bestX = 0;
+
+              // Try positions in order of increasing y, then x
+              for (let tryY = 0; tryY < 100; tryY++) {
+                for (let tryX = 0; tryX + w <= cols; tryX++) {
+                  const hasConflict = occupied.some(o =>
+                    !(tryX + w <= o.x || tryX >= o.x + o.w || tryY + h <= o.y || tryY >= o.y + o.h)
+                  );
+                  if (!hasConflict && tryY < bestY) {
+                    bestY = tryY;
+                    bestX = tryX;
+                    placed = true;
+                  }
+                }
+                if (placed) break;
+              }
+
+              if (placed) {
+                newX = bestX;
+                newY = bestY;
+              }
+            }
+
+            // If still not placed, use simple algorithm
+            if (!placed) {
+              newX = 0;
+              newY = maxYInRow;
+            }
+
+            // Record this tile's position
+            occupied.push({ x: newX, y: newY, w, h });
 
             const newTile = {
               ...tile,
-              layout: { ...tile.layout, x, y, w, h }
+              layout: { ...tile.layout, x: newX, y: newY, w, h }
             };
 
-            x += w;
-            maxYInRow = Math.max(maxYInRow, y + h);
+            // Update for next tile
+            x = newX + w;
+            if (x >= cols) {
+              x = 0;
+              y = maxYInRow;
+            }
+            maxYInRow = Math.max(maxYInRow, newY + h);
 
             return newTile;
           });
