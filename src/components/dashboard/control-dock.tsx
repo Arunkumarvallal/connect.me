@@ -18,8 +18,10 @@ import {
   Settings,
   Play,
   LayoutGrid,
+  Undo2,
+  Redo2,
 } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useProfileStore } from '@/store/profile-store';
 import { Tile, TileSize, tileSizeToLayout } from '@/types/profile';
@@ -34,18 +36,23 @@ const TILE_BUTTONS: Array<{ label: string; type: Tile['type']; size: TileSize; I
 ];
 
 interface ControlDockProps {
-  onPreview: () => void;
   onSettings: () => void;
   mobileView: boolean;
   onToggleMobileView: () => void;
 }
 
-export function ControlDock({ onPreview, onSettings, mobileView, onToggleMobileView }: ControlDockProps) {
+export function ControlDock({ onSettings, mobileView, onToggleMobileView }: ControlDockProps) {
   const { resolvedTheme, setTheme } = useTheme();
-  const { profile, addTile, autoArrangeTiles } = useProfileStore();
+  const { profile, addTile, autoArrangeTiles, undo, redo, canUndo, canRedo } = useProfileStore();
   const imageInputRef = useRef<HTMLInputElement>(null);
 
-  const isDark = resolvedTheme === 'dark';
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted ? resolvedTheme === 'dark' : false;
 
   const dockBg     = isDark ? 'bg-zinc-50'    : 'bg-zinc-950';
   const dockBorder  = isDark ? 'border-zinc-200' : 'border-zinc-800';
@@ -129,7 +136,7 @@ export function ControlDock({ onPreview, onSettings, mobileView, onToggleMobileV
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 28 }}
       >
-        <div className={`flex items-center gap-0.5 px-2 py-1.5 rounded-full border shadow-2xl ${dockBg} ${dockBorder}`}>
+        <div suppressHydrationWarning className={`flex items-center gap-0.5 px-2 py-1.5 rounded-full border shadow-2xl ${dockBg} ${dockBorder}`}>
 
           {/* Settings */}
           <Tooltip>
@@ -139,6 +146,34 @@ export function ControlDock({ onPreview, onSettings, mobileView, onToggleMobileV
               </button>
             </TooltipTrigger>
             <TooltipContent><p>Settings</p></TooltipContent>
+          </Tooltip>
+
+          {/* Undo */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={() => undo()}
+                disabled={!canUndo()}
+                className={`${iconBtn} ${!canUndo() ? 'opacity-30 cursor-not-allowed' : ''}`}
+              >
+                <Undo2 className="w-4 h-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent><p>Undo</p></TooltipContent>
+          </Tooltip>
+
+          {/* Redo */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={() => redo()}
+                disabled={!canRedo()}
+                className={`${iconBtn} ${!canRedo() ? 'opacity-30 cursor-not-allowed' : ''}`}
+              >
+                <Redo2 className="w-4 h-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent><p>Redo</p></TooltipContent>
           </Tooltip>
 
           {/* Auto Arrange */}
@@ -203,14 +238,17 @@ export function ControlDock({ onPreview, onSettings, mobileView, onToggleMobileV
             <TooltipContent><p>{mobileView ? 'Desktop view' : 'Mobile view'}</p></TooltipContent>
           </Tooltip>
 
-          {/* Preview */}
+          {/* Preview in new tab */}
           <Tooltip>
             <TooltipTrigger asChild>
-              <button onClick={onPreview} className={iconBtn}>
+              <button
+                onClick={() => window.open('/dashboard/preview', '_blank')}
+                className={iconBtn}
+              >
                 <Eye className="w-4 h-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent><p>Preview profile</p></TooltipContent>
+            <TooltipContent><p>Preview in new tab</p></TooltipContent>
           </Tooltip>
 
         </div>

@@ -6,7 +6,7 @@ export type TileSize = '1x1' | '2x1' | '3x1' | '1x2' | '2x2' | '3x2' | '1x3' | '
 export type TileType =
   | 'link' | 'social' | 'image' | 'video' | 'text' | 'heading'
   | 'spotify' | 'github' | 'youtube' | 'bio' | 'discord'
-  | 'luma' | 'instagram' | 'whatsapp' | 'map' | 'email' | 'project';
+  | 'luma' | 'instagram' | 'whatsapp' | 'map' | 'email' | 'project' | 'profile';
 
 /** Grid position managed by react-grid-layout */
 export interface TileLayout {
@@ -120,6 +120,14 @@ export interface ProfileTheme {
   background: ProfileBackground;
 }
 
+export interface SocialLinks {
+  linkedin?: string;
+  twitter?: string;
+  github?: string;
+  portfolio?: string;
+  email?: string;
+}
+
 export interface UserProfile {
   uid?: string;                   // Firebase Auth UID (Phase 2+)
   username: string;
@@ -127,6 +135,7 @@ export interface UserProfile {
   avatarUrl: string;
   bio: string;
   location?: string;
+  socialLinks?: SocialLinks;
   tiles: Tile[];
   theme: ProfileTheme;
   createdAt?: string;

@@ -51,8 +51,8 @@ export function TileCard({ tile, readOnly = false }: TileCardProps) {
             transition={{ duration: 0.12 }}
             onMouseEnter={() => setHovered(true)}
           >
-            {/* Size options — visual squares — hidden for heading tiles */}
-            {tile.type !== 'heading' && (
+            {/* Size options — visual squares — hidden for heading and profile tiles */}
+            {tile.type !== 'heading' && tile.type !== 'profile' && (
               <>
                 {TILE_PICKER_SIZES.map((size) => {
                   const { w, h } = tileSizeToLayout[size];
@@ -93,25 +93,31 @@ export function TileCard({ tile, readOnly = false }: TileCardProps) {
               </>
             )}
 
-{/* Edit */}
-        <button
-          onClick={() => setEditingTile(tile)}
-          title="Edit tile"
-          className="flex items-center justify-center w-6 h-6 rounded-full text-zinc-500 dark:text-zinc-400 hover:text-blue-400 dark:hover:text-blue-500 transition-colors"
-        >
-          <Pencil className="w-3.5 h-3.5" />
-        </button>
+        {/* Edit - hidden for profile tiles (inline editing) */}
+        {tile.type !== 'profile' && (
+          <>
+            <button
+              onClick={() => setEditingTile(tile)}
+              title="Edit tile"
+              className="flex items-center justify-center w-6 h-6 rounded-full text-zinc-500 dark:text-zinc-400 hover:text-blue-400 dark:hover:text-blue-500 transition-colors"
+            >
+              <Pencil className="w-3.5 h-3.5" />
+            </button>
 
-        <div className="w-px h-4 bg-zinc-700 dark:bg-zinc-300 mx-0.5" />
+            <div className="w-px h-4 bg-zinc-700 dark:bg-zinc-300 mx-0.5" />
+          </>
+        )}
 
-        {/* Delete */}
-        <button
-          onClick={() => removeTile(tile.id)}
-          title="Delete tile"
-          className="flex items-center justify-center w-6 h-6 rounded-full text-zinc-500 dark:text-zinc-400 hover:text-red-400 dark:hover:text-red-500 transition-colors"
-        >
-          <Trash2 className="w-3.5 h-3.5" />
-        </button>
+        {/* Delete - hidden for profile tiles */}
+        {tile.type !== 'profile' && (
+          <button
+            onClick={() => removeTile(tile.id)}
+            title="Delete tile"
+            className="flex items-center justify-center w-6 h-6 rounded-full text-zinc-500 dark:text-zinc-400 hover:text-red-400 dark:hover:text-red-500 transition-colors"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        )}
           </motion.div>
         )}
       </AnimatePresence>)}

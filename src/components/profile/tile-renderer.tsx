@@ -16,6 +16,7 @@ import {
   ImageIcon,
 } from 'lucide-react';
 import { useProfileStore } from '@/store/profile-store';
+import { ProfileTile } from '@/components/dashboard/profile-tile';
 
 interface TileRendererProps {
   tile: Tile;
@@ -356,6 +357,43 @@ export function TileRenderer({ tile, isDashboard }: TileRendererProps) {
       return <div className={base}><SocialTile  tile={tile} isDashboard={isDashboard} /></div>;
     case 'email':
       return <div className={base}><EmailTile   tile={tile} isDashboard={isDashboard} /></div>;
+    case 'profile':
+      return <div className={base}><ProfileTile readOnly={!isDashboard} /></div>;
+    case 'project':
+      return (
+        <div className={base}>
+          <div className="h-full p-5 bg-card flex flex-col justify-between">
+            <div>
+              <p className="text-sm font-semibold text-foreground">{tile.title}</p>
+              {tile.metadata?.username && (
+                <p className="text-[10px] text-muted-foreground mt-0.5">{tile.metadata.username}</p>
+              )}
+            </div>
+            {tile.metadata?.previews && (
+              <div className="grid grid-cols-2 gap-1 mt-2">
+                {tile.metadata.previews.slice(0, 4).map((src: string, i: number) => (
+                  <div key={i} className="relative aspect-square rounded-lg overflow-hidden">
+                    <img src={src} alt="" className="object-cover w-full h-full" />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    case 'map':
+      return (
+        <div className={base}>
+          <div className="relative h-full">
+            {tile.metadata?.imageUrl && (
+              <img src={tile.metadata.imageUrl} alt={tile.title ?? ''} className="w-full h-full object-cover" />
+            )}
+            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent">
+              <p className="text-white text-xs font-medium">{tile.title}</p>
+            </div>
+          </div>
+        </div>
+      );
     default:
       return (
         <div className={cn(base, 'p-5 bg-card flex flex-col justify-center')}>

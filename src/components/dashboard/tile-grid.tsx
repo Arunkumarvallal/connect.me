@@ -5,6 +5,7 @@ import GridLayout from 'react-grid-layout/legacy';
 import { Tile, GRID_CONFIG } from '@/types/profile';
 import { useProfileStore } from '@/store/profile-store';
 import { TileCard } from './tile-card';
+import { GridSkeleton } from './grid-skeleton';
 
 const RGL = GridLayout as React.ComponentType<any>;
 
@@ -65,18 +66,21 @@ export function TileGrid({ mobileView = false, readOnly = false, tiles: tilesPro
 
   const layout: RGLLayoutItem[] = tiles.map((tile) => {
     const isHeading = tile.type === 'heading';
-    const clampedW = isHeading ? cols : Math.min(tile.layout.w, cols);
-    const clampedX = isHeading ? 0 : Math.min(tile.layout.x, cols - clampedW);
+    const isProfile = tile.type === 'profile';
+    const isFullWidth = isHeading || isProfile;
+    const clampedW = isFullWidth ? cols : Math.min(tile.layout.w, cols);
+    const clampedX = isFullWidth ? 0 : Math.min(tile.layout.x, cols - clampedW);
+    const h = isHeading ? headingH : (isProfile ? Math.max(2, tile.layout.h) : tile.layout.h);
     return {
       i: tile.id,
       x: clampedX,
       y: tile.layout.y,
       w: clampedW,
-      h: isHeading ? headingH : tile.layout.h,
-      minW: isHeading ? cols : 1,
-      maxW: isHeading ? cols : cols,
-      minH: isHeading ? headingH : 1,
-      maxH: isHeading ? headingH : undefined,
+      h: h,
+      minW: isFullWidth ? cols : 1,
+      maxW: isFullWidth ? cols : cols,
+      minH: isFullWidth ? h : 1,
+      maxH: isFullWidth && !isProfile ? h : undefined,
       isDraggable: !readOnly,
       isResizable: !readOnly && !isHeading,
     };
@@ -129,9 +133,7 @@ export function TileGrid({ mobileView = false, readOnly = false, tiles: tilesPro
           ))}
         </RGL>
       ) : (
-        <div className="flex items-center justify-center h-64 text-muted-foreground">
-          Loading grid...
-        </div>
+        <GridSkeleton />
       )}
     </div>
   );
