@@ -40,7 +40,7 @@ export function PublicProfile({ profile, previewMode = false }: PublicProfilePro
   return (
     <div className={`min-h-screen flex bg-background text-foreground ${fontClass} transition-colors duration-300`}>
       {/* Left sidebar — identical to dashboard (read-only) */}
-      <aside className="hidden md:flex flex-col w-[560px] shrink-0 min-h-screen sticky top-0 h-screen overflow-y-auto">
+      <aside className="hidden lg:flex flex-col w-72 xl:w-80 shrink-0 min-h-screen sticky top-0 h-screen overflow-y-auto border-r border-border/40">
         <ProfileSidebar profile={profile} editable={false} />
       </aside>
 
