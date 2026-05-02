@@ -15,34 +15,45 @@ import {
   Quote,
   Heading1,
   AtSign,
+  Settings,
+  Play,
+  LayoutGrid,
+  Undo2,
+  Redo2,
 } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useProfileStore } from '@/store/profile-store';
 import { Tile, TileSize, tileSizeToLayout } from '@/types/profile';
 
 const TILE_BUTTONS: Array<{ label: string; type: Tile['type']; size: TileSize; Icon: React.ElementType }> = [
   { label: 'Link',    type: 'link',    size: '1x1', Icon: Link2    },
-  { label: 'Image',   type: 'image',   size: '1x1', Icon: Image    },
-  { label: 'Text',    type: 'text',    size: '1x1', Icon: Quote    },
-  { label: 'Heading', type: 'heading', size: '1x1', Icon: Heading1 },
+  { label: 'Image',   type: 'image',   size: '2x2', Icon: Image    },
+  { label: 'Text',    type: 'text',    size: '2x1', Icon: Quote    },
+  { label: 'Heading', type: 'heading', size: '3x1', Icon: Heading1 },
+  { label: 'Video',   type: 'video',   size: '2x2', Icon: Play     },
   { label: 'Social',  type: 'social',  size: '1x1', Icon: AtSign   },
 ];
 
 interface ControlDockProps {
-  onPreview: () => void;
+  onSettings: () => void;
   mobileView: boolean;
   onToggleMobileView: () => void;
 }
 
-export function ControlDock({ onPreview, mobileView, onToggleMobileView }: ControlDockProps) {
+export function ControlDock({ onSettings, mobileView, onToggleMobileView }: ControlDockProps) {
   const { resolvedTheme, setTheme } = useTheme();
-  const { profile, addTile } = useProfileStore();
+  const { profile, addTile, autoArrangeTiles, undo, redo, canUndo, canRedo } = useProfileStore();
   const imageInputRef = useRef<HTMLInputElement>(null);
 
-  const isDark = resolvedTheme === 'dark';
+  const [mounted, setMounted] = useState(false);
 
-  // Dock always inverted from page bg for maximum contrast
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted ? resolvedTheme === 'dark' : false;
+
   const dockBg     = isDark ? 'bg-zinc-50'    : 'bg-zinc-950';
   const dockBorder  = isDark ? 'border-zinc-200' : 'border-zinc-800';
   const dockText    = isDark ? 'text-zinc-700'  : 'text-zinc-300';
@@ -64,14 +75,12 @@ export function ControlDock({ onPreview, mobileView, onToggleMobileView }: Contr
 
   function handleAddTile(type: Tile['type'], size: TileSize) {
     if (type === 'image') {
-      // For image tiles, open the file picker first
       imageInputRef.current?.click();
       return;
     }
-    // Heading tiles always start full-width (tile-grid enforces this too)
-    const { w, h } = type === 'heading' ? { w: 4, h: 1 } : tileSizeToLayout[size];
+    const { w, h } = type === 'heading' ? { w: 3, h: 1 } : tileSizeToLayout[size];
     const maxY = Math.max(0, ...profile.tiles.map((t) => t.layout.y + t.layout.h));
-    const newTile: Tile = {
+    const newTile = {
       id: `${type}-${Date.now()}`,
       type,
       size,
@@ -89,12 +98,12 @@ export function ControlDock({ onPreview, mobileView, onToggleMobileView }: Contr
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
-      const { w, h } = tileSizeToLayout['1x1'];
+      const { w, h } = tileSizeToLayout['2x2'];
       const maxY = Math.max(0, ...profile.tiles.map((t) => t.layout.y + t.layout.h));
       addTile({
         id: `image-${Date.now()}`,
         type: 'image',
-        size: '1x1',
+        size: '2x2',
         layout: { x: 0, y: maxY, w, h },
         title: file.name.replace(/\.[^.]+$/, ''),
         metadata: { imageData: reader.result as string },
@@ -104,11 +113,15 @@ export function ControlDock({ onPreview, mobileView, onToggleMobileView }: Contr
     e.target.value = '';
   }
 
+  function handleAutoArrange() {
+    autoArrangeTiles();
+    toast.success('Tiles auto-arranged!');
+  }
+
   const iconBtn = `h-9 w-9 rounded-full flex items-center justify-center transition-colors duration-150 cursor-pointer ${dockText} ${btnHover}`;
 
   return (
     <TooltipProvider delayDuration={200}>
-      {/* Hidden image file input */}
       <input
         ref={imageInputRef}
         type="file"
@@ -123,9 +136,59 @@ export function ControlDock({ onPreview, mobileView, onToggleMobileView }: Contr
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 28 }}
       >
-        <div className={`flex items-center gap-0.5 px-2 py-1.5 rounded-full border shadow-2xl ${dockBg} ${dockBorder}`}>
+        <div suppressHydrationWarning className={`flex items-center gap-0.5 px-2 py-1.5 rounded-full border shadow-2xl ${dockBg} ${dockBorder}`}>
 
-          {/* Share — prominent, violet */}
+          {/* Settings */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button onClick={onSettings} className={iconBtn}>
+                <Settings className="w-4 h-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent><p>Settings</p></TooltipContent>
+          </Tooltip>
+
+          {/* Undo */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={() => undo()}
+                disabled={!canUndo()}
+                className={`${iconBtn} ${!canUndo() ? 'opacity-30 cursor-not-allowed' : ''}`}
+              >
+                <Undo2 className="w-4 h-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent><p>Undo</p></TooltipContent>
+          </Tooltip>
+
+          {/* Redo */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={() => redo()}
+                disabled={!canRedo()}
+                className={`${iconBtn} ${!canRedo() ? 'opacity-30 cursor-not-allowed' : ''}`}
+              >
+                <Redo2 className="w-4 h-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent><p>Redo</p></TooltipContent>
+          </Tooltip>
+
+          {/* Auto Arrange */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button onClick={handleAutoArrange} className={iconBtn}>
+                <LayoutGrid className="w-4 h-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent><p>Auto-arrange</p></TooltipContent>
+          </Tooltip>
+
+          <div className={`w-px h-5 mx-1 ${divider}`} />
+
+          {/* Share */}
           <Tooltip>
             <TooltipTrigger asChild>
               <button
@@ -141,7 +204,7 @@ export function ControlDock({ onPreview, mobileView, onToggleMobileView }: Contr
 
           <div className={`w-px h-5 mx-1 ${divider}`} />
 
-          {/* Direct tile-type add buttons */}
+          {/* Tile type buttons */}
           {TILE_BUTTONS.map(({ label, type, size, Icon }) => (
             <Tooltip key={type}>
               <TooltipTrigger asChild>
@@ -165,7 +228,7 @@ export function ControlDock({ onPreview, mobileView, onToggleMobileView }: Contr
             <TooltipContent><p>{isDark ? 'Light mode' : 'Dark mode'}</p></TooltipContent>
           </Tooltip>
 
-          {/* Mobile / Desktop toggle */}
+          {/* Mobile/Desktop toggle */}
           <Tooltip>
             <TooltipTrigger asChild>
               <button onClick={onToggleMobileView} className={`${iconBtn} ${mobileView ? btnActive : ''}`}>
@@ -175,14 +238,17 @@ export function ControlDock({ onPreview, mobileView, onToggleMobileView }: Contr
             <TooltipContent><p>{mobileView ? 'Desktop view' : 'Mobile view'}</p></TooltipContent>
           </Tooltip>
 
-          {/* Preview */}
+          {/* Preview in new tab */}
           <Tooltip>
             <TooltipTrigger asChild>
-              <button onClick={onPreview} className={iconBtn}>
+              <button
+                onClick={() => window.open('/dashboard/preview', '_blank')}
+                className={iconBtn}
+              >
                 <Eye className="w-4 h-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent><p>Preview profile</p></TooltipContent>
+            <TooltipContent><p>Preview in new tab</p></TooltipContent>
           </Tooltip>
 
         </div>

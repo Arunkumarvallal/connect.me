@@ -1,15 +1,19 @@
 'use client';
 
-import { useCallback, useRef, useEffect, useState } from 'react';
-import GridLayout from 'react-grid-layout';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import GridLayout from 'react-grid-layout/legacy';
 import { Tile, GRID_CONFIG } from '@/types/profile';
 import { useProfileStore } from '@/store/profile-store';
 import { TileCard } from './tile-card';
+import { GridSkeleton } from './grid-skeleton';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RGL = GridLayout as React.ComponentType<any>;
 
-type RGLLayoutItem = { i: string; x: number; y: number; w: number; h: number; minW?: number; minH?: number; maxW?: number; maxH?: number; isDraggable?: boolean; isResizable?: boolean; };
+type RGLLayoutItem = {
+  i: string; x: number; y: number; w: number; h: number;
+  minW?: number; minH?: number; maxW?: number; maxH?: number;
+  isDraggable?: boolean; isResizable?: boolean;
+};
 
 interface TileGridProps {
   mobileView?: boolean;
@@ -18,60 +22,65 @@ interface TileGridProps {
 }
 
 export function TileGrid({ mobileView = false, readOnly = false, tiles: tilesProp }: TileGridProps) {
-  const { profile, reorderTiles } = useProfileStore();
+  const { profile, reorderTiles, customCols } = useProfileStore();
   const tiles = tilesProp ?? profile.tiles;
   const containerRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(800);
+  const [width, setWidth] = useState(0);
+
+  const updateWidth = useCallback(() => {
+    const el = containerRef.current;
+    if (el) {
+      // Use getBoundingClientRect for more accurate width including padding
+      const rect = el.getBoundingClientRect();
+      const style = window.getComputedStyle(el);
+      const paddingLeft = parseFloat(style.paddingLeft) || 0;
+      const paddingRight = parseFloat(style.paddingRight) || 0;
+      const w = rect.width - paddingLeft - paddingRight;
+      setWidth(Math.floor(Math.max(w, 300))); // minimum 300px
+    }
+  }, []);
 
   useEffect(() => {
+    updateWidth();
     const el = containerRef.current;
     if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) setWidth(entry.contentRect.width);
-    });
+    const ro = new ResizeObserver(() => updateWidth());
     ro.observe(el);
-    setWidth(el.getBoundingClientRect().width);
     return () => ro.disconnect();
-  }, []);
+  }, [updateWidth]);
 
   const { gap, padding, cellPx, maxCols, minCols, maxColsMobile } = GRID_CONFIG;
 
-  // Compute how many columns fit so each cell is at least cellPx wide.
-  // Clamped between minCols (always ≥2) and maxCols (≤4 on desktop).
-  // This is purely reactive to container width — fully responsive.
-  const fitCols  = width > 0
-    ? Math.max(minCols, Math.min(maxCols, Math.floor((width - 2 * padding + gap) / (cellPx + gap))))
-    : maxCols;
-  const cols       = mobileView ? maxColsMobile : fitCols;
-  const marginSize = gap;
+  const cols = mobileView ? maxColsMobile : (customCols ?? Math.max(minCols, Math.min(maxCols, Math.floor((width - 2 * padding + gap) / (cellPx + gap)))));
 
-  // rowHeight = colWidth → every 1×1 tile is a perfect square.
-  const colWidth  = width > 0
-    ? (width - 2 * padding - (cols - 1) * gap) / cols
-    : cellPx;
-  const rowHeight = Math.round(colWidth);
+  // if (typeof window !== 'undefined') {
+  //   console.log('Grid calc:', { width, cols, customCols, cellPx, maxCols });
+  // }
 
-  // Heading pixel height is fixed; compute the fractional h that RGL needs:
-  // pixelH = h * rowHeight + (h - 1) * marginSize  →  h = (pixelH + marginSize) / (rowHeight + marginSize)
+   const marginSize = gap;
+  const colWidth = width > 0 ? (width - 2 * padding - (cols -1) * gap) / cols : cellPx;
+  const rowHeight = Math.max(80, Math.round(colWidth));
+
   const HEADING_PX = 52;
   const headingH = (HEADING_PX + marginSize) / (rowHeight + marginSize);
 
   const layout: RGLLayoutItem[] = tiles.map((tile) => {
     const isHeading = tile.type === 'heading';
-    // Always clamp w to current cols — makes layout responsive at ANY width,
-    // not just when the mobileView toggle is on.
-    const clampedW = isHeading ? cols : Math.min(tile.layout.w, cols);
-    const clampedX = isHeading ? 0    : Math.min(tile.layout.x, cols - clampedW);
+    const isProfile = tile.type === 'profile';
+    const isFullWidth = isHeading || isProfile;
+    const clampedW = isFullWidth ? cols : Math.min(tile.layout.w, cols);
+    const clampedX = isFullWidth ? 0 : Math.min(tile.layout.x, cols - clampedW);
+    const h = isHeading ? headingH : (isProfile ? Math.max(2, tile.layout.h) : tile.layout.h);
     return {
       i: tile.id,
       x: clampedX,
       y: tile.layout.y,
       w: clampedW,
-      h: isHeading ? headingH : tile.layout.h,
-      minW: isHeading ? cols : 1,
-      maxW: isHeading ? cols : cols,
-      minH: isHeading ? headingH : 1,
-      maxH: isHeading ? headingH : undefined,
+      h: h,
+      minW: isFullWidth ? cols : 1,
+      maxW: isFullWidth ? cols : cols,
+      minH: isFullWidth ? h : 1,
+      maxH: isFullWidth && !isProfile ? h : undefined,
       isDraggable: !readOnly,
       isResizable: !readOnly && !isHeading,
     };
@@ -81,44 +90,51 @@ export function TileGrid({ mobileView = false, readOnly = false, tiles: tilesPro
     (newLayout: RGLLayoutItem[]) => {
       if (readOnly) return;
       const updatedTiles: Tile[] = tiles.map((tile) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const item = (newLayout as any[]).find((l: { i: string }) => l.i === tile.id);
         if (!item) return tile;
-        // Headings: preserve original h (1), only track dragged y position (round to nearest grid row)
         if (tile.type === 'heading') {
           return { ...tile, layout: { ...tile.layout, y: Math.round(item.y) } };
         }
-        return {
-          ...tile,
-          layout: { x: item.x, y: item.y, w: item.w, h: item.h },
-        };
+        return { ...tile, layout: { x: item.x, y: item.y, w: item.w, h: item.h } };
       });
       reorderTiles(updatedTiles);
     },
     [tiles, reorderTiles, readOnly]
   );
 
+  // Debug: log layout before rendering
+  // if (typeof window !== 'undefined' && width > 200 && layout.length > 0) {
+  //   const first = layout[0];
+  //   console.log('RGL props:', { width, cols, layoutCount: layout.length, firstW: first.w, firstH: first.h });
+  // }
+
   return (
-    <div className="w-full" ref={containerRef}>
-      <RGL
-        className="layout"
-        layout={layout}
-        cols={cols}
-        rowHeight={rowHeight}
-        width={width}
-        margin={[marginSize, marginSize]}
-        containerPadding={[padding, padding]}
-        onLayoutChange={handleLayoutChange}
-        isDraggable={!readOnly}
-        isResizable={!readOnly}
-        resizeHandles={['se']}
-      >
-        {tiles.map((tile) => (
-          <div key={tile.id} className={tile.type === 'heading' ? '' : 'rounded-2xl'}>
-            <TileCard tile={tile} readOnly={readOnly} />
-          </div>
-        ))}
-      </RGL>
+    <div ref={containerRef} className="w-full h-full">
+      {width > 200 ? (
+        <RGL
+          key={`grid-${width}-${cols}`}
+          className="layout w-full"
+          layout={layout}
+          cols={cols}
+          rowHeight={rowHeight}
+          width={width}
+          margin={[marginSize, marginSize]}
+          containerPadding={[padding, padding]}
+          onLayoutChange={handleLayoutChange}
+          isDraggable={!readOnly}
+          isResizable={!readOnly}
+          resizeHandles={['se']}
+          style={{ width: `${width}px` }}
+        >
+          {tiles.map((tile) => (
+            <div key={tile.id} className={tile.type === 'heading' ? '' : 'rounded-2xl'}>
+              <TileCard tile={tile} readOnly={readOnly} />
+            </div>
+          ))}
+        </RGL>
+      ) : (
+        <GridSkeleton />
+      )}
     </div>
   );
 }
