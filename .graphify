@@ -1,0 +1,30 @@
+# Graphify Configuration for VS Code Token Optimization
+# This file tells VS Code and Copilot how to use the knowledge graph
+# GitHub: https://github.com/safishamsi/graphify
+
+# Enable graph-aware code suggestions
+graph_path: graphify-out/graph.json
+report_path: graphify-out/GRAPH_REPORT.md
+github: https://github.com/safishamsi/graphify
+
+# Token optimization settings
+token_optimization:
+  enabled: true
+  # Use graph to avoid re-reading files that are already in the graph
+  skip_redundant_reads: true
+  # Suggest related files based on graph connections
+  suggest_related: true
+  # Show graph context in Copilot responses
+  show_graph_context: true
+
+# MCP server settings (for agent access)
+mcp:
+  enabled: true
+  graph_path: graphify-out/graph.json
+
+# Auto-update settings
+auto_update:
+  # Rebuild graph after code changes (via git hook)
+  git_hook: true
+  # Watch mode for real-time updates
+  watch: false

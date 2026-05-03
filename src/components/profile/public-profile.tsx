@@ -37,20 +37,23 @@ export function PublicProfile({ profile, previewMode = false }: PublicProfilePro
   const fontClass = fontClassMap[profile.theme.font] ?? '';
 
   return (
-    <div className={`min-h-screen flex bg-background text-foreground ${fontClass} transition-colors duration-300`}>
-      {/* Mobile header — visible only on small screens */}
-      <div className="md:hidden w-full fixed top-0 left-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/40 px-4 py-3 flex items-center gap-3">
-        <Avatar className="w-9 h-9">
+    <div className={`min-h-screen flex flex-col bg-background text-foreground ${fontClass} transition-colors duration-300`}>
+      {/* Mobile layout: avatar → name → bio → tiles (per spec) */}
+      <div className="md:hidden w-full px-4 pt-8 pb-4 flex flex-col items-center gap-3">
+        <Avatar className="w-20 h-20">
           <AvatarImage src={profile.avatarUrl} alt={profile.displayName} />
-          <AvatarFallback>{profile.displayName.charAt(0)}</AvatarFallback>
+          <AvatarFallback className="text-2xl">{profile.displayName.charAt(0)}</AvatarFallback>
         </Avatar>
-        <div>
-          <p className="font-semibold text-sm">{profile.displayName}</p>
-        </div>
+        <h1 className="text-xl font-bold text-center">{profile.displayName}</h1>
+        {profile.bio && (
+          <p className="text-sm text-muted-foreground text-center max-w-md">
+            {profile.bio.length > 150 ? `${profile.bio.slice(0, 150)}...` : profile.bio}
+          </p>
+        )}
       </div>
 
-      {/* Main grid area — profile is now a tile in the grid */}
-      <main className={`flex-1 min-h-screen overflow-x-hidden pb-12 transition-all duration-300 ${gridBgClass} md:pt-0 pt-16`}>
+      {/* Desktop: show profile as tile in grid, Mobile: show tiles below bio */}
+      <main className={`flex-1 min-h-screen overflow-x-hidden pb-12 transition-all duration-300 ${gridBgClass}`}>
         <TileGrid readOnly tiles={profile.tiles} />
       </main>
     </div>

@@ -22,7 +22,9 @@ A modern, drag-and-drop personal link-in-bio builder — like Linktree meets Ben
 | Grid | react-grid-layout |
 | Animation | Framer Motion, Lenis smooth scroll |
 | AI | Genkit + Google GenAI (scaffolded) |
-| Backend (Phase 2) | Firebase Auth, Firestore, Firebase Storage |
+| Backend (Phase 2) | Firebase Auth, Firestore, Firebase Storage* |
+
+**\*Firebase Storage requires Blaze (Pay-as-you-go) plan.** See [docs/firebase-storage-notice.md](docs/firebase-storage-notice.md) for details and workarounds.
 
 ## Project Structure
 

@@ -5,6 +5,9 @@ import { persist } from 'zustand/middleware';
 import { cloneDeep } from 'lodash';
 import { Tile, TileSize, tileSizeToLayout, UserProfile } from '@/types/profile';
 import { mockProfile } from '@/lib/mock-data';
+import { db, auth } from '@/lib/firebase';
+import { doc, getDoc, setDoc, onSnapshot, serverTimestamp } from 'firebase/firestore';
+import { debounce } from 'lodash';
 
 interface ProfileStore {
   profile: UserProfile;
@@ -13,6 +16,10 @@ interface ProfileStore {
   customCols: number | null;
   history: UserProfile[];
   historyIndex: number;
+  isLoading: boolean;
+  isSaving: boolean;
+  error: string | null;
+  firestoreUnsubscribe: (() => void) | null;
 
   _recordHistory: (state: any) => { history: UserProfile[]; historyIndex: number };
   setProfile: (p: UserProfile) => void;
@@ -29,23 +36,44 @@ interface ProfileStore {
   redo: () => void;
   canUndo: () => boolean;
   canRedo: () => boolean;
+  
+  // Firestore sync
+  loadProfileFromFirestore: (uid: string) => Promise<void>;
+  saveProfileToFirestore: () => Promise<void>;
+  startFirestoreSync: (uid: string) => void;
+  stopFirestoreSync: () => void;
 }
 
 const MAX_HISTORY = 50;
 
+// Debounced save to Firestore (auto-save)
+const debouncedSave = debounce(async (profile: UserProfile, uid: string) => {
+  try {
+    const profileData = {
+      ...profile,
+      updatedAt: serverTimestamp(),
+    };
+    await setDoc(doc(db, 'users', uid), profileData, { merge: true });
+    console.log('[Firestore] Profile auto-saved');
+  } catch (error) {
+    console.error('[Firestore] Auto-save failed:', error);
+  }
+}, 2000);
+
 export const useProfileStore = create<ProfileStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       profile: cloneDeep(mockProfile),
       view: 'desktop',
       editingTile: null,
       customCols: null,
       history: [] as UserProfile[],
       historyIndex: -1,
+      isLoading: false,
+      isSaving: false,
+      error: null,
+      firestoreUnsubscribe: null,
 
-      setProfile: (p) => set({ profile: cloneDeep(p) }),
-
-      // Helper to record history before mutations
       _recordHistory: (state: any) => {
         const newHistory = state.history.slice(0, state.historyIndex + 1);
         newHistory.push(cloneDeep(state.profile));
@@ -55,6 +83,8 @@ export const useProfileStore = create<ProfileStore>()(
           historyIndex: newHistory.length - 1,
         };
       },
+
+      setProfile: (p) => set({ profile: cloneDeep(p) }),
 
       updateProfile: (patch) =>
         set((state) => ({
@@ -237,12 +267,96 @@ export const useProfileStore = create<ProfileStore>()(
         }),
 
       canUndo: () => {
-        // This needs to be a function that returns a boolean based on state
-        return false; // Will be overridden below
+        return get().historyIndex > 0;
       },
 
       canRedo: () => {
-        return false; // Will be overridden below
+        return get().historyIndex < get().history.length - 1;
+      },
+
+      // Firestore sync methods
+      loadProfileFromFirestore: async (uid: string) => {
+        set({ isLoading: true, error: null });
+        try {
+          const docRef = doc(db, 'users', uid);
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            const data = docSnap.data() as UserProfile;
+            set({ 
+              profile: data, 
+              isLoading: false 
+            });
+          } else {
+            // No profile found, use mock data
+            set({ 
+              profile: cloneDeep(mockProfile), 
+              isLoading: false 
+            });
+          }
+        } catch (error: any) {
+          console.error('[Firestore] Load failed:', error);
+          set({ 
+            error: error.message, 
+            isLoading: false 
+          });
+        }
+      },
+
+      saveProfileToFirestore: async () => {
+        const state = get();
+        const uid = auth.currentUser?.uid;
+        if (!uid) return;
+        
+        set({ isSaving: true, error: null });
+        try {
+          const profileData = {
+            ...state.profile,
+            updatedAt: serverTimestamp(),
+          };
+          await setDoc(doc(db, 'users', uid), profileData, { merge: true });
+          set({ isSaving: false });
+          console.log('[Firestore] Profile saved');
+        } catch (error: any) {
+          console.error('[Firestore] Save failed:', error);
+          set({ 
+            error: error.message, 
+            isSaving: false 
+          });
+        }
+      },
+
+      startFirestoreSync: (uid: string) => {
+        const state = get();
+        
+        // Stop existing listener if any
+        if (state.firestoreUnsubscribe) {
+          state.firestoreUnsubscribe();
+        }
+
+        const docRef = doc(db, 'users', uid);
+        const unsubscribe = onSnapshot(docRef, 
+          (doc) => {
+            if (doc.exists()) {
+              const data = doc.data() as UserProfile;
+              set({ profile: data });
+            }
+          },
+          (error) => {
+            console.error('[Firestore] Sync error:', error);
+            set({ error: error.message });
+          }
+        );
+
+        set({ firestoreUnsubscribe: unsubscribe });
+      },
+
+      stopFirestoreSync: () => {
+        const state = get();
+        if (state.firestoreUnsubscribe) {
+          state.firestoreUnsubscribe();
+          set({ firestoreUnsubscribe: null });
+        }
       },
     }),
     {
@@ -257,13 +371,85 @@ export const useProfileStore = create<ProfileStore>()(
   )
 );
 
-// Add canUndo/canRedo as derived state (not persisted)
-const origCreate = useProfileStore.getState;
-useProfileStore.getState = function() {
-  const state = origCreate();
-  return {
-    ...state,
-    canUndo: () => state.historyIndex > 0,
-    canRedo: () => state.historyIndex < state.history.length - 1,
-  };
-};
+// Patch updateProfile and other mutating actions to auto-save to Firestore
+const originalUpdateProfile = useProfileStore.getState().updateProfile;
+useProfileStore.setState({
+  updateProfile: (patch) => {
+    const state = useProfileStore.getState();
+    state._recordHistory(state);
+    useProfileStore.setState({ 
+      profile: { ...state.profile, ...patch } 
+    });
+    
+    // Auto-save to Firestore
+    const uid = auth.currentUser?.uid;
+    if (uid) {
+      debouncedSave(useProfileStore.getState().profile, uid);
+    }
+  },
+});
+
+// Similarly patch other mutating actions
+const originalUpdateTile = useProfileStore.getState().updateTile;
+useProfileStore.setState({
+  updateTile: (tile) => {
+    const state = useProfileStore.getState();
+    state._recordHistory(state);
+    useProfileStore.setState({
+      profile: {
+        ...state.profile,
+        tiles: state.profile.tiles.map((t) =>
+          t.id === tile.id ? { ...t, ...tile } : t
+        ),
+      },
+      editingTile: null,
+    });
+    
+    // Auto-save to Firestore
+    const uid = auth.currentUser?.uid;
+    if (uid) {
+      debouncedSave(useProfileStore.getState().profile, uid);
+    }
+  },
+});
+
+const originalAddTile = useProfileStore.getState().addTile;
+useProfileStore.setState({
+  addTile: (tile) => {
+    const state = useProfileStore.getState();
+    state._recordHistory(state);
+    useProfileStore.setState({
+      profile: {
+        ...state.profile,
+        tiles: [...state.profile.tiles, tile],
+      },
+    });
+    
+    // Auto-save to Firestore
+    const uid = auth.currentUser?.uid;
+    if (uid) {
+      debouncedSave(useProfileStore.getState().profile, uid);
+    }
+  },
+});
+
+const originalRemoveTile = useProfileStore.getState().removeTile;
+useProfileStore.setState({
+  removeTile: (id) => {
+    const state = useProfileStore.getState();
+    state._recordHistory(state);
+    useProfileStore.setState({
+      profile: {
+        ...state.profile,
+        tiles: state.profile.tiles.filter((t) => t.id !== id),
+      },
+      editingTile: state.editingTile?.id === id ? null : state.editingTile,
+    });
+    
+    // Auto-save to Firestore
+    const uid = auth.currentUser?.uid;
+    if (uid) {
+      debouncedSave(useProfileStore.getState().profile, uid);
+    }
+  },
+});
