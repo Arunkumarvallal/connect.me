@@ -115,7 +115,6 @@ export type ProfileBackground =
   | 'gradient-sunset' | 'gradient-ocean' | 'gradient-forest';
 
 export interface ProfileTheme {
-  mode: 'light' | 'dark';
   font: ProfileFont;
   background: ProfileBackground;
 }

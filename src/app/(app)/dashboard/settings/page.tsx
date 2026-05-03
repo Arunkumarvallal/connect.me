@@ -4,26 +4,20 @@ import { useState } from 'react';
 import { useProfileStore } from '@/store/profile-store';
 import { useAuth } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
-import { UserProfile, ProfileTheme, ProfileFont, ProfileBackground, SocialLinks } from '@/types/profile';
-import { GRID_CONFIG } from '@/types/profile';
-import { dashboardBgClassMap, fontClassMap } from '@/lib/theme-utils';
+import { UserProfile, SocialLinks } from '@/types/profile';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
 
 import { 
   User, 
-  Palette, 
   Share2, 
   LogOut, 
   Save,
@@ -31,21 +25,6 @@ import {
   Upload,
   Trash2
 } from 'lucide-react';
-
-const FONTS: { value: ProfileFont; label: string; className: string }[] = [
-  { value: 'headline', label: 'Headline', className: 'font-bold tracking-tight' },
-  { value: 'mono', label: 'Mono', className: 'font-mono' },
-  { value: 'sans', label: 'Sans', className: 'font-sans' },
-];
-
-const BACKGROUNDS: { value: ProfileBackground; label: string; swatch: string }[] = [
-  { value: 'white', label: 'White', swatch: '#ffffff' },
-  { value: 'light-gray', label: 'Light Gray', swatch: '#f4f4f5' },
-  { value: 'dark', label: 'Dark', swatch: '#09090b' },
-  { value: 'gradient-sunset', label: 'Sunset', swatch: 'linear-gradient(135deg,#f97316,#ec4899)' },
-  { value: 'gradient-ocean', label: 'Ocean', swatch: 'linear-gradient(135deg,#06b6d4,#3b82f6)' },
-  { value: 'gradient-forest', label: 'Forest', swatch: 'linear-gradient(135deg,#22c55e,#14b8a6)' },
-];
 
 export default function SettingsPage() {
   const { profile, updateProfile, setCustomCols, customCols } = useProfileStore();
@@ -71,12 +50,6 @@ export default function SettingsPage() {
     } finally {
       setSaving(false);
     }
-  };
-
-  const handleThemeUpdate = (themeUpdates: Partial<ProfileTheme>) => {
-    updateProfile({
-      theme: { ...profile.theme, ...themeUpdates }
-    });
   };
 
   const handleSocialUpdate = (socialUpdates: Partial<SocialLinks>) => {
@@ -129,14 +102,10 @@ export default function SettingsPage() {
       {/* Main Content */}
       <main className="max-w-5xl mx-auto px-6 py-8">
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
+          <TabsList className="grid w-full grid-cols-2 lg:w-[300px]">
             <TabsTrigger value="profile">
               <User className="w-4 h-4 mr-2" />
               Profile
-            </TabsTrigger>
-            <TabsTrigger value="appearance">
-              <Palette className="w-4 h-4 mr-2" />
-              Appearance
             </TabsTrigger>
             <TabsTrigger value="social">
               <Share2 className="w-4 h-4 mr-2" />
@@ -236,111 +205,7 @@ export default function SettingsPage() {
             </Card>
           </TabsContent>
 
-          {/* Appearance Settings */}
-          <TabsContent value="appearance" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Theme Settings</CardTitle>
-                <CardDescription>
-                  Customize how your profile looks
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Theme Mode */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-semibold">Theme Mode</Label>
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="theme-mode"
-                      checked={profile.theme.mode === 'dark'}
-                      onCheckedChange={(checked) => 
-                        handleThemeUpdate({ mode: checked ? 'dark' : 'light' })
-                      }
-                    />
-                    <Label htmlFor="theme-mode">
-                      {profile.theme.mode === 'dark' ? 'Dark Mode' : 'Light Mode'}
-                    </Label>
-                  </div>
-                </div>
 
-                <Separator />
-
-                {/* Font */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-semibold">Font</Label>
-                  <RadioGroup
-                    value={profile.theme.font}
-                    onValueChange={(v) => handleThemeUpdate({ font: v as ProfileFont })}
-                    className="space-y-2"
-                  >
-                    {FONTS.map((f) => (
-                      <div key={f.value} className="flex items-center gap-3">
-                        <RadioGroupItem value={f.value} id={`font-${f.value}`} />
-                        <Label
-                          htmlFor={`font-${f.value}`}
-                          className={`cursor-pointer text-base ${f.className}`}
-                        >
-                          {f.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </div>
-
-                <Separator />
-
-                {/* Background */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-semibold">Background</Label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {BACKGROUNDS.map((bg) => (
-                      <button
-                        key={bg.value}
-                        onClick={() => handleThemeUpdate({ background: bg.value })}
-                        className={`flex flex-col items-center gap-1.5 p-2 rounded-xl border-2 transition-all ${
-                          profile.theme.background === bg.value
-                            ? 'border-primary'
-                            : 'border-transparent hover:border-border'
-                        }`}
-                      >
-                        <div
-                          className="w-10 h-10 rounded-lg border border-border/30"
-                          style={{ background: bg.swatch }}
-                        />
-                        <span className="text-xs text-muted-foreground">{bg.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <Separator />
-
-                {/* Grid Columns */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-semibold">Grid Columns</Label>
-                  <Select
-                    value={customCols?.toString() ?? 'auto'}
-                    onValueChange={(v) => setCustomCols(v === 'auto' ? null : parseInt(v))}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Auto" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="auto">Auto (Responsive)</SelectItem>
-                      {Array.from(
-                        { length: GRID_CONFIG.maxCols - GRID_CONFIG.minCols + 1 },
-                        (_, i) => i + GRID_CONFIG.minCols
-                      ).map((col) => (
-                        <SelectItem key={col} value={col.toString()}>
-                          {col} Columns
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
 
           {/* Social Links Settings */}
           <TabsContent value="social" className="space-y-6">

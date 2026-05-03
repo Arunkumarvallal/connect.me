@@ -7,6 +7,7 @@ import { SettingsPanel } from './settings-panel';
 import { TileEditDialog } from './tile-edit-dialog';
 import { useProfileStore } from '@/store/profile-store';
 import { useAuth } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { dashboardBgClassMap, fontClassMap } from '@/lib/theme-utils';
 import { LogOut, LayoutDashboard, Settings } from 'lucide-react';
@@ -15,6 +16,7 @@ import { Button } from '@/components/ui/button';
 export function DashboardLayout() {
   const { profile } = useProfileStore();
   const { user, signOut } = useAuth();
+  const router = useRouter();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileView, setMobileView] = useState(false);
 
