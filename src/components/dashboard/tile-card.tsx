@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Pencil } from 'lucide-react';
 import { Tile, TileSize, tileSizeToLayout, TILE_PICKER_SIZES } from '@/types/profile';
 import { useProfileStore } from '@/store/profile-store';
 import { TileRenderer } from '@/components/profile/tile-renderer';
@@ -19,7 +19,7 @@ interface TileCardProps {
 const ICON_CELL_PX = 8;
 
 export function TileCard({ tile, readOnly = false }: TileCardProps) {
-  const { removeTile, updateTile } = useProfileStore();
+  const { removeTile, updateTile, setEditingTile } = useProfileStore();
   const [hovered, setHovered] = useState(false);
 
   function handleSizeChange(size: TileSize) {
@@ -32,13 +32,25 @@ export function TileCard({ tile, readOnly = false }: TileCardProps) {
       className="relative w-full h-full"
       onMouseEnter={readOnly ? undefined : () => setHovered(true)}
       onMouseLeave={readOnly ? undefined : () => setHovered(false)}
+      style={{ zIndex: hovered ? 10 : 'auto' }}
     >
+      {/* Delete button - top-right corner (per spec: delete-only top) */}
+      {!readOnly && tile.type !== 'profile' && tile.type !== 'heading' && (
+        <button
+          onClick={() => removeTile(tile.id)}
+          title="Delete tile"
+          className="absolute top-2 right-2 z-40 w-6 h-6 rounded-full bg-red-500/80 hover:bg-red-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
+      )}
+
       {/* Tile content — headings are edge-to-edge, others get rounded card */}
       <div className={`w-full h-full ${tile.type === 'heading' ? '' : 'rounded-2xl overflow-hidden'}`}>
         <TileRenderer tile={tile} isDashboard={!readOnly} />
       </div>
 
-      {/* Per-tile mini floating dock — edit mode only */}
+      {/* Per-tile mini floating dock — edit mode only (size controls at bottom per spec) */}
       {!readOnly && (<AnimatePresence>
         {hovered && (
           <motion.div
@@ -50,8 +62,8 @@ export function TileCard({ tile, readOnly = false }: TileCardProps) {
             transition={{ duration: 0.12 }}
             onMouseEnter={() => setHovered(true)}
           >
-            {/* Size options — visual squares — hidden for heading tiles */}
-            {tile.type !== 'heading' && (
+            {/* Size options — visual squares — hidden for heading and profile tiles */}
+            {tile.type !== 'heading' && tile.type !== 'profile' && (
               <>
                 {TILE_PICKER_SIZES.map((size) => {
                   const { w, h } = tileSizeToLayout[size];
@@ -92,14 +104,16 @@ export function TileCard({ tile, readOnly = false }: TileCardProps) {
               </>
             )}
 
-            {/* Delete */}
-            <button
-              onClick={() => removeTile(tile.id)}
-              title="Delete tile"
-              className="flex items-center justify-center w-6 h-6 rounded-full text-zinc-500 dark:text-zinc-400 hover:text-red-400 dark:hover:text-red-500 transition-colors"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
+        {/* Edit - hidden for profile tiles (inline editing) */}
+        {tile.type !== 'profile' && tile.type !== 'heading' && (
+          <button
+            onClick={() => setEditingTile(tile)}
+            title="Edit tile"
+            className="flex items-center justify-center w-6 h-6 rounded-full text-zinc-500 dark:text-zinc-400 hover:text-blue-400 dark:hover:text-blue-500 transition-colors"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+          </button>
+        )}
           </motion.div>
         )}
       </AnimatePresence>)}

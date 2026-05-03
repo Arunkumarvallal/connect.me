@@ -1,12 +1,12 @@
 
 export const BIO_MAX_CHARS = 150;
 
-export type TileSize = '1x1' | '2x1' | '1x2' | '2x2' | '2x3' | '3x1' | '4x1' | '4x4' | '2x4' | '3x2' | '4x2' | '6x4' | '5x2';
+export type TileSize = '1x1' | '2x1' | '3x1' | '1x2' | '2x2' | '3x2' | '1x3' | '2x3' | '3x3';
 
 export type TileType =
   | 'link' | 'social' | 'image' | 'video' | 'text' | 'heading'
   | 'spotify' | 'github' | 'youtube' | 'bio' | 'discord'
-  | 'luma' | 'instagram' | 'whatsapp' | 'map' | 'email' | 'project';
+  | 'luma' | 'instagram' | 'whatsapp' | 'map' | 'email' | 'project' | 'profile';
 
 /** Grid position managed by react-grid-layout */
 export interface TileLayout {
@@ -18,19 +18,15 @@ export interface TileLayout {
 
 /** Map TileSize shorthand to w/h for react-grid-layout */
 export const tileSizeToLayout: Record<TileSize, Pick<TileLayout, 'w' | 'h'>> = {
-  '1x1': { w: 1, h: 1   },   // small square   — 4× across on desktop, 2× on mobile
-  '2x1': { w: 2, h: 1   },   // wide flat      — 2× across on desktop
+  '1x1': { w: 1, h: 1   },   // small square
+  '2x1': { w: 2, h: 1   },   // wide flat
+  '3x1': { w: 3, h: 1   },   // full-width flat
   '1x2': { w: 1, h: 2   },   // tall narrow
-  '2x2': { w: 2, h: 2   },   // big square     — 2× across on desktop
-  '2x3': { w: 2, h: 3   },   // tall portrait  — 2× across on desktop
-  '3x1': { w: 3, h: 1   },
-  '4x1': { w: 4, h: 1   },
-  '4x4': { w: 4, h: 4   },
-  '2x4': { w: 2, h: 4   },
-  '3x2': { w: 3, h: 2   },
-  '4x2': { w: 4, h: 2   },
-  '6x4': { w: 6, h: 4   },
-  '5x2': { w: 5, h: 2   },
+  '2x2': { w: 2, h: 2   },   // big square
+  '3x2': { w: 3, h: 2   },   // full-width rectangle
+  '1x3': { w: 1, h: 3   },   // very tall narrow
+  '2x3': { w: 2, h: 3   },   // tall portrait
+  '3x3': { w: 3, h: 3   },   // full-width large
 };
 
 /**
@@ -45,11 +41,11 @@ export const tileSizeToLayout: Record<TileSize, Pick<TileLayout, 'w' | 'h'>> = {
  * padding     — space around the whole grid (px)
  */
 export const GRID_CONFIG = {
-  cellPx:          160,  // target cell size — drives how many cols fit at any width
-  maxCols:           4,  // desktop cap: never more than 4 columns
+  cellPx:          140,  // target cell size — drives how many cols fit at any width
+  maxCols:           6,  // desktop cap: allow up to 6 columns for full-width tiles
   minCols:           2,  // always at least 2 columns (mobile)
   maxColsMobile:     2,  // when mobileView preview is forced on
-  gap:              12,  // space between tiles (px)
+  gap:              16,  // space between tiles (px)
   padding:          16,  // outer padding around the grid (px)
   /**
    * Fixed row height used on the public profile page.
@@ -65,10 +61,15 @@ export const GRID_CONFIG = {
  *   The tile-card component multiplies w/h by ICON_CELL_PX to get the SVG rect dimensions.
  */
 export const TILE_PICKER_SIZES: TileSize[] = [
-  '1x1',   // ■  small square   — 4× across on desktop, 2× mobile
-  '2x1',   // ▬  wide flat      — 2× across
-  '2x2',   // ■  big square     — 2× across
-  '2x3',   // ▮  tall portrait  — 2× across
+  '1x1',   // ■  small square
+  '2x1',   // ▬  wide flat
+  '3x1',   // ▭  full-width flat
+  '1x2',   // ▯  tall narrow
+  '2x2',   // ■  big square
+  '3x2',   // ▮  full-width rectangle
+  '1x3',   // ▮  very tall
+  '2x3',   // ▮  tall portrait
+  '3x3',   // █  full-width large
 ];
 
 export interface LinkPreview {
@@ -113,10 +114,26 @@ export type ProfileBackground =
   | 'white' | 'light-gray' | 'dark'
   | 'gradient-sunset' | 'gradient-ocean' | 'gradient-forest';
 
+/** Hero section layout styles (2-5 styles as requested) */
+export type HeroStyle =
+  | 'classic'     // Centered avatar + name + bio (current default)
+  | 'banner'      // Full-width banner with avatar overlay + name/bio overlay
+  | 'minimal'     // Left-aligned small avatar + inline name/bio
+  | 'card'        // Card with avatar top-left, content right, colored background
+  | 'magazine';   // Large left avatar, right side has name + bio + social icons
+
 export interface ProfileTheme {
-  mode: 'light' | 'dark';
   font: ProfileFont;
   background: ProfileBackground;
+  heroStyle: HeroStyle;
+}
+
+export interface SocialLinks {
+  linkedin?: string;
+  twitter?: string;
+  github?: string;
+  portfolio?: string;
+  email?: string;
 }
 
 export interface UserProfile {
@@ -126,6 +143,7 @@ export interface UserProfile {
   avatarUrl: string;
   bio: string;
   location?: string;
+  socialLinks?: SocialLinks;
   tiles: Tile[];
   theme: ProfileTheme;
   createdAt?: string;

@@ -3,10 +3,10 @@
 import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ProfileSidebar } from '@/components/dashboard/profile-sidebar';
 import { TileGrid } from '@/components/dashboard/tile-grid';
-import { UserProfile } from '@/types/profile';
+import { UserProfile, HeroStyle } from '@/types/profile';
 import { dashboardBgClassMap, fontClassMap } from '@/lib/theme-utils';
+import { heroComponentMap } from './hero_styles';
 
 interface PublicProfileProps {
   profile: UserProfile;
@@ -36,28 +36,59 @@ export function PublicProfile({ profile, previewMode = false }: PublicProfilePro
 
   const gridBgClass = dashboardBgClassMap[profile.theme.background] ?? '';
   const fontClass = fontClassMap[profile.theme.font] ?? '';
+  const heroStyle = profile.theme.heroStyle || 'classic';
+  const HeroComponent = heroComponentMap[heroStyle as HeroStyle] || heroComponentMap.classic;
+
+  // Filter out profile tile from grid (hero section handles it now)
+  const contentTiles = profile.tiles.filter(tile => tile.type !== 'profile');
 
   return (
-    <div className={`min-h-screen flex bg-background text-foreground ${fontClass} transition-colors duration-300`}>
-      {/* Left sidebar — identical to dashboard (read-only) */}
-      <aside className="hidden md:flex flex-col w-[560px] shrink-0 min-h-screen sticky top-0 h-screen overflow-y-auto">
-        <ProfileSidebar profile={profile} editable={false} />
-      </aside>
+    <div className={`min-h-screen flex flex-col bg-background text-foreground ${fontClass} transition-colors duration-300`}>
+      {/* Hero Section - rendered based on selected style */}
+      <HeroComponent profile={profile} readOnly previewMode={previewMode} />
 
-      {/* Mobile header — visible only on small screens */}
-      <div className="md:hidden w-full fixed top-0 left-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/40 px-4 py-3 flex items-center gap-3">
-        <Avatar className="w-9 h-9">
+      {/* Mobile layout fallback: if hero component returned null for mobile, show inline layout */}
+      <div className="md:hidden w-full px-4 pt-8 pb-4 flex flex-col items-center gap-3">
+        <Avatar className="w-20 h-20">
           <AvatarImage src={profile.avatarUrl} alt={profile.displayName} />
-          <AvatarFallback>{profile.displayName.charAt(0)}</AvatarFallback>
+          <AvatarFallback className="text-2xl">{profile.displayName.charAt(0)}</AvatarFallback>
         </Avatar>
-        <div>
-          <p className="font-semibold text-sm">{profile.displayName}</p>
-        </div>
+        <h1 className="text-xl font-bold text-center">{profile.displayName}</h1>
+        {profile.location && (
+          <p className="text-sm text-muted-foreground text-center">{profile.location}</p>
+        )}
+        {profile.bio && (
+          <p className="text-sm text-muted-foreground text-center max-w-md">
+            {profile.bio.length > 150 ? `${profile.bio.slice(0, 150)}...` : profile.bio}
+          </p>
+        )}
+        {/* Mobile Social Links */}
+        {profile.socialLinks && (
+          <div className="flex gap-3 mt-1">
+            {Object.entries(profile.socialLinks).map(([key, value]) =>
+              value ? (
+                <a
+                  key={key}
+                  href={key === 'email' ? `mailto:${value}` : value}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {key === 'linkedin' && <span className="text-xs">LinkedIn</span>}
+                  {key === 'twitter' && <span className="text-xs">Twitter</span>}
+                  {key === 'github' && <span className="text-xs">GitHub</span>}
+                  {key === 'portfolio' && <span className="text-xs">Portfolio</span>}
+                  {key === 'email' && <span className="text-xs">Email</span>}
+                </a>
+              ) : null
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Main grid area — same bg logic as dashboard */}
-      <main className={`flex-1 min-h-screen overflow-x-hidden pb-12 transition-all duration-300 ${gridBgClass} md:pt-0 pt-16`}>
-        <TileGrid readOnly tiles={profile.tiles} />
+      {/* Tiles Grid - excluding profile tile (hero handles it) */}
+      <main className={`flex-1 min-h-screen overflow-x-hidden pb-12 transition-all duration-300 ${gridBgClass}`}>
+        <TileGrid readOnly tiles={contentTiles} />
       </main>
     </div>
   );

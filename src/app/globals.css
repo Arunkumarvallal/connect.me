@@ -73,10 +73,18 @@
 .react-resizable-handle {
   opacity: 0;
   transition: opacity 150ms ease;
+  z-index: 40 !important;
 }
 
 .react-grid-item:hover .react-resizable-handle {
   opacity: 1;
+}
+
+.react-resizable-handle-se {
+  bottom: 4px !important;
+  right: 4px !important;
+  width: 12px !important;
+  height: 12px !important;
 }
 
 .react-resizable-handle::after {
@@ -110,4 +118,10 @@
 
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }

@@ -11,6 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useProfileStore } from '@/store/profile-store';
 import { LinkPreview, Tile } from '@/types/profile';
+import { uploadImage, getTileImagePath } from '@/lib/storage';
+import { auth } from '@/lib/firebase';
 
 export function TileEditDialog() {
   const { editingTile, setEditingTile, updateTile } = useProfileStore();
@@ -52,9 +54,60 @@ export function TileEditDialog() {
   function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    
+    // Validate file
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+    
+    // Use base64 for free plan (Storage not available)
+    if (file.size > 500 * 1024) { // 500KB limit for base64
+      toast.error('File too large. Upgrade to Blaze plan for Firebase Storage.');
+      return;
+    }
+
+    // Show loading state via toast
+    toast.loading('Converting image...');
+    
+    // Convert to base64 (temporary solution for free plan)
     const reader = new FileReader();
-    reader.onload = () => patchMeta({ imageData: reader.result as string });
+    reader.onload = () => {
+      patchMeta({ 
+        imageData: reader.result as string,
+      });
+      toast.dismiss();
+      toast.success('Image added as base64');
+      toast.info('Image added as base64. Upgrade to Blaze plan for Firebase Storage.', { duration: 5000 });
+    };
     reader.readAsDataURL(file);
+    e.target.value = '';
+    
+    // TODO: Uncomment below when you upgrade to Blaze plan
+    /*
+    const userId = auth.currentUser?.uid;
+    if (!userId) {
+      toast.error('You must be signed in to upload images');
+      patchMeta({ uploading: false });
+      return;
+    }
+
+    // TODO: Uncomment when you upgrade to Blaze plan
+    /*
+    const path = getTileImagePath(userId, form.id, file.name);
+    uploadImage(file, path)
+      .then((downloadURL) => {
+        patchMeta({ 
+          imageUrl: downloadURL, 
+          imageStoragePath: path,
+        });
+        toast.success('Image uploaded successfully!');
+      })
+      .catch((error) => {
+        console.error('Upload failed:', error);
+        toast.error('Failed to upload image');
+      });
+    */
   }
 
   function handleSave() {
