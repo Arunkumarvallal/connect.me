@@ -139,105 +139,160 @@ export const useProfileStore = create<ProfileStore>()(
       autoArrangeTiles: () =>
         set((state) => {
           const tiles = [...state.profile.tiles];
-          const cols = 3;
+          const cols = state.customCols || 3;
 
-          // Separate fixed-width tiles (profile, heading) from flexible ones
-          const fixedTiles = tiles.filter(t => t.type === 'profile' || t.type === 'heading');
-          const flexibleTiles = tiles.filter(t => t.type !== 'profile' && t.type !== 'heading');
+          // Separate tiles by type and priority
+          const profileTiles = tiles.filter(t => t.type === 'profile');
+          const headingTiles = tiles.filter(t => t.type === 'heading');
+          const regularTiles = tiles.filter(t => t.type !== 'profile' && t.type !== 'heading');
 
-          // Sort flexible tiles by area (largest first) for better space utilization
-          flexibleTiles.sort((a, b) => {
-            const areaA = a.layout.w * a.layout.h;
-            const areaB = b.layout.w * b.layout.h;
-            return areaB - areaA; // Largest first
-          });
+          // Intelligent sorting strategy:
+          // 1. Group by width categories (wide, medium, narrow)
+          // 2. Within each group, sort by height (shorter first for better packing)
+          // 3. Interleave groups for visual variety
+          const wideTiles = regularTiles.filter(t => t.layout.w >= Math.ceil(cols * 0.66));
+          const mediumTiles = regularTiles.filter(t => t.layout.w >= 2 && t.layout.w < Math.ceil(cols * 0.66));
+          const narrowTiles = regularTiles.filter(t => t.layout.w === 1);
 
-          // Interleave: place fixed tiles first, then fill with flexible ones
-          const sortedTiles = [...fixedTiles, ...flexibleTiles];
+          // Sort each group by height (shorter first - easier to pack)
+          const sortByHeight = (a: Tile, b: Tile) => a.layout.h - b.layout.h;
+          wideTiles.sort(sortByHeight);
+          mediumTiles.sort(sortByHeight);
+          narrowTiles.sort(sortByHeight);
 
-          let x = 0;
-          let y = 0;
-          let maxYInRow = 0;
+          // Interleave tiles for better visual distribution
+          const sortedTiles: Tile[] = [];
+          const maxLen = Math.max(wideTiles.length, mediumTiles.length, narrowTiles.length);
+          for (let i = 0; i < maxLen; i++) {
+            if (i < wideTiles.length) sortedTiles.push(wideTiles[i]);
+            if (i < mediumTiles.length) sortedTiles.push(mediumTiles[i]);
+            if (i < narrowTiles.length) sortedTiles.push(narrowTiles[i]);
+          }
+
+          const newTiles: Tile[] = [];
           const occupied: Array<{x: number, y: number, w: number, h: number}> = [];
 
-          const newTiles = sortedTiles.map((tile) => {
-            const isFixedWidth = tile.type === 'heading' || tile.type === 'profile';
-            const w = isFixedWidth ? cols : Math.min(tile.layout.w, cols);
-            const h = isFixedWidth ? (tile.type === 'profile' ? 2 : 1) : tile.layout.h;
+          let currentY = 0;
 
-            // Try to find best position (greedy fill - try to place at lowest y, then leftmost x)
-            let placed = false;
-            let newX = x;
-            let newY = y;
+          // Helper: Find best position using "Bottom-Left" algorithm
+          // Tries to place tiles as low as possible, then as left as possible
+          const findBestPosition = (w: number, h: number): {x: number, y: number} => {
+            let bestY = Infinity;
+            let bestX = 0;
 
-            // First try current position
-            if (newX + w <= cols) {
-              // Check if this position is already occupied
-              const hasConflict = occupied.some(o =>
-                !(newX + w <= o.x || newX >= o.x + o.w || newY + h <= o.y || newY >= o.y + o.h)
+            // Collect all y positions to try (including tile edges)
+            const yPositions = new Set<number>([0]);
+            occupied.forEach(o => {
+              yPositions.add(o.y);
+              yPositions.add(o.y + o.h);
+            });
+            const sortedY = Array.from(yPositions).sort((a, b) => a - b);
+
+            // Try each y position (lowest first)
+            for (const tryY of sortedY) {
+              if (tryY > bestY) break; // No need to check higher y
+
+              // Try each x position at this y (leftmost first)
+              for (let tryX = 0; tryX + w <= cols; tryX++) {
+                // Check for conflicts
+                const hasConflict = occupied.some(o =>
+                  !(tryX + w <= o.x || tryX >= o.x + o.w || tryY + h <= o.y || tryY >= o.y + o.h)
+                );
+
+                if (hasConflict) continue;
+
+                // Check if this position is "supported" (no floating)
+                // A position is supported if it's at y=0 or there's a tile below it
+                const isSupported = tryY === 0 || occupied.some(o =>
+                  o.x < tryX + w && o.x + o.w > tryX && o.y + o.h === tryY
+                );
+
+                // Prefer supported positions, but don't require it
+                const score = tryY * 100 + (isSupported ? 0 : 50) + tryX;
+
+                if (tryY < bestY || (tryY === bestY && tryX < bestX)) {
+                  bestY = tryY;
+                  bestX = tryX;
+                }
+                break; // Found valid position at this y, move to next y
+              }
+            }
+
+            return bestY < Infinity ? { x: bestX, y: bestY } : { x: 0, y: currentY };
+          };
+
+          // Place profile tiles first (full width at top)
+          profileTiles.forEach(tile => {
+            const w = cols;
+            const h = Math.max(2, tile.layout.h);
+            newTiles.push({ ...tile, layout: { ...tile.layout, x: 0, y: currentY, w, h } });
+            occupied.push({ x: 0, y: currentY, w, h });
+            currentY += h;
+          });
+
+          // Place heading tiles (full width)
+          headingTiles.forEach(tile => {
+            const w = cols;
+            const h = 1;
+            newTiles.push({ ...tile, layout: { ...tile.layout, x: 0, y: currentY, w, h } });
+            occupied.push({ x: 0, y: currentY, w, h });
+            currentY += h;
+          });
+
+          // Place regular tiles using intelligent packing
+          sortedTiles.forEach(tile => {
+            const w = Math.min(tile.layout.w, cols);
+            const h = tile.layout.h;
+
+            const pos = findBestPosition(w, h);
+
+            newTiles.push({ ...tile, layout: { ...tile.layout, x: pos.x, y: pos.y, w, h } });
+            occupied.push({ x: pos.x, y: pos.y, w, h });
+
+            // Update currentY
+            currentY = Math.max(currentY, pos.y + h);
+          });
+
+          // Post-processing: Compact the layout to remove gaps
+          // Sort tiles by y position, then x position
+          newTiles.sort((a, b) => {
+            if (a.layout.y !== b.layout.y) return a.layout.y - b.layout.y;
+            return a.layout.x - b.layout.x;
+          });
+
+          // Adjust y positions to eliminate vertical gaps where possible
+          const finalOccupied: Array<{x: number, y: number, w: number, h: number}> = [];
+          const compactedTiles: Tile[] = [];
+
+          newTiles.forEach(tile => {
+            const w = tile.layout.w;
+            const h = tile.layout.h;
+
+            // Find the highest position this tile can occupy
+            let bestY = tile.layout.y;
+            for (let tryY = 0; tryY < tile.layout.y; tryY++) {
+              const hasConflict = finalOccupied.some(o =>
+                !(tile.layout.x + w <= o.x || tile.layout.x >= o.x + o.w || tryY + h <= o.y || tryY >= o.y + o.h)
               );
               if (!hasConflict) {
-                placed = true;
+                bestY = tryY;
+              } else {
+                break; // Can't go higher
               }
             }
 
-            // If conflict, find next available position
-            if (!placed) {
-              // Reset to find best position
-              let bestY = Number.MAX_SAFE_INTEGER;
-              let bestX = 0;
-
-              // Try positions in order of increasing y, then x
-              for (let tryY = 0; tryY < 100; tryY++) {
-                for (let tryX = 0; tryX + w <= cols; tryX++) {
-                  const hasConflict = occupied.some(o =>
-                    !(tryX + w <= o.x || tryX >= o.x + o.w || tryY + h <= o.y || tryY >= o.y + o.h)
-                  );
-                  if (!hasConflict && tryY < bestY) {
-                    bestY = tryY;
-                    bestX = tryX;
-                    placed = true;
-                  }
-                }
-                if (placed) break;
-              }
-
-              if (placed) {
-                newX = bestX;
-                newY = bestY;
-              }
-            }
-
-            // If still not placed, use simple algorithm
-            if (!placed) {
-              newX = 0;
-              newY = maxYInRow;
-            }
-
-            // Record this tile's position
-            occupied.push({ x: newX, y: newY, w, h });
-
-            const newTile = {
+            compactedTiles.push({
               ...tile,
-              layout: { ...tile.layout, x: newX, y: newY, w, h }
-            };
-
-            // Update for next tile
-            x = newX + w;
-            if (x >= cols) {
-              x = 0;
-              y = maxYInRow;
-            }
-            maxYInRow = Math.max(maxYInRow, newY + h);
-
-            return newTile;
+              layout: { ...tile.layout, y: bestY }
+            });
+            finalOccupied.push({ x: tile.layout.x, y: bestY, w, h });
           });
 
           return {
             ...state._recordHistory(state),
             profile: {
               ...state.profile,
-              tiles: newTiles,
+              tiles: compactedTiles,
             },
           };
         }),

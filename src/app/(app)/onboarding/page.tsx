@@ -23,13 +23,31 @@ export default function OnboardingPage() {
   const [bio, setBio] = useState('');
   const [saving, setSaving] = useState(false);
 
-  // Redirect if not authenticated
+  // Redirect if not authenticated or already has a profile (onboarding complete)
   useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
+      return;
     }
+    
     if (user) {
       setDisplayName(user.displayName || '');
+      
+      // Check if user already has a profile (already completed onboarding)
+      const checkProfile = async () => {
+        try {
+          const docRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            console.log('[Onboarding] Profile already exists, redirecting to dashboard');
+            toast.info('You have already set up your profile');
+            router.push('/dashboard');
+          }
+        } catch (error) {
+          console.error('[Onboarding] Error checking profile:', error);
+        }
+      };
+      checkProfile();
     }
   }, [user, loading, router]);
 

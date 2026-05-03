@@ -114,9 +114,18 @@ export type ProfileBackground =
   | 'white' | 'light-gray' | 'dark'
   | 'gradient-sunset' | 'gradient-ocean' | 'gradient-forest';
 
+/** Hero section layout styles (2-5 styles as requested) */
+export type HeroStyle =
+  | 'classic'     // Centered avatar + name + bio (current default)
+  | 'banner'      // Full-width banner with avatar overlay + name/bio overlay
+  | 'minimal'     // Left-aligned small avatar + inline name/bio
+  | 'card'        // Card with avatar top-left, content right, colored background
+  | 'magazine';   // Large left avatar, right side has name + bio + social icons
+
 export interface ProfileTheme {
   font: ProfileFont;
   background: ProfileBackground;
+  heroStyle: HeroStyle;
 }
 
 export interface SocialLinks {

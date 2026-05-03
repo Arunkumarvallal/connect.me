@@ -16,7 +16,8 @@ export const mockProfile: UserProfile = {
   location: "San Francisco, CA",
   theme: {
     font: 'sans',
-    background: 'white'
+    background: 'white',
+    heroStyle: 'classic'
   },
   socialLinks: {
     linkedin: 'https://linkedin.com/in/sarahchen-id',

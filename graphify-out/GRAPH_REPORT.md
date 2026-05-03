@@ -1,95 +1,91 @@
-# Graph Report - .  (2026-05-03)
+# Graph Report - t:\r_lib\connect.me\src  (2026-05-03)
 
 ## Corpus Check
-- 98 files · ~95,958 words
-- Verdict: corpus is large enough that graph structure adds value.
+- Corpus is ~26,295 words - fits in a single context window. You may not need a graph.
 
 ## Summary
-- 136 nodes · 63 edges · 80 communities detected
+- 135 nodes · 65 edges · 77 communities detected
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Group tile-renderer.tsx|Group: tile-renderer.tsx]]
-- [[_COMMUNITY_Group use-toast.ts|Group: use-toast.ts]]
-- [[_COMMUNITY_Group tile-edit-dialog.tsx|Group: tile-edit-dialog.tsx]]
-- [[_COMMUNITY_Group storage.ts|Group: storage.ts]]
-- [[_COMMUNITY_Group cn()|Group: cn()]]
-- [[_COMMUNITY_Authentication|Authentication]]
-- [[_COMMUNITY_Group handleSubmit()|Group: handleSubmit()]]
-- [[_COMMUNITY_Group generateMetadata()|Group: generateMetadata()]]
-- [[_COMMUNITY_Group cn()|Group: cn()]]
-- [[_COMMUNITY_Group middleware()|Group: middleware()]]
-- [[_COMMUNITY_Group RootLayout()|Group: RootLayout()]]
-- [[_COMMUNITY_Group DashboardError()|Group: DashboardError()]]
-- [[_COMMUNITY_Group DashboardPage()|Group: DashboardPage()]]
-- [[_COMMUNITY_Group PreviewPage()|Group: PreviewPage()]]
-- [[_COMMUNITY_Group Home()|Group: Home()]]
-- [[_COMMUNITY_Group handleAuth()|Group: handleAuth()]]
-- [[_COMMUNITY_Group ProfileError()|Group: ProfileError()]]
-- [[_COMMUNITY_Group ProfileNotFound()|Group: ProfileNotFound()]]
-- [[_COMMUNITY_Group GET()|Group: GET()]]
-- [[_COMMUNITY_Group testFirestore()|Group: testFirestore()]]
-- [[_COMMUNITY_Group ControlDock()|Group: ControlDock()]]
-- [[_COMMUNITY_Group GridSkeleton()|Group: GridSkeleton()]]
-- [[_COMMUNITY_Group tile-card.tsx|Group: tile-card.tsx]]
-- [[_COMMUNITY_Group tile-grid.tsx|Group: tile-grid.tsx]]
-- [[_COMMUNITY_Profile Management|Profile Management]]
-- [[_COMMUNITY_Group Badge()|Group: Badge()]]
-- [[_COMMUNITY_Group useCarousel()|Group: useCarousel()]]
-- [[_COMMUNITY_Group Skeleton()|Group: Skeleton()]]
-- [[_COMMUNITY_Group use-mobile.tsx|Group: use-mobile.tsx]]
-- [[_COMMUNITY_Group utils.ts|Group: utils.ts]]
-- [[_COMMUNITY_Single next-env.d.ts|Single: next-env.d.ts]]
-- [[_COMMUNITY_Configuration|Configuration]]
-- [[_COMMUNITY_Configuration|Configuration]]
-- [[_COMMUNITY_Single check_cache.py|Single: check_cache.py]]
-- [[_COMMUNITY_Single detect_files.py|Single: detect_files.py]]
-- [[_COMMUNITY_Single run_ast.py|Single: run_ast.py]]
-- [[_COMMUNITY_Single dev.ts|Single: dev.ts]]
-- [[_COMMUNITY_Single genkit.ts|Single: genkit.ts]]
-- [[_COMMUNITY_Single loading.tsx|Single: loading.tsx]]
-- [[_COMMUNITY_Single loading.tsx|Single: loading.tsx]]
-- [[_COMMUNITY_Dashboard Components|Dashboard Components]]
-- [[_COMMUNITY_Profile Management|Profile Management]]
-- [[_COMMUNITY_Profile Management|Profile Management]]
-- [[_COMMUNITY_Single settings-panel.tsx|Single: settings-panel.tsx]]
-- [[_COMMUNITY_Single accordion.tsx|Single: accordion.tsx]]
-- [[_COMMUNITY_Single alert-dialog.tsx|Single: alert-dialog.tsx]]
-- [[_COMMUNITY_Single alert.tsx|Single: alert.tsx]]
-- [[_COMMUNITY_Single avatar.tsx|Single: avatar.tsx]]
-- [[_COMMUNITY_Single button.tsx|Single: button.tsx]]
-- [[_COMMUNITY_Single calendar.tsx|Single: calendar.tsx]]
-- [[_COMMUNITY_Single card.tsx|Single: card.tsx]]
-- [[_COMMUNITY_Single checkbox.tsx|Single: checkbox.tsx]]
-- [[_COMMUNITY_Single collapsible.tsx|Single: collapsible.tsx]]
-- [[_COMMUNITY_Single dialog.tsx|Single: dialog.tsx]]
-- [[_COMMUNITY_Single dropdown-menu.tsx|Single: dropdown-menu.tsx]]
-- [[_COMMUNITY_Single form.tsx|Single: form.tsx]]
-- [[_COMMUNITY_Single input.tsx|Single: input.tsx]]
-- [[_COMMUNITY_Single label.tsx|Single: label.tsx]]
-- [[_COMMUNITY_Single menubar.tsx|Single: menubar.tsx]]
-- [[_COMMUNITY_Single popover.tsx|Single: popover.tsx]]
-- [[_COMMUNITY_Single progress.tsx|Single: progress.tsx]]
-- [[_COMMUNITY_Single radio-group.tsx|Single: radio-group.tsx]]
-- [[_COMMUNITY_Single scroll-area.tsx|Single: scroll-area.tsx]]
-- [[_COMMUNITY_Single select.tsx|Single: select.tsx]]
-- [[_COMMUNITY_Single separator.tsx|Single: separator.tsx]]
-- [[_COMMUNITY_Single sheet.tsx|Single: sheet.tsx]]
-- [[_COMMUNITY_Single slider.tsx|Single: slider.tsx]]
-- [[_COMMUNITY_Single switch.tsx|Single: switch.tsx]]
-- [[_COMMUNITY_Single table.tsx|Single: table.tsx]]
-- [[_COMMUNITY_Single tabs.tsx|Single: tabs.tsx]]
-- [[_COMMUNITY_Single textarea.tsx|Single: textarea.tsx]]
-- [[_COMMUNITY_Single toast.tsx|Single: toast.tsx]]
-- [[_COMMUNITY_Single toaster.tsx|Single: toaster.tsx]]
-- [[_COMMUNITY_Single tooltip.tsx|Single: tooltip.tsx]]
-- [[_COMMUNITY_Authentication|Authentication]]
-- [[_COMMUNITY_Single mock-data.ts|Single: mock-data.ts]]
-- [[_COMMUNITY_Single placeholder-images.ts|Single: placeholder-images.ts]]
-- [[_COMMUNITY_Single theme-utils.ts|Single: theme-utils.ts]]
-- [[_COMMUNITY_Profile Management|Profile Management]]
-- [[_COMMUNITY_Profile Management|Profile Management]]
+- [[_COMMUNITY_Community 0|Community 0]]
+- [[_COMMUNITY_Community 1|Community 1]]
+- [[_COMMUNITY_Community 2|Community 2]]
+- [[_COMMUNITY_Community 3|Community 3]]
+- [[_COMMUNITY_Community 4|Community 4]]
+- [[_COMMUNITY_Community 5|Community 5]]
+- [[_COMMUNITY_Community 6|Community 6]]
+- [[_COMMUNITY_Community 7|Community 7]]
+- [[_COMMUNITY_Community 8|Community 8]]
+- [[_COMMUNITY_Community 9|Community 9]]
+- [[_COMMUNITY_Community 10|Community 10]]
+- [[_COMMUNITY_Community 11|Community 11]]
+- [[_COMMUNITY_Community 12|Community 12]]
+- [[_COMMUNITY_Community 13|Community 13]]
+- [[_COMMUNITY_Community 14|Community 14]]
+- [[_COMMUNITY_Community 15|Community 15]]
+- [[_COMMUNITY_Community 16|Community 16]]
+- [[_COMMUNITY_Community 17|Community 17]]
+- [[_COMMUNITY_Community 18|Community 18]]
+- [[_COMMUNITY_Community 19|Community 19]]
+- [[_COMMUNITY_Community 20|Community 20]]
+- [[_COMMUNITY_Community 21|Community 21]]
+- [[_COMMUNITY_Community 22|Community 22]]
+- [[_COMMUNITY_Community 23|Community 23]]
+- [[_COMMUNITY_Community 24|Community 24]]
+- [[_COMMUNITY_Community 25|Community 25]]
+- [[_COMMUNITY_Community 26|Community 26]]
+- [[_COMMUNITY_Community 27|Community 27]]
+- [[_COMMUNITY_Community 28|Community 28]]
+- [[_COMMUNITY_Community 29|Community 29]]
+- [[_COMMUNITY_Community 30|Community 30]]
+- [[_COMMUNITY_Community 31|Community 31]]
+- [[_COMMUNITY_Community 32|Community 32]]
+- [[_COMMUNITY_Community 33|Community 33]]
+- [[_COMMUNITY_Community 34|Community 34]]
+- [[_COMMUNITY_Community 35|Community 35]]
+- [[_COMMUNITY_Community 36|Community 36]]
+- [[_COMMUNITY_Community 37|Community 37]]
+- [[_COMMUNITY_Community 38|Community 38]]
+- [[_COMMUNITY_Community 39|Community 39]]
+- [[_COMMUNITY_Community 40|Community 40]]
+- [[_COMMUNITY_Community 41|Community 41]]
+- [[_COMMUNITY_Community 42|Community 42]]
+- [[_COMMUNITY_Community 43|Community 43]]
+- [[_COMMUNITY_Community 44|Community 44]]
+- [[_COMMUNITY_Community 45|Community 45]]
+- [[_COMMUNITY_Community 46|Community 46]]
+- [[_COMMUNITY_Community 47|Community 47]]
+- [[_COMMUNITY_Community 48|Community 48]]
+- [[_COMMUNITY_Community 49|Community 49]]
+- [[_COMMUNITY_Community 50|Community 50]]
+- [[_COMMUNITY_Community 51|Community 51]]
+- [[_COMMUNITY_Community 52|Community 52]]
+- [[_COMMUNITY_Community 53|Community 53]]
+- [[_COMMUNITY_Community 54|Community 54]]
+- [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
+- [[_COMMUNITY_Community 58|Community 58]]
+- [[_COMMUNITY_Community 59|Community 59]]
+- [[_COMMUNITY_Community 60|Community 60]]
+- [[_COMMUNITY_Community 61|Community 61]]
+- [[_COMMUNITY_Community 62|Community 62]]
+- [[_COMMUNITY_Community 63|Community 63]]
+- [[_COMMUNITY_Community 64|Community 64]]
+- [[_COMMUNITY_Community 65|Community 65]]
+- [[_COMMUNITY_Community 66|Community 66]]
+- [[_COMMUNITY_Community 67|Community 67]]
+- [[_COMMUNITY_Community 68|Community 68]]
+- [[_COMMUNITY_Community 69|Community 69]]
+- [[_COMMUNITY_Community 70|Community 70]]
+- [[_COMMUNITY_Community 71|Community 71]]
+- [[_COMMUNITY_Community 72|Community 72]]
+- [[_COMMUNITY_Community 73|Community 73]]
+- [[_COMMUNITY_Community 74|Community 74]]
+- [[_COMMUNITY_Community 75|Community 75]]
+- [[_COMMUNITY_Community 76|Community 76]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `fetchLinkPreview()` - 3 edges
@@ -108,468 +104,450 @@
 
 ## Communities
 
-### Community 0 - "Group: tile-renderer.tsx"
+### Community 0 - "Community 0"
 Cohesion: 0.25
 Nodes (0): 
 
-### Community 1 - "Group: use-toast.ts"
+### Community 1 - "Community 1"
 Cohesion: 0.48
 Nodes (5): addToRemoveQueue(), dispatch(), genId(), reducer(), toast()
 
-### Community 2 - "Group: tile-edit-dialog.tsx"
+### Community 2 - "Community 2"
 Cohesion: 0.47
 Nodes (3): fetchLinkPreview(), patch(), patchMeta()
 
-### Community 3 - "Group: storage.ts"
+### Community 3 - "Community 3"
 Cohesion: 0.33
 Nodes (0): 
 
-### Community 4 - "Group: cn()"
+### Community 4 - "Community 4"
 Cohesion: 0.5
 Nodes (0): 
 
-### Community 5 - "Authentication"
+### Community 5 - "Community 5"
+Cohesion: 0.5
+Nodes (0): 
+
+### Community 6 - "Community 6"
 Cohesion: 0.67
 Nodes (2): useAuth(), useRequireAuth()
 
-### Community 6 - "Group: handleSubmit()"
+### Community 7 - "Community 7"
 Cohesion: 0.67
 Nodes (0): 
 
-### Community 7 - "Group: generateMetadata()"
+### Community 8 - "Community 8"
 Cohesion: 0.67
 Nodes (0): 
 
-### Community 8 - "Group: cn()"
-Cohesion: 0.67
-Nodes (0): 
-
-### Community 9 - "Group: middleware()"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 10 - "Group: RootLayout()"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 11 - "Group: DashboardError()"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 12 - "Group: DashboardPage()"
+### Community 9 - "Community 9"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 13 - "Group: PreviewPage()"
+### Community 10 - "Community 10"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 14 - "Group: Home()"
+### Community 11 - "Community 11"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 15 - "Group: handleAuth()"
+### Community 12 - "Community 12"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 16 - "Group: ProfileError()"
+### Community 13 - "Community 13"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 17 - "Group: ProfileNotFound()"
+### Community 14 - "Community 14"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 18 - "Group: GET()"
+### Community 15 - "Community 15"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 19 - "Group: testFirestore()"
+### Community 16 - "Community 16"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 20 - "Group: ControlDock()"
+### Community 17 - "Community 17"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 21 - "Group: GridSkeleton()"
+### Community 18 - "Community 18"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 22 - "Group: tile-card.tsx"
+### Community 19 - "Community 19"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 23 - "Group: tile-grid.tsx"
+### Community 20 - "Community 20"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 24 - "Profile Management"
+### Community 21 - "Community 21"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 25 - "Group: Badge()"
+### Community 22 - "Community 22"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 26 - "Group: useCarousel()"
+### Community 23 - "Community 23"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 27 - "Group: Skeleton()"
+### Community 24 - "Community 24"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 28 - "Group: use-mobile.tsx"
+### Community 25 - "Community 25"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 29 - "Group: utils.ts"
+### Community 26 - "Community 26"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 30 - "Single: next-env.d.ts"
+### Community 27 - "Community 27"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 31 - "Configuration"
+### Community 28 - "Community 28"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 32 - "Configuration"
+### Community 29 - "Community 29"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 33 - "Single: check_cache.py"
+### Community 30 - "Community 30"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 34 - "Single: detect_files.py"
+### Community 31 - "Community 31"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 35 - "Single: run_ast.py"
+### Community 32 - "Community 32"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 36 - "Single: dev.ts"
+### Community 33 - "Community 33"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 37 - "Single: genkit.ts"
+### Community 34 - "Community 34"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 38 - "Single: loading.tsx"
+### Community 35 - "Community 35"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 39 - "Single: loading.tsx"
+### Community 36 - "Community 36"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 40 - "Dashboard Components"
+### Community 37 - "Community 37"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 41 - "Profile Management"
+### Community 38 - "Community 38"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 42 - "Profile Management"
+### Community 39 - "Community 39"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 43 - "Single: settings-panel.tsx"
+### Community 40 - "Community 40"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 44 - "Single: accordion.tsx"
+### Community 41 - "Community 41"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 45 - "Single: alert-dialog.tsx"
+### Community 42 - "Community 42"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 46 - "Single: alert.tsx"
+### Community 43 - "Community 43"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 47 - "Single: avatar.tsx"
+### Community 44 - "Community 44"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 48 - "Single: button.tsx"
+### Community 45 - "Community 45"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 49 - "Single: calendar.tsx"
+### Community 46 - "Community 46"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 50 - "Single: card.tsx"
+### Community 47 - "Community 47"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 51 - "Single: checkbox.tsx"
+### Community 48 - "Community 48"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 52 - "Single: collapsible.tsx"
+### Community 49 - "Community 49"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 53 - "Single: dialog.tsx"
+### Community 50 - "Community 50"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 54 - "Single: dropdown-menu.tsx"
+### Community 51 - "Community 51"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 55 - "Single: form.tsx"
+### Community 52 - "Community 52"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 56 - "Single: input.tsx"
+### Community 53 - "Community 53"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 57 - "Single: label.tsx"
+### Community 54 - "Community 54"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 58 - "Single: menubar.tsx"
+### Community 55 - "Community 55"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 59 - "Single: popover.tsx"
+### Community 56 - "Community 56"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 60 - "Single: progress.tsx"
+### Community 57 - "Community 57"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 61 - "Single: radio-group.tsx"
+### Community 58 - "Community 58"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 62 - "Single: scroll-area.tsx"
+### Community 59 - "Community 59"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 63 - "Single: select.tsx"
+### Community 60 - "Community 60"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 64 - "Single: separator.tsx"
+### Community 61 - "Community 61"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 65 - "Single: sheet.tsx"
+### Community 62 - "Community 62"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 66 - "Single: slider.tsx"
+### Community 63 - "Community 63"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 67 - "Single: switch.tsx"
+### Community 64 - "Community 64"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 68 - "Single: table.tsx"
+### Community 65 - "Community 65"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 69 - "Single: tabs.tsx"
+### Community 66 - "Community 66"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 70 - "Single: textarea.tsx"
+### Community 67 - "Community 67"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 71 - "Single: toast.tsx"
+### Community 68 - "Community 68"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 72 - "Single: toaster.tsx"
+### Community 69 - "Community 69"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 73 - "Single: tooltip.tsx"
+### Community 70 - "Community 70"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 74 - "Authentication"
+### Community 71 - "Community 71"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 75 - "Single: mock-data.ts"
+### Community 72 - "Community 72"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 76 - "Single: placeholder-images.ts"
+### Community 73 - "Community 73"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 77 - "Single: theme-utils.ts"
+### Community 74 - "Community 74"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 78 - "Profile Management"
+### Community 75 - "Community 75"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 79 - "Profile Management"
+### Community 76 - "Community 76"
 Cohesion: 1.0
 Nodes (0): 
 
 ## Knowledge Gaps
-- **Thin community `Group: middleware()`** (2 nodes): `middleware()`, `middleware.ts`
+- **Thin community `Community 9`** (2 nodes): `middleware()`, `middleware.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: RootLayout()`** (2 nodes): `RootLayout()`, `layout.tsx`
+- **Thin community `Community 10`** (2 nodes): `RootLayout()`, `layout.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: DashboardError()`** (2 nodes): `DashboardError()`, `error.tsx`
+- **Thin community `Community 11`** (2 nodes): `DashboardError()`, `error.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: DashboardPage()`** (2 nodes): `DashboardPage()`, `page.tsx`
+- **Thin community `Community 12`** (2 nodes): `DashboardPage()`, `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: PreviewPage()`** (2 nodes): `PreviewPage()`, `page.tsx`
+- **Thin community `Community 13`** (2 nodes): `PreviewPage()`, `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: Home()`** (2 nodes): `Home()`, `page.tsx`
+- **Thin community `Community 14`** (2 nodes): `SettingsPage()`, `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: handleAuth()`** (2 nodes): `handleAuth()`, `page.tsx`
+- **Thin community `Community 15`** (2 nodes): `handleAuth()`, `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: ProfileError()`** (2 nodes): `ProfileError()`, `error.tsx`
+- **Thin community `Community 16`** (2 nodes): `ProfileError()`, `error.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: ProfileNotFound()`** (2 nodes): `ProfileNotFound()`, `not-found.tsx`
+- **Thin community `Community 17`** (2 nodes): `ProfileNotFound()`, `not-found.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: GET()`** (2 nodes): `GET()`, `route.ts`
+- **Thin community `Community 18`** (2 nodes): `GET()`, `route.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: testFirestore()`** (2 nodes): `testFirestore()`, `page.tsx`
+- **Thin community `Community 19`** (2 nodes): `testFirestore()`, `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: ControlDock()`** (2 nodes): `ControlDock()`, `control-dock.tsx`
+- **Thin community `Community 20`** (2 nodes): `ControlDock()`, `control-dock.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: GridSkeleton()`** (2 nodes): `GridSkeleton()`, `grid-skeleton.tsx`
+- **Thin community `Community 21`** (2 nodes): `GridSkeleton()`, `grid-skeleton.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: tile-card.tsx`** (2 nodes): `tile-card.tsx`, `TileCard()`
+- **Thin community `Community 22`** (2 nodes): `tile-card.tsx`, `TileCard()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: tile-grid.tsx`** (2 nodes): `tile-grid.tsx`, `TileGrid()`
+- **Thin community `Community 23`** (2 nodes): `tile-grid.tsx`, `TileGrid()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Profile Management`** (2 nodes): `raf()`, `public-profile.tsx`
+- **Thin community `Community 24`** (2 nodes): `raf()`, `public-profile.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: Badge()`** (2 nodes): `Badge()`, `badge.tsx`
+- **Thin community `Community 25`** (2 nodes): `SocialIcon()`, `social-icons.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: useCarousel()`** (2 nodes): `useCarousel()`, `carousel.tsx`
+- **Thin community `Community 26`** (2 nodes): `Badge()`, `badge.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: Skeleton()`** (2 nodes): `Skeleton()`, `skeleton.tsx`
+- **Thin community `Community 27`** (2 nodes): `useCarousel()`, `carousel.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: use-mobile.tsx`** (2 nodes): `use-mobile.tsx`, `useIsMobile()`
+- **Thin community `Community 28`** (2 nodes): `Skeleton()`, `skeleton.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Group: utils.ts`** (2 nodes): `utils.ts`, `cn()`
+- **Thin community `Community 29`** (2 nodes): `use-mobile.tsx`, `useIsMobile()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: next-env.d.ts`** (1 nodes): `next-env.d.ts`
+- **Thin community `Community 30`** (2 nodes): `utils.ts`, `cn()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Configuration`** (1 nodes): `next.config.ts`
+- **Thin community `Community 31`** (1 nodes): `dev.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Configuration`** (1 nodes): `tailwind.config.ts`
+- **Thin community `Community 32`** (1 nodes): `genkit.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: check_cache.py`** (1 nodes): `check_cache.py`
+- **Thin community `Community 33`** (1 nodes): `loading.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: detect_files.py`** (1 nodes): `detect_files.py`
+- **Thin community `Community 34`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: run_ast.py`** (1 nodes): `run_ast.py`
+- **Thin community `Community 35`** (1 nodes): `loading.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: dev.ts`** (1 nodes): `dev.ts`
+- **Thin community `Community 36`** (1 nodes): `dashboard-layout.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: genkit.ts`** (1 nodes): `genkit.ts`
+- **Thin community `Community 37`** (1 nodes): `profile-sidebar.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: loading.tsx`** (1 nodes): `loading.tsx`
+- **Thin community `Community 38`** (1 nodes): `profile-tile.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: loading.tsx`** (1 nodes): `loading.tsx`
+- **Thin community `Community 39`** (1 nodes): `settings-panel.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Dashboard Components`** (1 nodes): `dashboard-layout.tsx`
+- **Thin community `Community 40`** (1 nodes): `hero-styles.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Profile Management`** (1 nodes): `profile-sidebar.tsx`
+- **Thin community `Community 41`** (1 nodes): `accordion.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Profile Management`** (1 nodes): `profile-tile.tsx`
+- **Thin community `Community 42`** (1 nodes): `alert-dialog.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: settings-panel.tsx`** (1 nodes): `settings-panel.tsx`
+- **Thin community `Community 43`** (1 nodes): `alert.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: accordion.tsx`** (1 nodes): `accordion.tsx`
+- **Thin community `Community 44`** (1 nodes): `avatar.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: alert-dialog.tsx`** (1 nodes): `alert-dialog.tsx`
+- **Thin community `Community 45`** (1 nodes): `button.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: alert.tsx`** (1 nodes): `alert.tsx`
+- **Thin community `Community 46`** (1 nodes): `calendar.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: avatar.tsx`** (1 nodes): `avatar.tsx`
+- **Thin community `Community 47`** (1 nodes): `card.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: button.tsx`** (1 nodes): `button.tsx`
+- **Thin community `Community 48`** (1 nodes): `checkbox.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: calendar.tsx`** (1 nodes): `calendar.tsx`
+- **Thin community `Community 49`** (1 nodes): `collapsible.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: card.tsx`** (1 nodes): `card.tsx`
+- **Thin community `Community 50`** (1 nodes): `dialog.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: checkbox.tsx`** (1 nodes): `checkbox.tsx`
+- **Thin community `Community 51`** (1 nodes): `dropdown-menu.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: collapsible.tsx`** (1 nodes): `collapsible.tsx`
+- **Thin community `Community 52`** (1 nodes): `form.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: dialog.tsx`** (1 nodes): `dialog.tsx`
+- **Thin community `Community 53`** (1 nodes): `input.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: dropdown-menu.tsx`** (1 nodes): `dropdown-menu.tsx`
+- **Thin community `Community 54`** (1 nodes): `label.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: form.tsx`** (1 nodes): `form.tsx`
+- **Thin community `Community 55`** (1 nodes): `menubar.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: input.tsx`** (1 nodes): `input.tsx`
+- **Thin community `Community 56`** (1 nodes): `popover.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: label.tsx`** (1 nodes): `label.tsx`
+- **Thin community `Community 57`** (1 nodes): `progress.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: menubar.tsx`** (1 nodes): `menubar.tsx`
+- **Thin community `Community 58`** (1 nodes): `radio-group.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: popover.tsx`** (1 nodes): `popover.tsx`
+- **Thin community `Community 59`** (1 nodes): `scroll-area.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: progress.tsx`** (1 nodes): `progress.tsx`
+- **Thin community `Community 60`** (1 nodes): `select.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: radio-group.tsx`** (1 nodes): `radio-group.tsx`
+- **Thin community `Community 61`** (1 nodes): `separator.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: scroll-area.tsx`** (1 nodes): `scroll-area.tsx`
+- **Thin community `Community 62`** (1 nodes): `sheet.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: select.tsx`** (1 nodes): `select.tsx`
+- **Thin community `Community 63`** (1 nodes): `slider.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: separator.tsx`** (1 nodes): `separator.tsx`
+- **Thin community `Community 64`** (1 nodes): `switch.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: sheet.tsx`** (1 nodes): `sheet.tsx`
+- **Thin community `Community 65`** (1 nodes): `table.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: slider.tsx`** (1 nodes): `slider.tsx`
+- **Thin community `Community 66`** (1 nodes): `tabs.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: switch.tsx`** (1 nodes): `switch.tsx`
+- **Thin community `Community 67`** (1 nodes): `textarea.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: table.tsx`** (1 nodes): `table.tsx`
+- **Thin community `Community 68`** (1 nodes): `toast.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: tabs.tsx`** (1 nodes): `tabs.tsx`
+- **Thin community `Community 69`** (1 nodes): `toaster.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: textarea.tsx`** (1 nodes): `textarea.tsx`
+- **Thin community `Community 70`** (1 nodes): `tooltip.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: toast.tsx`** (1 nodes): `toast.tsx`
+- **Thin community `Community 71`** (1 nodes): `firebase.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: toaster.tsx`** (1 nodes): `toaster.tsx`
+- **Thin community `Community 72`** (1 nodes): `mock-data.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: tooltip.tsx`** (1 nodes): `tooltip.tsx`
+- **Thin community `Community 73`** (1 nodes): `placeholder-images.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Authentication`** (1 nodes): `firebase.ts`
+- **Thin community `Community 74`** (1 nodes): `theme-utils.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: mock-data.ts`** (1 nodes): `mock-data.ts`
+- **Thin community `Community 75`** (1 nodes): `profile-store.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: placeholder-images.ts`** (1 nodes): `placeholder-images.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Single: theme-utils.ts`** (1 nodes): `theme-utils.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Profile Management`** (1 nodes): `profile-store.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Profile Management`** (1 nodes): `profile.ts`
+- **Thin community `Community 76`** (1 nodes): `profile.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
