@@ -8,6 +8,9 @@ export type TileType =
   | 'spotify' | 'github' | 'youtube' | 'bio' | 'discord'
   | 'luma' | 'instagram' | 'whatsapp' | 'map' | 'email' | 'project' | 'profile';
 
+/** Logical grouping for the public viewer (chennai-react style) */
+export type TileSection = 'socials' | 'projects' | 'experience' | 'sponsors' | 'contact' | 'general';
+
 /** Grid position managed by react-grid-layout */
 export interface TileLayout {
   x: number;  // column start (0-based)
@@ -31,45 +34,27 @@ export const tileSizeToLayout: Record<TileSize, Pick<TileLayout, 'w' | 'h'>> = {
 
 /**
  * Single source of truth for the tile grid layout.
- * Change values here — tile-grid.tsx reads from this automatically.
  *
- * cellPx      — minimum/target cell size in px. Tiles are NEVER smaller than this.
- *               Increase this to make all tiles bigger overall.
- * maxCols     — maximum columns allowed on desktop (tiles won't go smaller than cellPx)
- * maxColsMobile — maximum columns on mobile
- * gap         — space between tiles (px)
- * padding     — space around the whole grid (px)
+ * cellPx       — target cell size in px. Tiles are NEVER smaller than this.
+ * editorMaxCols — max cols inside the dashboard editor (unrestricted by the brief)
+ * publicMaxCols — cap on the public viewer (chennai-react: 2–4 cols)
+ * gap          — space between tiles (px)
+ * padding      — space around the whole grid (px)
  */
 export const GRID_CONFIG = {
-  cellPx:          140,  // target cell size — drives how many cols fit at any width
-  maxCols:           6,  // desktop cap: allow up to 6 columns for full-width tiles
-  minCols:           2,  // always at least 2 columns (mobile)
-  maxColsMobile:     2,  // when mobileView preview is forced on
-  gap:              16,  // space between tiles (px)
-  padding:          16,  // outer padding around the grid (px)
-  /**
-   * Fixed row height used on the public profile page.
-   * (Dashboard tiles use a dynamic rowHeight derived from container width.)
-   */
+  cellPx:           140,
+  editorMaxCols:    6,
+  editorMinCols:    2,
+  publicMaxCols:    4,
+  publicMinCols:    2,
+  maxColsMobile:    2,
+  gap:              16,
+  padding:          16,
   rowHeightPx:      80,
 } as const;
 
-/**
- * Sizes shown in the per-tile size picker.
- * ─ Change this ONE array to add, remove, or reorder picker options globally.
- * ─ Icon proportions are derived automatically from tileSizeToLayout (no hardcoded values).
- *   The tile-card component multiplies w/h by ICON_CELL_PX to get the SVG rect dimensions.
- */
 export const TILE_PICKER_SIZES: TileSize[] = [
-  '1x1',   // ■  small square
-  '2x1',   // ▬  wide flat
-  '3x1',   // ▭  full-width flat
-  '1x2',   // ▯  tall narrow
-  '2x2',   // ■  big square
-  '3x2',   // ▮  full-width rectangle
-  '1x3',   // ▮  very tall
-  '2x3',   // ▮  tall portrait
-  '3x3',   // █  full-width large
+  '1x1', '2x1', '3x1', '1x2', '2x2', '3x2', '1x3', '2x3', '3x3',
 ];
 
 export interface LinkPreview {
@@ -91,21 +76,27 @@ export interface Tile {
   url?: string;
   metadata?: {
     brand?: string;
+    brandColor?: string;       // override brand bg (e.g. '#1DA1F2')
     imageUrl?: string;
-    imageData?: string;           // base64 for local uploads (Phase 1)
-    imageStoragePath?: string;    // Firebase Storage path (Phase 2+)
+    imageData?: string;
+    imageStoragePath?: string;
     videoUrl?: string;
-    videoStoragePath?: string;    // Firebase Storage path (Phase 2+)
+    videoStoragePath?: string;
     description?: string;
     username?: string;
     accentColor?: string;
+    accentChip?: string;       // e.g. 'OSS', 'Available', 'Open to work'
     label?: string;
     isGif?: boolean;
     location?: string;
     previews?: string[];
     buttonText?: string;
     linkText?: string;
-    linkPreview?: LinkPreview;    // OG metadata from /api/link-preview
+    linkPreview?: LinkPreview;
+    section?: TileSection;     // override section for the public viewer
+    handle?: string;           // social handle e.g. '@shamthedev'
+    /** BentoCard visual variant */
+    cardVariant?: 'plain' | 'gradient' | 'image' | 'brand' | 'glow';
   };
 }
 
@@ -114,18 +105,38 @@ export type ProfileBackground =
   | 'white' | 'light-gray' | 'dark'
   | 'gradient-sunset' | 'gradient-ocean' | 'gradient-forest';
 
-/** Hero section layout styles (2-5 styles as requested) */
-export type HeroStyle =
-  | 'classic'     // Centered avatar + name + bio (current default)
-  | 'banner'      // Full-width banner with avatar overlay + name/bio overlay
-  | 'minimal'     // Left-aligned small avatar + inline name/bio
-  | 'card'        // Card with avatar top-left, content right, colored background
-  | 'magazine';   // Large left avatar, right side has name + bio + social icons
+/**
+ * Accent chip floating on the sticky-left hero.
+ * Customisable per profile from day 1.
+ */
+export type HeroAccentKind = 'oss' | 'available' | 'open-to-work' | 'building' | 'speaking' | 'custom';
+
+export interface HeroAccent {
+  kind: HeroAccentKind;
+  label: string;            // shown on the chip
+  emoji?: string;           // optional emoji prefix
+  color?: string;           // tailwind bg class, e.g. 'bg-emerald-500'
+  href?: string;            // optional click target
+}
+
+export const DEFAULT_HERO_ACCENT: HeroAccent = {
+  kind: 'available',
+  label: 'Available for hire',
+  emoji: '✦',
+  color: 'bg-emerald-500',
+};
 
 export interface ProfileTheme {
   font: ProfileFont;
   background: ProfileBackground;
-  heroStyle: HeroStyle;
+  /** Customisable accent chip floating on the hero */
+  heroAccent: HeroAccent;
+  /**
+   * Max grid columns for the public preview AND the dashboard editor.
+   * Persisted on the profile so editor changes are visible in preview.
+   * chennai-react reference: 1–4 (default 4).
+   */
+  maxCols?: number;
 }
 
 export interface SocialLinks {
@@ -134,10 +145,13 @@ export interface SocialLinks {
   github?: string;
   portfolio?: string;
   email?: string;
+  discord?: string;
+  youtube?: string;
+  instagram?: string;
 }
 
 export interface UserProfile {
-  uid?: string;                   // Firebase Auth UID (Phase 2+)
+  uid?: string;
   username: string;
   displayName: string;
   avatarUrl: string;
