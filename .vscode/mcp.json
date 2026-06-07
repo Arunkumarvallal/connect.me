@@ -1,12 +1,17 @@
 {
   "servers": {
-    "filesystem": {
-      "command": "npx",
+     "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp"    },
+    "graphify": {
+      "type": "stdio",
+      "command": "C:\\Users\\ShamSuriya\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
       "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "/Volumes/Elements/Project Files/GitHub/connect.me"
-      ]
+        "-m",
+        "graphify.serve",
+        "graphify-out/graph.json"
+      ],
+      "description": "Graphify knowledge graph server (https://github.com/safishamsi/graphify)"
     }
   }
 }

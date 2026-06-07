@@ -25,7 +25,7 @@ import { useRef, useState, useEffect } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useProfileStore } from '@/store/profile-store';
 import { Tile, TileSize, tileSizeToLayout } from '@/types/profile';
-
+import { uploadImage, getTileImagePath } from '@/lib/storage';
 const TILE_BUTTONS: Array<{ label: string; type: Tile['type']; size: TileSize; Icon: React.ElementType }> = [
   { label: 'Link',    type: 'link',    size: '1x1', Icon: Link2    },
   { label: 'Image',   type: 'image',   size: '2x2', Icon: Image    },
@@ -96,6 +96,13 @@ export function ControlDock({ onSettings, mobileView, onToggleMobileView }: Cont
   function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    
+    // Check file size (base64 has limits)
+    if (file.size > 500 * 1024) { // 500KB limit for base64
+      toast.error('File too large. Please use images under 500KB or upgrade to Blaze plan for Firebase Storage.');
+      return;
+    }
+    
     const reader = new FileReader();
     reader.onload = () => {
       const { w, h } = tileSizeToLayout['2x2'];
@@ -106,8 +113,11 @@ export function ControlDock({ onSettings, mobileView, onToggleMobileView }: Cont
         size: '2x2',
         layout: { x: 0, y: maxY, w, h },
         title: file.name.replace(/\.[^.]+$/, ''),
-        metadata: { imageData: reader.result as string },
+        metadata: { 
+          imageData: reader.result as string,
+        },
       });
+      toast.info('Image added as base64. Upgrade to Blaze plan for Firebase Storage.', { duration: 5000 });
     };
     reader.readAsDataURL(file);
     e.target.value = '';

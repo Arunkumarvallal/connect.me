@@ -1,0 +1,2005 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "middleware.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\middleware.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_middleware_ts",
+      "community": 9,
+      "norm_label": "middleware.ts"
+    },
+    {
+      "label": "middleware()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\middleware.ts",
+      "source_location": "L4",
+      "id": "middleware_middleware",
+      "community": 9,
+      "norm_label": "middleware()"
+    },
+    {
+      "label": "dev.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\ai\\dev.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_ai_dev_ts",
+      "community": 31,
+      "norm_label": "dev.ts"
+    },
+    {
+      "label": "genkit.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\ai\\genkit.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_ai_genkit_ts",
+      "community": 32,
+      "norm_label": "genkit.ts"
+    },
+    {
+      "label": "layout.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\layout.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_layout_tsx",
+      "community": 10,
+      "norm_label": "layout.tsx"
+    },
+    {
+      "label": "RootLayout()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\layout.tsx",
+      "source_location": "L42",
+      "id": "layout_rootlayout",
+      "community": 10,
+      "norm_label": "rootlayout()"
+    },
+    {
+      "label": "error.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\error.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_app_dashboard_error_tsx",
+      "community": 11,
+      "norm_label": "error.tsx"
+    },
+    {
+      "label": "DashboardError()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\error.tsx",
+      "source_location": "L3",
+      "id": "error_dashboarderror",
+      "community": 11,
+      "norm_label": "dashboarderror()"
+    },
+    {
+      "label": "loading.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\loading.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_app_dashboard_loading_tsx",
+      "community": 33,
+      "norm_label": "loading.tsx"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\page.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_app_dashboard_page_tsx",
+      "community": 12,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "DashboardPage()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\page.tsx",
+      "source_location": "L9",
+      "id": "page_dashboardpage",
+      "community": 12,
+      "norm_label": "dashboardpage()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\preview\\page.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_app_dashboard_preview_page_tsx",
+      "community": 13,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "PreviewPage()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\preview\\page.tsx",
+      "source_location": "L6",
+      "id": "page_previewpage",
+      "community": 13,
+      "norm_label": "previewpage()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\settings\\page.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_app_dashboard_settings_page_tsx",
+      "community": 14,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "SettingsPage()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\settings\\page.tsx",
+      "source_location": "L29",
+      "id": "page_settingspage",
+      "community": 14,
+      "norm_label": "settingspage()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\onboarding\\page.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_app_onboarding_page_tsx",
+      "community": 4,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "checkProfile()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\onboarding\\page.tsx",
+      "source_location": "L37",
+      "id": "page_checkprofile",
+      "community": 4,
+      "norm_label": "checkprofile()"
+    },
+    {
+      "label": "handleUsernameChange()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\onboarding\\page.tsx",
+      "source_location": "L90",
+      "id": "page_handleusernamechange",
+      "community": 4,
+      "norm_label": "handleusernamechange()"
+    },
+    {
+      "label": "handleSubmit()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\onboarding\\page.tsx",
+      "source_location": "L96",
+      "id": "page_handlesubmit",
+      "community": 4,
+      "norm_label": "handlesubmit()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\page.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_public_page_tsx",
+      "community": 34,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\login\\page.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_public_login_page_tsx",
+      "community": 15,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "handleAuth()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\login\\page.tsx",
+      "source_location": "L45",
+      "id": "page_handleauth",
+      "community": 15,
+      "norm_label": "handleauth()"
+    },
+    {
+      "label": "error.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\error.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_public_username_error_tsx",
+      "community": 16,
+      "norm_label": "error.tsx"
+    },
+    {
+      "label": "ProfileError()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\error.tsx",
+      "source_location": "L3",
+      "id": "error_profileerror",
+      "community": 16,
+      "norm_label": "profileerror()"
+    },
+    {
+      "label": "loading.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\loading.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_public_username_loading_tsx",
+      "community": 35,
+      "norm_label": "loading.tsx"
+    },
+    {
+      "label": "not-found.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\not-found.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_public_username_not_found_tsx",
+      "community": 17,
+      "norm_label": "not-found.tsx"
+    },
+    {
+      "label": "ProfileNotFound()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\not-found.tsx",
+      "source_location": "L4",
+      "id": "not_found_profilenotfound",
+      "community": 17,
+      "norm_label": "profilenotfound()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\page.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_public_username_page_tsx",
+      "community": 7,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "generateMetadata()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\page.tsx",
+      "source_location": "L9",
+      "id": "page_generatemetadata",
+      "community": 7,
+      "norm_label": "generatemetadata()"
+    },
+    {
+      "label": "UserProfilePage()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\page.tsx",
+      "source_location": "L20",
+      "id": "page_userprofilepage",
+      "community": 7,
+      "norm_label": "userprofilepage()"
+    },
+    {
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\api\\link-preview\\route.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_api_link_preview_route_ts",
+      "community": 18,
+      "norm_label": "route.ts"
+    },
+    {
+      "label": "GET()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\api\\link-preview\\route.ts",
+      "source_location": "L5",
+      "id": "route_get",
+      "community": 18,
+      "norm_label": "get()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\debug\\page.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_app_debug_page_tsx",
+      "community": 19,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "testFirestore()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\debug\\page.tsx",
+      "source_location": "L24",
+      "id": "page_testfirestore",
+      "community": 19,
+      "norm_label": "testfirestore()"
+    },
+    {
+      "label": "control-dock.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\control-dock.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_dashboard_control_dock_tsx",
+      "community": 20,
+      "norm_label": "control-dock.tsx"
+    },
+    {
+      "label": "ControlDock()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\control-dock.tsx",
+      "source_location": "L44",
+      "id": "control_dock_controldock",
+      "community": 20,
+      "norm_label": "controldock()"
+    },
+    {
+      "label": "dashboard-layout.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\dashboard-layout.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_dashboard_dashboard_layout_tsx",
+      "community": 36,
+      "norm_label": "dashboard-layout.tsx"
+    },
+    {
+      "label": "grid-skeleton.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\grid-skeleton.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_dashboard_grid_skeleton_tsx",
+      "community": 21,
+      "norm_label": "grid-skeleton.tsx"
+    },
+    {
+      "label": "GridSkeleton()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\grid-skeleton.tsx",
+      "source_location": "L7",
+      "id": "grid_skeleton_gridskeleton",
+      "community": 21,
+      "norm_label": "gridskeleton()"
+    },
+    {
+      "label": "profile-sidebar.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\profile-sidebar.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_dashboard_profile_sidebar_tsx",
+      "community": 37,
+      "norm_label": "profile-sidebar.tsx"
+    },
+    {
+      "label": "profile-tile.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\profile-tile.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_dashboard_profile_tile_tsx",
+      "community": 38,
+      "norm_label": "profile-tile.tsx"
+    },
+    {
+      "label": "settings-panel.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\settings-panel.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_dashboard_settings_panel_tsx",
+      "community": 39,
+      "norm_label": "settings-panel.tsx"
+    },
+    {
+      "label": "tile-card.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-card.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_dashboard_tile_card_tsx",
+      "community": 22,
+      "norm_label": "tile-card.tsx"
+    },
+    {
+      "label": "TileCard()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-card.tsx",
+      "source_location": "L21",
+      "id": "tile_card_tilecard",
+      "community": 22,
+      "norm_label": "tilecard()"
+    },
+    {
+      "label": "tile-edit-dialog.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "community": 2,
+      "norm_label": "tile-edit-dialog.tsx"
+    },
+    {
+      "label": "patch()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L28",
+      "id": "tile_edit_dialog_patch",
+      "community": 2,
+      "norm_label": "patch()"
+    },
+    {
+      "label": "patchMeta()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L32",
+      "id": "tile_edit_dialog_patchmeta",
+      "community": 2,
+      "norm_label": "patchmeta()"
+    },
+    {
+      "label": "fetchLinkPreview()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L38",
+      "id": "tile_edit_dialog_fetchlinkpreview",
+      "community": 2,
+      "norm_label": "fetchlinkpreview()"
+    },
+    {
+      "label": "handleImageUpload()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L54",
+      "id": "tile_edit_dialog_handleimageupload",
+      "community": 2,
+      "norm_label": "handleimageupload()"
+    },
+    {
+      "label": "handleSave()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L113",
+      "id": "tile_edit_dialog_handlesave",
+      "community": 2,
+      "norm_label": "handlesave()"
+    },
+    {
+      "label": "tile-grid.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-grid.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_dashboard_tile_grid_tsx",
+      "community": 23,
+      "norm_label": "tile-grid.tsx"
+    },
+    {
+      "label": "TileGrid()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-grid.tsx",
+      "source_location": "L24",
+      "id": "tile_grid_tilegrid",
+      "community": 23,
+      "norm_label": "tilegrid()"
+    },
+    {
+      "label": "hero-styles.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\hero-styles.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_profile_hero_styles_tsx",
+      "community": 40,
+      "norm_label": "hero-styles.tsx"
+    },
+    {
+      "label": "public-profile.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\public-profile.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_profile_public_profile_tsx",
+      "community": 24,
+      "norm_label": "public-profile.tsx"
+    },
+    {
+      "label": "raf()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\public-profile.tsx",
+      "source_location": "L25",
+      "id": "public_profile_raf",
+      "community": 24,
+      "norm_label": "raf()"
+    },
+    {
+      "label": "social-icons.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\social-icons.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_profile_social_icons_tsx",
+      "community": 25,
+      "norm_label": "social-icons.tsx"
+    },
+    {
+      "label": "SocialIcon()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\social-icons.tsx",
+      "source_location": "L40",
+      "id": "social_icons_socialicon",
+      "community": 25,
+      "norm_label": "socialicon()"
+    },
+    {
+      "label": "tile-renderer.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "community": 0,
+      "norm_label": "tile-renderer.tsx"
+    },
+    {
+      "label": "SocialIcon()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L32",
+      "id": "tile_renderer_socialicon",
+      "community": 0,
+      "norm_label": "socialicon()"
+    },
+    {
+      "label": "commit()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L51",
+      "id": "tile_renderer_commit",
+      "community": 0,
+      "norm_label": "commit()"
+    },
+    {
+      "label": "commitUrl()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L143",
+      "id": "tile_renderer_commiturl",
+      "community": 0,
+      "norm_label": "commiturl()"
+    },
+    {
+      "label": "commitTitle()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L149",
+      "id": "tile_renderer_committitle",
+      "community": 0,
+      "norm_label": "committitle()"
+    },
+    {
+      "label": "handleFile()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L229",
+      "id": "tile_renderer_handlefile",
+      "community": 0,
+      "norm_label": "handlefile()"
+    },
+    {
+      "label": "commitUsername()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L288",
+      "id": "tile_renderer_commitusername",
+      "community": 0,
+      "norm_label": "commitusername()"
+    },
+    {
+      "label": "copyEmail()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L368",
+      "id": "tile_renderer_copyemail",
+      "community": 0,
+      "norm_label": "copyemail()"
+    },
+    {
+      "label": "accordion.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\accordion.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_accordion_tsx",
+      "community": 41,
+      "norm_label": "accordion.tsx"
+    },
+    {
+      "label": "alert-dialog.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\alert-dialog.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_alert_dialog_tsx",
+      "community": 42,
+      "norm_label": "alert-dialog.tsx"
+    },
+    {
+      "label": "alert.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\alert.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_alert_tsx",
+      "community": 43,
+      "norm_label": "alert.tsx"
+    },
+    {
+      "label": "avatar.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\avatar.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_avatar_tsx",
+      "community": 44,
+      "norm_label": "avatar.tsx"
+    },
+    {
+      "label": "badge.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\badge.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_badge_tsx",
+      "community": 26,
+      "norm_label": "badge.tsx"
+    },
+    {
+      "label": "Badge()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\badge.tsx",
+      "source_location": "L30",
+      "id": "badge_badge",
+      "community": 26,
+      "norm_label": "badge()"
+    },
+    {
+      "label": "button.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\button.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_button_tsx",
+      "community": 45,
+      "norm_label": "button.tsx"
+    },
+    {
+      "label": "calendar.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\calendar.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_calendar_tsx",
+      "community": 46,
+      "norm_label": "calendar.tsx"
+    },
+    {
+      "label": "card.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\card.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_card_tsx",
+      "community": 47,
+      "norm_label": "card.tsx"
+    },
+    {
+      "label": "carousel.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\carousel.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_carousel_tsx",
+      "community": 27,
+      "norm_label": "carousel.tsx"
+    },
+    {
+      "label": "useCarousel()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\carousel.tsx",
+      "source_location": "L35",
+      "id": "carousel_usecarousel",
+      "community": 27,
+      "norm_label": "usecarousel()"
+    },
+    {
+      "label": "chart.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\chart.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_chart_tsx",
+      "community": 8,
+      "norm_label": "chart.tsx"
+    },
+    {
+      "label": "useChart()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\chart.tsx",
+      "source_location": "L27",
+      "id": "chart_usechart",
+      "community": 8,
+      "norm_label": "usechart()"
+    },
+    {
+      "label": "cn()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\chart.tsx",
+      "source_location": "L54",
+      "id": "chart_cn",
+      "community": 8,
+      "norm_label": "cn()"
+    },
+    {
+      "label": "checkbox.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\checkbox.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_checkbox_tsx",
+      "community": 48,
+      "norm_label": "checkbox.tsx"
+    },
+    {
+      "label": "collapsible.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\collapsible.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_collapsible_tsx",
+      "community": 49,
+      "norm_label": "collapsible.tsx"
+    },
+    {
+      "label": "dialog.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\dialog.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_dialog_tsx",
+      "community": 50,
+      "norm_label": "dialog.tsx"
+    },
+    {
+      "label": "dropdown-menu.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\dropdown-menu.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_dropdown_menu_tsx",
+      "community": 51,
+      "norm_label": "dropdown-menu.tsx"
+    },
+    {
+      "label": "form.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\form.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_form_tsx",
+      "community": 52,
+      "norm_label": "form.tsx"
+    },
+    {
+      "label": "input.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\input.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_input_tsx",
+      "community": 53,
+      "norm_label": "input.tsx"
+    },
+    {
+      "label": "label.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\label.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_label_tsx",
+      "community": 54,
+      "norm_label": "label.tsx"
+    },
+    {
+      "label": "menubar.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\menubar.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_menubar_tsx",
+      "community": 55,
+      "norm_label": "menubar.tsx"
+    },
+    {
+      "label": "popover.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\popover.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_popover_tsx",
+      "community": 56,
+      "norm_label": "popover.tsx"
+    },
+    {
+      "label": "progress.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\progress.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_progress_tsx",
+      "community": 57,
+      "norm_label": "progress.tsx"
+    },
+    {
+      "label": "radio-group.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\radio-group.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_radio_group_tsx",
+      "community": 58,
+      "norm_label": "radio-group.tsx"
+    },
+    {
+      "label": "scroll-area.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\scroll-area.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_scroll_area_tsx",
+      "community": 59,
+      "norm_label": "scroll-area.tsx"
+    },
+    {
+      "label": "select.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\select.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_select_tsx",
+      "community": 60,
+      "norm_label": "select.tsx"
+    },
+    {
+      "label": "separator.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\separator.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_separator_tsx",
+      "community": 61,
+      "norm_label": "separator.tsx"
+    },
+    {
+      "label": "sheet.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\sheet.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_sheet_tsx",
+      "community": 62,
+      "norm_label": "sheet.tsx"
+    },
+    {
+      "label": "sidebar.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\sidebar.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_sidebar_tsx",
+      "community": 5,
+      "norm_label": "sidebar.tsx"
+    },
+    {
+      "label": "useSidebar()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\sidebar.tsx",
+      "source_location": "L41",
+      "id": "sidebar_usesidebar",
+      "community": 5,
+      "norm_label": "usesidebar()"
+    },
+    {
+      "label": "handleKeyDown()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\sidebar.tsx",
+      "source_location": "L101",
+      "id": "sidebar_handlekeydown",
+      "community": 5,
+      "norm_label": "handlekeydown()"
+    },
+    {
+      "label": "cn()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\sidebar.tsx",
+      "source_location": "L143",
+      "id": "sidebar_cn",
+      "community": 5,
+      "norm_label": "cn()"
+    },
+    {
+      "label": "skeleton.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\skeleton.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_skeleton_tsx",
+      "community": 28,
+      "norm_label": "skeleton.tsx"
+    },
+    {
+      "label": "Skeleton()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\skeleton.tsx",
+      "source_location": "L3",
+      "id": "skeleton_skeleton",
+      "community": 28,
+      "norm_label": "skeleton()"
+    },
+    {
+      "label": "slider.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\slider.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_slider_tsx",
+      "community": 63,
+      "norm_label": "slider.tsx"
+    },
+    {
+      "label": "switch.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\switch.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_switch_tsx",
+      "community": 64,
+      "norm_label": "switch.tsx"
+    },
+    {
+      "label": "table.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\table.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_table_tsx",
+      "community": 65,
+      "norm_label": "table.tsx"
+    },
+    {
+      "label": "tabs.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\tabs.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_tabs_tsx",
+      "community": 66,
+      "norm_label": "tabs.tsx"
+    },
+    {
+      "label": "textarea.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\textarea.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_textarea_tsx",
+      "community": 67,
+      "norm_label": "textarea.tsx"
+    },
+    {
+      "label": "toast.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\toast.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_toast_tsx",
+      "community": 68,
+      "norm_label": "toast.tsx"
+    },
+    {
+      "label": "toaster.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\toaster.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_toaster_tsx",
+      "community": 69,
+      "norm_label": "toaster.tsx"
+    },
+    {
+      "label": "tooltip.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\tooltip.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_components_ui_tooltip_tsx",
+      "community": 70,
+      "norm_label": "tooltip.tsx"
+    },
+    {
+      "label": "use-mobile.tsx",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-mobile.tsx",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_hooks_use_mobile_tsx",
+      "community": 29,
+      "norm_label": "use-mobile.tsx"
+    },
+    {
+      "label": "useIsMobile()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-mobile.tsx",
+      "source_location": "L5",
+      "id": "use_mobile_useismobile",
+      "community": 29,
+      "norm_label": "useismobile()"
+    },
+    {
+      "label": "use-toast.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "community": 1,
+      "norm_label": "use-toast.ts"
+    },
+    {
+      "label": "genId()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L30",
+      "id": "use_toast_genid",
+      "community": 1,
+      "norm_label": "genid()"
+    },
+    {
+      "label": "addToRemoveQueue()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L61",
+      "id": "use_toast_addtoremovequeue",
+      "community": 1,
+      "norm_label": "addtoremovequeue()"
+    },
+    {
+      "label": "reducer()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L77",
+      "id": "use_toast_reducer",
+      "community": 1,
+      "norm_label": "reducer()"
+    },
+    {
+      "label": "dispatch()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L136",
+      "id": "use_toast_dispatch",
+      "community": 1,
+      "norm_label": "dispatch()"
+    },
+    {
+      "label": "toast()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L145",
+      "id": "use_toast_toast",
+      "community": 1,
+      "norm_label": "toast()"
+    },
+    {
+      "label": "useToast()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L174",
+      "id": "use_toast_usetoast",
+      "community": 1,
+      "norm_label": "usetoast()"
+    },
+    {
+      "label": "auth.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\auth.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_lib_auth_ts",
+      "community": 6,
+      "norm_label": "auth.ts"
+    },
+    {
+      "label": "signOut()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\auth.ts",
+      "source_location": "L26",
+      "id": "auth_signout",
+      "community": 6,
+      "norm_label": "signout()"
+    },
+    {
+      "label": "useAuth()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\auth.ts",
+      "source_location": "L40",
+      "id": "auth_useauth",
+      "community": 6,
+      "norm_label": "useauth()"
+    },
+    {
+      "label": "useRequireAuth()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\auth.ts",
+      "source_location": "L118",
+      "id": "auth_userequireauth",
+      "community": 6,
+      "norm_label": "userequireauth()"
+    },
+    {
+      "label": "firebase.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\firebase.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_lib_firebase_ts",
+      "community": 71,
+      "norm_label": "firebase.ts"
+    },
+    {
+      "label": "mock-data.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\mock-data.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_lib_mock_data_ts",
+      "community": 72,
+      "norm_label": "mock-data.ts"
+    },
+    {
+      "label": "placeholder-images.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\placeholder-images.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_lib_placeholder_images_ts",
+      "community": 73,
+      "norm_label": "placeholder-images.ts"
+    },
+    {
+      "label": "storage.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_lib_storage_ts",
+      "community": 3,
+      "norm_label": "storage.ts"
+    },
+    {
+      "label": "uploadImage()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L17",
+      "id": "storage_uploadimage",
+      "community": 3,
+      "norm_label": "uploadimage()"
+    },
+    {
+      "label": "deleteImage()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L53",
+      "id": "storage_deleteimage",
+      "community": 3,
+      "norm_label": "deleteimage()"
+    },
+    {
+      "label": "getAvatarPath()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L69",
+      "id": "storage_getavatarpath",
+      "community": 3,
+      "norm_label": "getavatarpath()"
+    },
+    {
+      "label": "getTileImagePath()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L77",
+      "id": "storage_gettileimagepath",
+      "community": 3,
+      "norm_label": "gettileimagepath()"
+    },
+    {
+      "label": "getTileVideoPath()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L85",
+      "id": "storage_gettilevideopath",
+      "community": 3,
+      "norm_label": "gettilevideopath()"
+    },
+    {
+      "label": "theme-utils.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\theme-utils.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_lib_theme_utils_ts",
+      "community": 74,
+      "norm_label": "theme-utils.ts"
+    },
+    {
+      "label": "utils.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\utils.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_lib_utils_ts",
+      "community": 30,
+      "norm_label": "utils.ts"
+    },
+    {
+      "label": "cn()",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\utils.ts",
+      "source_location": "L4",
+      "id": "utils_cn",
+      "community": 30,
+      "norm_label": "cn()"
+    },
+    {
+      "label": "profile-store.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\store\\profile-store.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_store_profile_store_ts",
+      "community": 75,
+      "norm_label": "profile-store.ts"
+    },
+    {
+      "label": "profile.ts",
+      "file_type": "code",
+      "source_file": "t:\\r_lib\\connect.me\\src\\types\\profile.ts",
+      "source_location": "L1",
+      "id": "t_r_lib_connect_me_src_types_profile_ts",
+      "community": 76,
+      "norm_label": "profile.ts"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\middleware.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_middleware_ts",
+      "_tgt": "middleware_middleware",
+      "source": "t_r_lib_connect_me_src_middleware_ts",
+      "target": "middleware_middleware",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\layout.tsx",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_layout_tsx",
+      "_tgt": "layout_rootlayout",
+      "source": "t_r_lib_connect_me_src_app_layout_tsx",
+      "target": "layout_rootlayout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\error.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_app_dashboard_error_tsx",
+      "_tgt": "error_dashboarderror",
+      "source": "t_r_lib_connect_me_src_app_app_dashboard_error_tsx",
+      "target": "error_dashboarderror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_app_dashboard_page_tsx",
+      "_tgt": "page_dashboardpage",
+      "source": "t_r_lib_connect_me_src_app_app_dashboard_page_tsx",
+      "target": "page_dashboardpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\preview\\page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_app_dashboard_preview_page_tsx",
+      "_tgt": "page_previewpage",
+      "source": "t_r_lib_connect_me_src_app_app_dashboard_preview_page_tsx",
+      "target": "page_previewpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\dashboard\\settings\\page.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_app_dashboard_settings_page_tsx",
+      "_tgt": "page_settingspage",
+      "source": "t_r_lib_connect_me_src_app_app_dashboard_settings_page_tsx",
+      "target": "page_settingspage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\onboarding\\page.tsx",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_app_onboarding_page_tsx",
+      "_tgt": "page_checkprofile",
+      "source": "t_r_lib_connect_me_src_app_app_onboarding_page_tsx",
+      "target": "page_checkprofile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\onboarding\\page.tsx",
+      "source_location": "L90",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_app_onboarding_page_tsx",
+      "_tgt": "page_handleusernamechange",
+      "source": "t_r_lib_connect_me_src_app_app_onboarding_page_tsx",
+      "target": "page_handleusernamechange",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(app)\\onboarding\\page.tsx",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_app_onboarding_page_tsx",
+      "_tgt": "page_handlesubmit",
+      "source": "t_r_lib_connect_me_src_app_app_onboarding_page_tsx",
+      "target": "page_handlesubmit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\login\\page.tsx",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_public_login_page_tsx",
+      "_tgt": "page_handleauth",
+      "source": "t_r_lib_connect_me_src_app_public_login_page_tsx",
+      "target": "page_handleauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\error.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_public_username_error_tsx",
+      "_tgt": "error_profileerror",
+      "source": "t_r_lib_connect_me_src_app_public_username_error_tsx",
+      "target": "error_profileerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\not-found.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_public_username_not_found_tsx",
+      "_tgt": "not_found_profilenotfound",
+      "source": "t_r_lib_connect_me_src_app_public_username_not_found_tsx",
+      "target": "not_found_profilenotfound",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_public_username_page_tsx",
+      "_tgt": "page_generatemetadata",
+      "source": "t_r_lib_connect_me_src_app_public_username_page_tsx",
+      "target": "page_generatemetadata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\(public)\\[username]\\page.tsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_public_username_page_tsx",
+      "_tgt": "page_userprofilepage",
+      "source": "t_r_lib_connect_me_src_app_public_username_page_tsx",
+      "target": "page_userprofilepage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\api\\link-preview\\route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_api_link_preview_route_ts",
+      "_tgt": "route_get",
+      "source": "t_r_lib_connect_me_src_app_api_link_preview_route_ts",
+      "target": "route_get",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\app\\debug\\page.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_app_debug_page_tsx",
+      "_tgt": "page_testfirestore",
+      "source": "t_r_lib_connect_me_src_app_debug_page_tsx",
+      "target": "page_testfirestore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\control-dock.tsx",
+      "source_location": "L44",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_dashboard_control_dock_tsx",
+      "_tgt": "control_dock_controldock",
+      "source": "t_r_lib_connect_me_src_components_dashboard_control_dock_tsx",
+      "target": "control_dock_controldock",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\grid-skeleton.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_dashboard_grid_skeleton_tsx",
+      "_tgt": "grid_skeleton_gridskeleton",
+      "source": "t_r_lib_connect_me_src_components_dashboard_grid_skeleton_tsx",
+      "target": "grid_skeleton_gridskeleton",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-card.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_dashboard_tile_card_tsx",
+      "_tgt": "tile_card_tilecard",
+      "source": "t_r_lib_connect_me_src_components_dashboard_tile_card_tsx",
+      "target": "tile_card_tilecard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "_tgt": "tile_edit_dialog_patch",
+      "source": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "target": "tile_edit_dialog_patch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "_tgt": "tile_edit_dialog_patchmeta",
+      "source": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "target": "tile_edit_dialog_patchmeta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "_tgt": "tile_edit_dialog_fetchlinkpreview",
+      "source": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "target": "tile_edit_dialog_fetchlinkpreview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "_tgt": "tile_edit_dialog_handleimageupload",
+      "source": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "target": "tile_edit_dialog_handleimageupload",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L113",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "_tgt": "tile_edit_dialog_handlesave",
+      "source": "t_r_lib_connect_me_src_components_dashboard_tile_edit_dialog_tsx",
+      "target": "tile_edit_dialog_handlesave",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_src": "tile_edit_dialog_fetchlinkpreview",
+      "_tgt": "tile_edit_dialog_patch",
+      "source": "tile_edit_dialog_patch",
+      "target": "tile_edit_dialog_fetchlinkpreview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-edit-dialog.tsx",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_src": "tile_edit_dialog_fetchlinkpreview",
+      "_tgt": "tile_edit_dialog_patchmeta",
+      "source": "tile_edit_dialog_patchmeta",
+      "target": "tile_edit_dialog_fetchlinkpreview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\dashboard\\tile-grid.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_dashboard_tile_grid_tsx",
+      "_tgt": "tile_grid_tilegrid",
+      "source": "t_r_lib_connect_me_src_components_dashboard_tile_grid_tsx",
+      "target": "tile_grid_tilegrid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\public-profile.tsx",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_profile_public_profile_tsx",
+      "_tgt": "public_profile_raf",
+      "source": "t_r_lib_connect_me_src_components_profile_public_profile_tsx",
+      "target": "public_profile_raf",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\social-icons.tsx",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_profile_social_icons_tsx",
+      "_tgt": "social_icons_socialicon",
+      "source": "t_r_lib_connect_me_src_components_profile_social_icons_tsx",
+      "target": "social_icons_socialicon",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "_tgt": "tile_renderer_socialicon",
+      "source": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "target": "tile_renderer_socialicon",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L363",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "_tgt": "tile_renderer_commit",
+      "source": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "target": "tile_renderer_commit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L143",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "_tgt": "tile_renderer_commiturl",
+      "source": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "target": "tile_renderer_commiturl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L283",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "_tgt": "tile_renderer_committitle",
+      "source": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "target": "tile_renderer_committitle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L229",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "_tgt": "tile_renderer_handlefile",
+      "source": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "target": "tile_renderer_handlefile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L288",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "_tgt": "tile_renderer_commitusername",
+      "source": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "target": "tile_renderer_commitusername",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\profile\\tile-renderer.tsx",
+      "source_location": "L368",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "_tgt": "tile_renderer_copyemail",
+      "source": "t_r_lib_connect_me_src_components_profile_tile_renderer_tsx",
+      "target": "tile_renderer_copyemail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\badge.tsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_ui_badge_tsx",
+      "_tgt": "badge_badge",
+      "source": "t_r_lib_connect_me_src_components_ui_badge_tsx",
+      "target": "badge_badge",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\carousel.tsx",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_ui_carousel_tsx",
+      "_tgt": "carousel_usecarousel",
+      "source": "t_r_lib_connect_me_src_components_ui_carousel_tsx",
+      "target": "carousel_usecarousel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\chart.tsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_ui_chart_tsx",
+      "_tgt": "chart_usechart",
+      "source": "t_r_lib_connect_me_src_components_ui_chart_tsx",
+      "target": "chart_usechart",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\chart.tsx",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_ui_chart_tsx",
+      "_tgt": "chart_cn",
+      "source": "t_r_lib_connect_me_src_components_ui_chart_tsx",
+      "target": "chart_cn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\sidebar.tsx",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_ui_sidebar_tsx",
+      "_tgt": "sidebar_usesidebar",
+      "source": "t_r_lib_connect_me_src_components_ui_sidebar_tsx",
+      "target": "sidebar_usesidebar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\sidebar.tsx",
+      "source_location": "L101",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_ui_sidebar_tsx",
+      "_tgt": "sidebar_handlekeydown",
+      "source": "t_r_lib_connect_me_src_components_ui_sidebar_tsx",
+      "target": "sidebar_handlekeydown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\sidebar.tsx",
+      "source_location": "L143",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_ui_sidebar_tsx",
+      "_tgt": "sidebar_cn",
+      "source": "t_r_lib_connect_me_src_components_ui_sidebar_tsx",
+      "target": "sidebar_cn",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\components\\ui\\skeleton.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_components_ui_skeleton_tsx",
+      "_tgt": "skeleton_skeleton",
+      "source": "t_r_lib_connect_me_src_components_ui_skeleton_tsx",
+      "target": "skeleton_skeleton",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-mobile.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_hooks_use_mobile_tsx",
+      "_tgt": "use_mobile_useismobile",
+      "source": "t_r_lib_connect_me_src_hooks_use_mobile_tsx",
+      "target": "use_mobile_useismobile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "_tgt": "use_toast_genid",
+      "source": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "target": "use_toast_genid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "_tgt": "use_toast_addtoremovequeue",
+      "source": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "target": "use_toast_addtoremovequeue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "_tgt": "use_toast_reducer",
+      "source": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "target": "use_toast_reducer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L136",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "_tgt": "use_toast_dispatch",
+      "source": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "target": "use_toast_dispatch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L145",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "_tgt": "use_toast_toast",
+      "source": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "target": "use_toast_toast",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L174",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "_tgt": "use_toast_usetoast",
+      "source": "t_r_lib_connect_me_src_hooks_use_toast_ts",
+      "target": "use_toast_usetoast",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_src": "use_toast_toast",
+      "_tgt": "use_toast_genid",
+      "source": "use_toast_genid",
+      "target": "use_toast_toast",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L99",
+      "weight": 1.0,
+      "_src": "use_toast_reducer",
+      "_tgt": "use_toast_addtoremovequeue",
+      "source": "use_toast_addtoremovequeue",
+      "target": "use_toast_reducer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L137",
+      "weight": 1.0,
+      "_src": "use_toast_dispatch",
+      "_tgt": "use_toast_reducer",
+      "source": "use_toast_reducer",
+      "target": "use_toast_dispatch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\hooks\\use-toast.ts",
+      "source_location": "L155",
+      "weight": 1.0,
+      "_src": "use_toast_toast",
+      "_tgt": "use_toast_dispatch",
+      "source": "use_toast_dispatch",
+      "target": "use_toast_toast",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\auth.ts",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_lib_auth_ts",
+      "_tgt": "auth_signout",
+      "source": "t_r_lib_connect_me_src_lib_auth_ts",
+      "target": "auth_signout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\auth.ts",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_lib_auth_ts",
+      "_tgt": "auth_useauth",
+      "source": "t_r_lib_connect_me_src_lib_auth_ts",
+      "target": "auth_useauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\auth.ts",
+      "source_location": "L118",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_lib_auth_ts",
+      "_tgt": "auth_userequireauth",
+      "source": "t_r_lib_connect_me_src_lib_auth_ts",
+      "target": "auth_userequireauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\auth.ts",
+      "source_location": "L119",
+      "weight": 1.0,
+      "_src": "auth_userequireauth",
+      "_tgt": "auth_useauth",
+      "source": "auth_useauth",
+      "target": "auth_userequireauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_lib_storage_ts",
+      "_tgt": "storage_uploadimage",
+      "source": "t_r_lib_connect_me_src_lib_storage_ts",
+      "target": "storage_uploadimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_lib_storage_ts",
+      "_tgt": "storage_deleteimage",
+      "source": "t_r_lib_connect_me_src_lib_storage_ts",
+      "target": "storage_deleteimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_lib_storage_ts",
+      "_tgt": "storage_getavatarpath",
+      "source": "t_r_lib_connect_me_src_lib_storage_ts",
+      "target": "storage_getavatarpath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_lib_storage_ts",
+      "_tgt": "storage_gettileimagepath",
+      "source": "t_r_lib_connect_me_src_lib_storage_ts",
+      "target": "storage_gettileimagepath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\storage.ts",
+      "source_location": "L85",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_lib_storage_ts",
+      "_tgt": "storage_gettilevideopath",
+      "source": "t_r_lib_connect_me_src_lib_storage_ts",
+      "target": "storage_gettilevideopath",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "t:\\r_lib\\connect.me\\src\\lib\\utils.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "t_r_lib_connect_me_src_lib_utils_ts",
+      "_tgt": "utils_cn",
+      "source": "t_r_lib_connect_me_src_lib_utils_ts",
+      "target": "utils_cn",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}

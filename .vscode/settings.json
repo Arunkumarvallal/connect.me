@@ -1,0 +1,16 @@
+{
+  "graphify.enabled": true,
+  "graphify.graphPath": "graphify-out/graph.json",
+  "graphify.reportPath": "graphify-out/GRAPH_REPORT.md",
+  "graphify.github": "https://github.com/safishamsi/graphify",
+  "graphify.tokenOptimization": {
+    "enabled": true,
+    "skipRedundantReads": true,
+    "suggestRelated": true,
+    "showGraphContext": true
+  },
+  "copilot.chat.context": {
+    "graphifyIntegration": true,
+    "preferGraphContext": true
+  }
+}

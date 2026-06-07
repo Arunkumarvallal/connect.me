@@ -15,9 +15,9 @@ export const mockProfile: UserProfile = {
   bio: "Instructional Designer with 5+ years crafting learner-centric training for tech, healthcare, and higher ed. Specializing in eLearning, microlearning, and competency-based assessment.",
   location: "San Francisco, CA",
   theme: {
-    mode: 'light',
     font: 'sans',
-    background: 'white'
+    background: 'white',
+    heroStyle: 'classic'
   },
   socialLinks: {
     linkedin: 'https://linkedin.com/in/sarahchen-id',

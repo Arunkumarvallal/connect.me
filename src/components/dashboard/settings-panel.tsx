@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useProfileStore } from '@/store/profile-store';
-import { ProfileFont, ProfileBackground } from '@/types/profile';
+import { ProfileFont, ProfileBackground, HeroStyle } from '@/types/profile';
 import { GRID_CONFIG } from '@/types/profile';
 
 const FONTS: { value: ProfileFont; label: string; className: string }[] = [
@@ -21,6 +21,14 @@ const BACKGROUNDS: { value: ProfileBackground; label: string; swatch: string }[]
   { value: 'gradient-sunset', label: 'Sunset', swatch: 'linear-gradient(135deg,#f97316,#ec4899)' },
   { value: 'gradient-ocean', label: 'Ocean', swatch: 'linear-gradient(135deg,#06b6d4,#3b82f6)' },
   { value: 'gradient-forest', label: 'Forest', swatch: 'linear-gradient(135deg,#22c55e,#14b8a6)' },
+];
+
+const HERO_STYLES: { value: HeroStyle; label: string; description: string }[] = [
+  { value: 'classic', label: 'Classic', description: 'Centered avatar + name + bio' },
+  { value: 'banner', label: 'Banner', description: 'Full-width banner with overlay' },
+  { value: 'minimal', label: 'Minimal', description: 'Left-aligned compact layout' },
+  { value: 'card', label: 'Card', description: 'Card container with accent' },
+  { value: 'magazine', label: 'Magazine', description: 'Large avatar, editorial style' },
 ];
 
 interface SettingsPanelProps {
@@ -105,6 +113,31 @@ export function SettingsPanel({ open, onClose }: SettingsPanelProps) {
                     style={{ background: bg.swatch }}
                   />
                   <span className="text-xs text-muted-foreground">{bg.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Hero Style */}
+          <div className="space-y-3">
+            <Label className="text-sm font-semibold">Hero Style</Label>
+            <div className="grid grid-cols-1 gap-2">
+              {HERO_STYLES.map((style) => (
+                <button
+                  key={style.value}
+                  onClick={() =>
+                    updateProfile({
+                      theme: { ...profile.theme, heroStyle: style.value },
+                    })
+                  }
+                  className={`flex flex-col items-start gap-1 p-3 rounded-xl border-2 transition-all text-left ${
+                    profile.theme.heroStyle === style.value
+                      ? 'border-primary bg-primary/5'
+                      : 'border-border hover:border-primary/50'
+                  }`}
+                >
+                  <span className="text-sm font-medium">{style.label}</span>
+                  <span className="text-xs text-muted-foreground">{style.description}</span>
                 </button>
               ))}
             </div>

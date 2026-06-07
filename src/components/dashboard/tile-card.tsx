@@ -34,12 +34,23 @@ export function TileCard({ tile, readOnly = false }: TileCardProps) {
       onMouseLeave={readOnly ? undefined : () => setHovered(false)}
       style={{ zIndex: hovered ? 10 : 'auto' }}
     >
+      {/* Delete button - top-right corner (per spec: delete-only top) */}
+      {!readOnly && tile.type !== 'profile' && tile.type !== 'heading' && (
+        <button
+          onClick={() => removeTile(tile.id)}
+          title="Delete tile"
+          className="absolute top-2 right-2 z-40 w-6 h-6 rounded-full bg-red-500/80 hover:bg-red-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
+      )}
+
       {/* Tile content — headings are edge-to-edge, others get rounded card */}
       <div className={`w-full h-full ${tile.type === 'heading' ? '' : 'rounded-2xl overflow-hidden'}`}>
         <TileRenderer tile={tile} isDashboard={!readOnly} />
       </div>
 
-      {/* Per-tile mini floating dock — edit mode only */}
+      {/* Per-tile mini floating dock — edit mode only (size controls at bottom per spec) */}
       {!readOnly && (<AnimatePresence>
         {hovered && (
           <motion.div
@@ -94,28 +105,13 @@ export function TileCard({ tile, readOnly = false }: TileCardProps) {
             )}
 
         {/* Edit - hidden for profile tiles (inline editing) */}
-        {tile.type !== 'profile' && (
-          <>
-            <button
-              onClick={() => setEditingTile(tile)}
-              title="Edit tile"
-              className="flex items-center justify-center w-6 h-6 rounded-full text-zinc-500 dark:text-zinc-400 hover:text-blue-400 dark:hover:text-blue-500 transition-colors"
-            >
-              <Pencil className="w-3.5 h-3.5" />
-            </button>
-
-            <div className="w-px h-4 bg-zinc-700 dark:bg-zinc-300 mx-0.5" />
-          </>
-        )}
-
-        {/* Delete - hidden for profile tiles */}
-        {tile.type !== 'profile' && (
+        {tile.type !== 'profile' && tile.type !== 'heading' && (
           <button
-            onClick={() => removeTile(tile.id)}
-            title="Delete tile"
-            className="flex items-center justify-center w-6 h-6 rounded-full text-zinc-500 dark:text-zinc-400 hover:text-red-400 dark:hover:text-red-500 transition-colors"
+            onClick={() => setEditingTile(tile)}
+            title="Edit tile"
+            className="flex items-center justify-center w-6 h-6 rounded-full text-zinc-500 dark:text-zinc-400 hover:text-blue-400 dark:hover:text-blue-500 transition-colors"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Pencil className="w-3.5 h-3.5" />
           </button>
         )}
           </motion.div>

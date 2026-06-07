@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // User profiles - allow authenticated users to read/write their own profile
+    // Also allow public read access for public profile pages
+    match /users/{userId} {
+      allow read: if true;  // Public read access for profile pages
+      allow create: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.uid == userId;
+      allow update, delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Usernames collection - for username reservation
+    match /usernames/{username} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null 
+        && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if request.auth != null 
+        && request.auth.uid == resource.data.uid;
+    }
+  }
+}
