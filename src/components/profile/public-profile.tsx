@@ -3,7 +3,6 @@
 import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ProfileSidebar } from '@/components/dashboard/profile-sidebar';
 import { TileGrid } from '@/components/dashboard/tile-grid';
 import { UserProfile } from '@/types/profile';
 import { dashboardBgClassMap, fontClassMap } from '@/lib/theme-utils';
@@ -39,11 +38,6 @@ export function PublicProfile({ profile, previewMode = false }: PublicProfilePro
 
   return (
     <div className={`min-h-screen flex bg-background text-foreground ${fontClass} transition-colors duration-300`}>
-      {/* Left sidebar — identical to dashboard (read-only) */}
-      <aside className="hidden md:flex flex-col w-[560px] shrink-0 min-h-screen sticky top-0 h-screen overflow-y-auto">
-        <ProfileSidebar profile={profile} editable={false} />
-      </aside>
-
       {/* Mobile header — visible only on small screens */}
       <div className="md:hidden w-full fixed top-0 left-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/40 px-4 py-3 flex items-center gap-3">
         <Avatar className="w-9 h-9">
@@ -55,7 +49,7 @@ export function PublicProfile({ profile, previewMode = false }: PublicProfilePro
         </div>
       </div>
 
-      {/* Main grid area — same bg logic as dashboard */}
+      {/* Main grid area — profile is now a tile in the grid */}
       <main className={`flex-1 min-h-screen overflow-x-hidden pb-12 transition-all duration-300 ${gridBgClass} md:pt-0 pt-16`}>
         <TileGrid readOnly tiles={profile.tiles} />
       </main>

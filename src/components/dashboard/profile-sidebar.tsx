@@ -24,12 +24,12 @@ export function ProfileSidebar({ profile: profileProp, editable = true }: Profil
   ).current;
 
   return (
-    <aside className="relative flex flex-col items-center gap-6 pt-12 px-8 pb-24 w-full h-full">
-      {/* Avatar — large, click to change */}
+    <aside className="relative flex flex-col items-center gap-5 pt-8 px-6 pb-8 w-full h-full">
+      {/* Avatar — click to change */}
       <div className="relative group shrink-0">
-        <Avatar className="w-52 h-52 ring-[1.5px] ring-zinc-300 dark:ring-zinc-600">
+        <Avatar className="w-28 h-28 sm:w-32 sm:h-32 ring-[1.5px] ring-zinc-300 dark:ring-zinc-600">
           <AvatarImage src={profile.avatarUrl} alt={profile.displayName} />
-          <AvatarFallback className="text-6xl font-semibold">
+          <AvatarFallback className="text-4xl font-semibold">
             {profile.displayName.charAt(0)}
           </AvatarFallback>
         </Avatar>
@@ -64,12 +64,12 @@ export function ProfileSidebar({ profile: profileProp, editable = true }: Profil
           key={profile.displayName}
           defaultValue={profile.displayName}
           onChange={(e) => debouncedUpdate({ displayName: e.target.value })}
-          className="w-full text-center text-3xl font-bold bg-transparent border-none outline-none focus:outline-none shadow-none ring-0 focus:ring-0 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-foreground p-0"
+          className="w-full text-center text-xl sm:text-2xl font-bold bg-transparent border-none outline-none focus:outline-none shadow-none ring-0 focus:ring-0 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-foreground p-0"
           placeholder="Your name"
           spellCheck={false}
         />
       ) : (
-        <h1 className="w-full text-center text-3xl font-bold text-foreground">
+        <h1 className="w-full text-center text-xl sm:text-2xl font-bold text-foreground">
           {profile.displayName || 'Your Name'}
         </h1>
       )}
@@ -81,9 +81,9 @@ export function ProfileSidebar({ profile: profileProp, editable = true }: Profil
             key={profile.bio}
             defaultValue={profile.bio}
             maxLength={BIO_MAX_CHARS}
-            rows={5}
+            rows={3}
             onChange={(e) => debouncedUpdate({ bio: e.target.value })}
-            className="w-full resize-none bg-transparent border-none outline-none focus:outline-none shadow-none ring-0 focus:ring-0 text-base text-muted-foreground leading-relaxed placeholder:text-zinc-400 dark:placeholder:text-zinc-600 p-0"
+            className="w-full resize-none bg-transparent border-none outline-none focus:outline-none shadow-none ring-0 focus:ring-0 text-sm sm:text-base text-muted-foreground leading-relaxed placeholder:text-zinc-400 dark:placeholder:text-zinc-600 p-0"
             placeholder="Write a short bio…"
             spellCheck={false}
           />
@@ -93,7 +93,7 @@ export function ProfileSidebar({ profile: profileProp, editable = true }: Profil
         </div>
       ) : (
         profile.bio && (
-          <p className="w-full text-base text-muted-foreground leading-relaxed">
+          <p className="w-full text-sm sm:text-base text-muted-foreground leading-relaxed">
             {profile.bio}
           </p>
         )
