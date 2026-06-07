@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { cloneDeep } from 'lodash';
-import { Tile, TileSize, tileSizeToLayout, UserProfile } from '@/types/profile';
+import { Tile, TileSize, tileSizeToLayout, UserProfile, HeroAccent } from '@/types/profile';
 import { mockProfile } from '@/lib/mock-data';
 import { db, auth } from '@/lib/firebase';
 import { doc, getDoc, setDoc, onSnapshot, serverTimestamp } from 'firebase/firestore';
@@ -13,7 +13,6 @@ interface ProfileStore {
   profile: UserProfile;
   view: 'desktop' | 'mobile';
   editingTile: Tile | null;
-  customCols: number | null;
   history: UserProfile[];
   historyIndex: number;
   isLoading: boolean;
@@ -30,14 +29,12 @@ interface ProfileStore {
   reorderTiles: (tiles: Tile[]) => void;
   setView: (v: 'desktop' | 'mobile') => void;
   setEditingTile: (t: Tile | null) => void;
-  setCustomCols: (cols: number | null) => void;
   autoArrangeTiles: () => void;
   undo: () => void;
   redo: () => void;
   canUndo: () => boolean;
   canRedo: () => boolean;
-  
-  // Firestore sync
+
   loadProfileFromFirestore: (uid: string) => Promise<void>;
   saveProfileToFirestore: () => Promise<void>;
   startFirestoreSync: (uid: string) => void;
@@ -46,7 +43,6 @@ interface ProfileStore {
 
 const MAX_HISTORY = 50;
 
-// Debounced save to Firestore (auto-save)
 const debouncedSave = debounce(async (profile: UserProfile, uid: string) => {
   try {
     const profileData = {
@@ -54,11 +50,80 @@ const debouncedSave = debounce(async (profile: UserProfile, uid: string) => {
       updatedAt: serverTimestamp(),
     };
     await setDoc(doc(db, 'users', uid), profileData, { merge: true });
-    console.log('[Firestore] Profile auto-saved');
   } catch (error) {
     console.error('[Firestore] Auto-save failed:', error);
   }
 }, 2000);
+
+/**
+ * v5 → v6 migration
+ * Old theme: { font, background, heroStyle }
+ * New theme: { font, background, heroAccent: HeroAccent }
+ */
+function heroStyleToAccent(heroStyle: string | undefined): HeroAccent {
+  switch (heroStyle) {
+    case 'banner':    return { kind: 'speaking', label: 'Speaking', emoji: '✦', color: 'bg-pink-500' };
+    case 'minimal':   return { kind: 'building', label: 'Building', emoji: '✦', color: 'bg-sky-500' };
+    case 'card':      return { kind: 'oss', label: 'Open source', emoji: '✦', color: 'bg-violet-500' };
+    case 'magazine':  return { kind: 'open-to-work', label: 'Open to work', emoji: '✦', color: 'bg-amber-500' };
+    case 'classic':
+    default:          return { kind: 'available', label: 'Available for hire', emoji: '✦', color: 'bg-emerald-500' };
+  }
+}
+
+interface LegacyTheme {
+  font?: string;
+  background?: string;
+  heroStyle?: string;
+}
+
+function migrateV5ToV6(persisted: any): any {
+  if (!persisted) return persisted;
+  // zustand v5 wraps persisted state as { state, version }
+  const inner = persisted.state ?? persisted;
+  const profile = inner.profile;
+  if (!profile) return persisted;
+  const legacyTheme = profile.theme as LegacyTheme;
+  if (legacyTheme && (legacyTheme as any).heroAccent) {
+    return persisted; // already v6+
+  }
+  inner.profile = {
+    ...profile,
+    theme: {
+      font: (legacyTheme?.font as any) ?? 'sans',
+      background: (legacyTheme?.background as any) ?? 'white',
+      heroAccent: heroStyleToAccent(legacyTheme?.heroStyle),
+    },
+  };
+  if (persisted.state) persisted.state = inner;
+  return persisted;
+}
+
+/**
+ * v6 → v7 migration
+ * - `customCols` moves from zustand state to `theme.maxCols` (persisted on profile)
+ * - The dashboard editor and the public preview now share the same column count.
+ */
+function migrateV6ToV7(persisted: any): any {
+  if (!persisted) return persisted;
+  const inner = persisted.state ?? persisted;
+  const profile = inner.profile;
+  if (!profile) return persisted;
+  const theme = profile.theme ?? {};
+  if (typeof theme.maxCols === 'number') return persisted; // already v7+
+
+  const cols = inner.customCols;
+  if (typeof cols === 'number' && cols >= 1 && cols <= 4) {
+    theme.maxCols = cols;
+  } else {
+    theme.maxCols = 4; // chennai-react default
+  }
+  inner.profile = { ...profile, theme };
+  // drop customCols — its data is now in theme.maxCols
+  delete inner.customCols;
+  if (persisted.state) persisted.state = inner;
+  return persisted;
+}
 
 export const useProfileStore = create<ProfileStore>()(
   persist(
@@ -66,7 +131,6 @@ export const useProfileStore = create<ProfileStore>()(
       profile: cloneDeep(mockProfile),
       view: 'desktop',
       editingTile: null,
-      customCols: null,
       history: [] as UserProfile[],
       historyIndex: -1,
       isLoading: false,
@@ -134,33 +198,24 @@ export const useProfileStore = create<ProfileStore>()(
 
       setEditingTile: (t) => set({ editingTile: t }),
 
-      setCustomCols: (cols) => set({ customCols: cols }),
-
       autoArrangeTiles: () =>
         set((state) => {
           const tiles = [...state.profile.tiles];
-          const cols = state.customCols || 3;
+          const cols = state.profile.theme.maxCols || 4;
 
-          // Separate tiles by type and priority
           const profileTiles = tiles.filter(t => t.type === 'profile');
           const headingTiles = tiles.filter(t => t.type === 'heading');
           const regularTiles = tiles.filter(t => t.type !== 'profile' && t.type !== 'heading');
 
-          // Intelligent sorting strategy:
-          // 1. Group by width categories (wide, medium, narrow)
-          // 2. Within each group, sort by height (shorter first for better packing)
-          // 3. Interleave groups for visual variety
           const wideTiles = regularTiles.filter(t => t.layout.w >= Math.ceil(cols * 0.66));
           const mediumTiles = regularTiles.filter(t => t.layout.w >= 2 && t.layout.w < Math.ceil(cols * 0.66));
           const narrowTiles = regularTiles.filter(t => t.layout.w === 1);
 
-          // Sort each group by height (shorter first - easier to pack)
           const sortByHeight = (a: Tile, b: Tile) => a.layout.h - b.layout.h;
           wideTiles.sort(sortByHeight);
           mediumTiles.sort(sortByHeight);
           narrowTiles.sort(sortByHeight);
 
-          // Interleave tiles for better visual distribution
           const sortedTiles: Tile[] = [];
           const maxLen = Math.max(wideTiles.length, mediumTiles.length, narrowTiles.length);
           for (let i = 0; i < maxLen; i++) {
@@ -174,13 +229,10 @@ export const useProfileStore = create<ProfileStore>()(
 
           let currentY = 0;
 
-          // Helper: Find best position using "Bottom-Left" algorithm
-          // Tries to place tiles as low as possible, then as left as possible
           const findBestPosition = (w: number, h: number): {x: number, y: number} => {
             let bestY = Infinity;
             let bestX = 0;
 
-            // Collect all y positions to try (including tile edges)
             const yPositions = new Set<number>([0]);
             occupied.forEach(o => {
               yPositions.add(o.y);
@@ -188,40 +240,27 @@ export const useProfileStore = create<ProfileStore>()(
             });
             const sortedY = Array.from(yPositions).sort((a, b) => a - b);
 
-            // Try each y position (lowest first)
             for (const tryY of sortedY) {
-              if (tryY > bestY) break; // No need to check higher y
-
-              // Try each x position at this y (leftmost first)
+              if (tryY > bestY) break;
               for (let tryX = 0; tryX + w <= cols; tryX++) {
-                // Check for conflicts
                 const hasConflict = occupied.some(o =>
                   !(tryX + w <= o.x || tryX >= o.x + o.w || tryY + h <= o.y || tryY >= o.y + o.h)
                 );
-
                 if (hasConflict) continue;
-
-                // Check if this position is "supported" (no floating)
-                // A position is supported if it's at y=0 or there's a tile below it
                 const isSupported = tryY === 0 || occupied.some(o =>
                   o.x < tryX + w && o.x + o.w > tryX && o.y + o.h === tryY
                 );
-
-                // Prefer supported positions, but don't require it
                 const score = tryY * 100 + (isSupported ? 0 : 50) + tryX;
-
                 if (tryY < bestY || (tryY === bestY && tryX < bestX)) {
                   bestY = tryY;
                   bestX = tryX;
                 }
-                break; // Found valid position at this y, move to next y
+                break;
               }
             }
-
             return bestY < Infinity ? { x: bestX, y: bestY } : { x: 0, y: currentY };
           };
 
-          // Place profile tiles first (full width at top)
           profileTiles.forEach(tile => {
             const w = cols;
             const h = Math.max(2, tile.layout.h);
@@ -230,7 +269,6 @@ export const useProfileStore = create<ProfileStore>()(
             currentY += h;
           });
 
-          // Place heading tiles (full width)
           headingTiles.forEach(tile => {
             const w = cols;
             const h = 1;
@@ -239,61 +277,40 @@ export const useProfileStore = create<ProfileStore>()(
             currentY += h;
           });
 
-          // Place regular tiles using intelligent packing
           sortedTiles.forEach(tile => {
             const w = Math.min(tile.layout.w, cols);
             const h = tile.layout.h;
-
             const pos = findBestPosition(w, h);
-
             newTiles.push({ ...tile, layout: { ...tile.layout, x: pos.x, y: pos.y, w, h } });
             occupied.push({ x: pos.x, y: pos.y, w, h });
-
-            // Update currentY
             currentY = Math.max(currentY, pos.y + h);
           });
 
-          // Post-processing: Compact the layout to remove gaps
-          // Sort tiles by y position, then x position
           newTiles.sort((a, b) => {
             if (a.layout.y !== b.layout.y) return a.layout.y - b.layout.y;
             return a.layout.x - b.layout.x;
           });
 
-          // Adjust y positions to eliminate vertical gaps where possible
           const finalOccupied: Array<{x: number, y: number, w: number, h: number}> = [];
           const compactedTiles: Tile[] = [];
-
           newTiles.forEach(tile => {
             const w = tile.layout.w;
             const h = tile.layout.h;
-
-            // Find the highest position this tile can occupy
             let bestY = tile.layout.y;
             for (let tryY = 0; tryY < tile.layout.y; tryY++) {
               const hasConflict = finalOccupied.some(o =>
                 !(tile.layout.x + w <= o.x || tile.layout.x >= o.x + o.w || tryY + h <= o.y || tryY >= o.y + o.h)
               );
-              if (!hasConflict) {
-                bestY = tryY;
-              } else {
-                break; // Can't go higher
-              }
+              if (!hasConflict) bestY = tryY;
+              else break;
             }
-
-            compactedTiles.push({
-              ...tile,
-              layout: { ...tile.layout, y: bestY }
-            });
+            compactedTiles.push({ ...tile, layout: { ...tile.layout, y: bestY } });
             finalOccupied.push({ x: tile.layout.x, y: bestY, w, h });
           });
 
           return {
             ...state._recordHistory(state),
-            profile: {
-              ...state.profile,
-              tiles: compactedTiles,
-            },
+            profile: { ...state.profile, tiles: compactedTiles },
           };
         }),
 
@@ -302,11 +319,7 @@ export const useProfileStore = create<ProfileStore>()(
           if (state.historyIndex < 0) return state;
           const newIndex = state.historyIndex - 1;
           const profile = cloneDeep(state.history[newIndex] || state.profile);
-          return {
-            historyIndex: newIndex,
-            profile,
-            editingTile: null,
-          };
+          return { historyIndex: newIndex, profile, editingTile: null };
         }),
 
       redo: () =>
@@ -314,47 +327,26 @@ export const useProfileStore = create<ProfileStore>()(
           if (state.historyIndex >= state.history.length - 1) return state;
           const newIndex = state.historyIndex + 1;
           const profile = cloneDeep(state.history[newIndex]);
-          return {
-            historyIndex: newIndex,
-            profile,
-            editingTile: null,
-          };
+          return { historyIndex: newIndex, profile, editingTile: null };
         }),
 
-      canUndo: () => {
-        return get().historyIndex > 0;
-      },
+      canUndo: () => get().historyIndex > 0,
+      canRedo: () => get().historyIndex < get().history.length - 1,
 
-      canRedo: () => {
-        return get().historyIndex < get().history.length - 1;
-      },
-
-      // Firestore sync methods
       loadProfileFromFirestore: async (uid: string) => {
         set({ isLoading: true, error: null });
         try {
           const docRef = doc(db, 'users', uid);
           const docSnap = await getDoc(docRef);
-          
           if (docSnap.exists()) {
             const data = docSnap.data() as UserProfile;
-            set({ 
-              profile: data, 
-              isLoading: false 
-            });
+            set({ profile: data, isLoading: false });
           } else {
-            // No profile found, use mock data
-            set({ 
-              profile: cloneDeep(mockProfile), 
-              isLoading: false 
-            });
+            set({ profile: cloneDeep(mockProfile), isLoading: false });
           }
         } catch (error: any) {
           console.error('[Firestore] Load failed:', error);
-          set({ 
-            error: error.message, 
-            isLoading: false 
-          });
+          set({ error: error.message, isLoading: false });
         }
       },
 
@@ -362,35 +354,23 @@ export const useProfileStore = create<ProfileStore>()(
         const state = get();
         const uid = auth.currentUser?.uid;
         if (!uid) return;
-        
         set({ isSaving: true, error: null });
         try {
-          const profileData = {
-            ...state.profile,
-            updatedAt: serverTimestamp(),
-          };
+          const profileData = { ...state.profile, updatedAt: serverTimestamp() };
           await setDoc(doc(db, 'users', uid), profileData, { merge: true });
           set({ isSaving: false });
-          console.log('[Firestore] Profile saved');
         } catch (error: any) {
           console.error('[Firestore] Save failed:', error);
-          set({ 
-            error: error.message, 
-            isSaving: false 
-          });
+          set({ error: error.message, isSaving: false });
         }
       },
 
       startFirestoreSync: (uid: string) => {
         const state = get();
-        
-        // Stop existing listener if any
-        if (state.firestoreUnsubscribe) {
-          state.firestoreUnsubscribe();
-        }
-
+        if (state.firestoreUnsubscribe) state.firestoreUnsubscribe();
         const docRef = doc(db, 'users', uid);
-        const unsubscribe = onSnapshot(docRef, 
+        const unsubscribe = onSnapshot(
+          docRef,
           (doc) => {
             if (doc.exists()) {
               const data = doc.data() as UserProfile;
@@ -400,9 +380,8 @@ export const useProfileStore = create<ProfileStore>()(
           (error) => {
             console.error('[Firestore] Sync error:', error);
             set({ error: error.message });
-          }
+          },
         );
-
         set({ firestoreUnsubscribe: unsubscribe });
       },
 
@@ -416,95 +395,59 @@ export const useProfileStore = create<ProfileStore>()(
     }),
     {
       name: 'profile-store',
-      version: 5,
+      version: 7,
+      migrate: (persisted, version) => {
+        if (version < 6) return migrateV5ToV6(persisted);
+        if (version < 7) return migrateV6ToV7(persisted);
+        return persisted as any;
+      },
       partialize: (state) => ({
         profile: state.profile,
         view: state.view,
-        customCols: state.customCols,
       }),
-    }
-  )
+    },
+  ),
 );
 
-// Patch updateProfile and other mutating actions to auto-save to Firestore
-const originalUpdateProfile = useProfileStore.getState().updateProfile;
+// Patch mutating actions to auto-save to Firestore
 useProfileStore.setState({
   updateProfile: (patch) => {
     const state = useProfileStore.getState();
     state._recordHistory(state);
-    useProfileStore.setState({ 
-      profile: { ...state.profile, ...patch } 
-    });
-    
-    // Auto-save to Firestore
+    useProfileStore.setState({ profile: { ...state.profile, ...patch } });
     const uid = auth.currentUser?.uid;
-    if (uid) {
-      debouncedSave(useProfileStore.getState().profile, uid);
-    }
+    if (uid) debouncedSave(useProfileStore.getState().profile, uid);
   },
-});
-
-// Similarly patch other mutating actions
-const originalUpdateTile = useProfileStore.getState().updateTile;
-useProfileStore.setState({
   updateTile: (tile) => {
     const state = useProfileStore.getState();
     state._recordHistory(state);
     useProfileStore.setState({
       profile: {
         ...state.profile,
-        tiles: state.profile.tiles.map((t) =>
-          t.id === tile.id ? { ...t, ...tile } : t
-        ),
+        tiles: state.profile.tiles.map((t) => (t.id === tile.id ? { ...t, ...tile } : t)),
       },
       editingTile: null,
     });
-    
-    // Auto-save to Firestore
     const uid = auth.currentUser?.uid;
-    if (uid) {
-      debouncedSave(useProfileStore.getState().profile, uid);
-    }
+    if (uid) debouncedSave(useProfileStore.getState().profile, uid);
   },
-});
-
-const originalAddTile = useProfileStore.getState().addTile;
-useProfileStore.setState({
   addTile: (tile) => {
     const state = useProfileStore.getState();
     state._recordHistory(state);
     useProfileStore.setState({
-      profile: {
-        ...state.profile,
-        tiles: [...state.profile.tiles, tile],
-      },
+      profile: { ...state.profile, tiles: [...state.profile.tiles, tile] },
     });
-    
-    // Auto-save to Firestore
     const uid = auth.currentUser?.uid;
-    if (uid) {
-      debouncedSave(useProfileStore.getState().profile, uid);
-    }
+    if (uid) debouncedSave(useProfileStore.getState().profile, uid);
   },
-});
-
-const originalRemoveTile = useProfileStore.getState().removeTile;
-useProfileStore.setState({
   removeTile: (id) => {
     const state = useProfileStore.getState();
     state._recordHistory(state);
     useProfileStore.setState({
-      profile: {
-        ...state.profile,
-        tiles: state.profile.tiles.filter((t) => t.id !== id),
-      },
+      profile: { ...state.profile, tiles: state.profile.tiles.filter((t) => t.id !== id) },
       editingTile: state.editingTile?.id === id ? null : state.editingTile,
     });
-    
-    // Auto-save to Firestore
     const uid = auth.currentUser?.uid;
-    if (uid) {
-      debouncedSave(useProfileStore.getState().profile, uid);
-    }
+    if (uid) debouncedSave(useProfileStore.getState().profile, uid);
   },
 });

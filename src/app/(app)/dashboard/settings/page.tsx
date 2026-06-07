@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 
 export default function SettingsPage() {
-  const { profile, updateProfile, setCustomCols, customCols } = useProfileStore();
+  const { profile, updateProfile } = useProfileStore();
   const { user, signOut } = useAuth();
   const router = useRouter();
   
